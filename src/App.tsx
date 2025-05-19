@@ -1,25 +1,15 @@
-import { useAuth } from "./context/AuthContext";
-import LoginPage from "./pages/auth/LoginPage";
-import Layout from "./pages/Layout";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { RouterProvider } from "react-router-dom";
+import router from "./routes/Router";
+
+const queryClient = new QueryClient();
 
 function App() {
-  const { isLoggedIn, logout } = useAuth();
-
-  if (!isLoggedIn) {
-    return <LoginPage />;
-  }
-
   return (
-    <>
-      <button
-        onClick={logout}
-        className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-      >
-          로그아웃
-      </button>
-      <Layout></Layout>
-    </>
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} /> 
+    </QueryClientProvider>
   );
-}
+};
 
 export default App;
