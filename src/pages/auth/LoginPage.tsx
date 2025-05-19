@@ -1,26 +1,21 @@
 import { useState } from "react";
 import InputText from "../../component/input/InputText";
-import { useAuth } from "../../context/AuthContext";
+import { useLogin } from "../../hooks/useAuth";
 
 export default function LoginPage() {
-  const { login } = useAuth();
   const [loginId, setLoginId] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+
+  const loginMutation = useLogin();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
-
-    try {
-      if (loginId === "test" && password === "1234") {
-        login();
-      } else {
-        throw new Error("아이디 또는 비밀번호가 올바르지 않습니다.");
-      }
-    } catch (err: any) {
-      setError(err.message);
-    }
+    
+    const loginRequest = {
+      loginId: loginId,
+      password: password
+    };
+    loginMutation.mutate(loginRequest);
   };
 
   return (

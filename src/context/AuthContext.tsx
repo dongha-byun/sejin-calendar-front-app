@@ -2,11 +2,11 @@ import { createContext, useContext, useState } from "react";
 
 interface AuthContextType {
   isLoggedIn: boolean;
-  login: () => void;
+  login: (accessToken: string) => void;
   logout: () => void;
 }
 
-const ACCESS_TOKEN_KEY = "access-token";
+export const ACCESS_TOKEN_KEY = "access-token";
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -14,9 +14,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return localStorage.getItem(ACCESS_TOKEN_KEY) === "true";
   });
 
-  const login = () => {
+  const login = (accessToken: string) => {
     setIsLoggedIn(true);
-    localStorage.setItem(ACCESS_TOKEN_KEY, "true");
+    localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
   };
 
   const logout = () => {
