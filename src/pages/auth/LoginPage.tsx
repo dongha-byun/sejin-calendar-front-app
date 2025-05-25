@@ -1,12 +1,12 @@
 import { useState } from "react";
 import InputText from "../../component/input/InputText";
-import { useLogin } from "../../hooks/useAuth";
+import { authService } from "../../api/auth/authService";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
+  const navigate = useNavigate();
   const [loginId, setLoginId] = useState("");
   const [password, setPassword] = useState("");
-
-  const loginMutation = useLogin();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -15,7 +15,10 @@ export default function LoginPage() {
       loginId: loginId,
       password: password
     };
-    loginMutation.mutate(loginRequest);
+    console.log(loginRequest);
+    authService.login(loginRequest).then(() => {
+      navigate("/main");
+    });
   };
 
   return (

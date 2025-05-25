@@ -1,24 +1,19 @@
 // Navbar.tsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 import NavMenu from "./NavMenu";
-import { useMenus } from "../../hooks/useMenus";
+import { menuService } from "../../api/menu/menuService";
+import type { MenuItem } from "../../types/menu/MenuItem";
 
 const Header: React.FC = () => {
-    // const menuData = FakeMenus;
-    const {data, isLoading, error} = useMenus();
+    const [menus, setMenus] = useState<MenuItem[]>([]);
 
-    if(isLoading) {
-        return <div>로딩 중 ...</div>;
-    }
-
-    if(error) {
-        console.log(error);
-        return <div>오류 발생</div>;
-    }
+    useEffect(() => {
+        menuService.list().then(setMenus);
+    })
 
     return (
         <nav className="bg-purple-700 text-white">
-            <NavMenu items={data} depth={1} />
+            <NavMenu items={menus} depth={1} />
         </nav>
     );
 };
