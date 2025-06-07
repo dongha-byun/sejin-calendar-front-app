@@ -33,9 +33,9 @@ const NavMenu: React.FC<Props> = ({ items, depth = 1 }) => {
       >
         {items.map((item, idx) => (
           <li key={idx} className={`relative group`}>
-            {item.link ? (
+            {item.path ? (
               <a
-                href={item.link}
+                href={item.path}
                 className={`block px-4 py-2 rounded ${getHoverBgColor()}`}
               >
                 {item.name}
@@ -48,9 +48,9 @@ const NavMenu: React.FC<Props> = ({ items, depth = 1 }) => {
               </button>
             )}
   
-            {item.children && (
+            {item.childMenus && (
               <NavMenu
-                items={item.children}
+                items={item.childMenus}
                 depth={depth + 1}
               />
             )}
