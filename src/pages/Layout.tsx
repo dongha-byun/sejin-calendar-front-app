@@ -10,6 +10,7 @@ const Layout: React.FC<Props> = ({child}) => {
     return (
         <>
             <Header></Header>
+            {child && React.createElement(child)}
         </>
     );
 }

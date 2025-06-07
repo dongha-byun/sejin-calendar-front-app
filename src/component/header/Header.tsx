@@ -9,10 +9,6 @@ const Header: React.FC = () => {
 
     // 최대 childMenus 길이 추출 (하위 메뉴 행 수 맞추기 위해)
     const sortedMenus = menus.sort((a, b) => a.order - b.order);
-    const maxChildCount = Math.max(
-        ...sortedMenus.map((menu) => menu.childMenus?.length || 0)
-    );
-
     const handleTopMenuClick = () => {
         setIsSubmenuOpen((prev) => !prev);
     };
@@ -51,14 +47,14 @@ const Header: React.FC = () => {
                         <ul className="space-y-1">
                         {(menu.childMenus || []).sort((a, b) => a.order - b.order).map(
                             (child) => (
-                            <li key={child.id}>
-                                <a
-                                href={child.path || "#"}
-                                className="hover:text-purple-600 transition"
-                                >
-                                {child.name}
-                                </a>
-                            </li>
+                                <li key={child.id}>
+                                    <a  href={child.path || "#"}
+                                        className="hover:text-purple-600 transition"
+                                        target="_blank"
+                                    >
+                                    {child.name}
+                                    </a>
+                                </li>
                             )
                         )}
                         </ul>

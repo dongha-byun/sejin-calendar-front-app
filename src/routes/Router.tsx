@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import LoginPage from "../pages/auth/LoginPage";
 import Layout from "../pages/Layout";
+import BaseInfoCustomCompany from "../pages/baseinfo/customcompany/BaseInfoCustomCompany";
 
 const router = createBrowserRouter([
     {
@@ -17,6 +18,12 @@ const router = createBrowserRouter([
         path: "/main",
         element: (
             <Layout />
+        )
+    },
+    {
+        path: "/base-info/custom-company",
+        element: (
+            <BaseInfoCustomCompany />
         )
     }
 ]);
