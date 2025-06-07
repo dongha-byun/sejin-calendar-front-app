@@ -1,6 +1,6 @@
 import { useState } from "react";
 import InputText from "../../component/input/InputText";
-import { authService } from "../../api/auth/authService";
+import authApi from "../../api/auth/auth";
 import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
@@ -15,11 +15,16 @@ export default function LoginPage() {
       loginId: loginId,
       password: password
     };
-    console.log(loginRequest);
-    authService.login(loginRequest).then(() => {
-      navigate("/main");
-    });
-  };
+
+    authApi.login(loginRequest)
+      .then(() => {
+        navigate("/main");
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("로그인 오류");
+      });
+  }
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 max-w-3xl mx-auto my-6">
