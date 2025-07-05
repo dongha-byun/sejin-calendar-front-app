@@ -15,8 +15,8 @@ export const CompanyTypeDescription: Record<CompanyType, string> = {
 }
 
 export interface CustomCompany {
-  id: number;
-  companyType: CompanyType;
+  id?: number;
+  companyType: string;
   name: string;
   ceo: string;
   registrationNumber: string;

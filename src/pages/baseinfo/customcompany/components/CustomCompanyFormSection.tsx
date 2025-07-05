@@ -1,15 +1,25 @@
 import React, { useState } from "react";
-import { type CustomCompany, type CompanyType } from "../../../../types/baseinfo/CustomCompany";
+import { type CustomCompany, CompanyType, CompanyTypeDescription } from "../../../../types/baseinfo/CustomCompany";
 
-const categories: CompanyType[] = ["자재관련", "인쇄소", "지업사", "제본소", "총판"];
+const categories: CompanyType[] = [
+  CompanyType.Material, CompanyType.Printing, CompanyType.Paper, CompanyType.Binding, CompanyType.Agency
+];
+
+const categoriesStringVer: string[] = [
+  CompanyTypeDescription[CompanyType.Material],
+  CompanyTypeDescription[CompanyType.Printing],
+  CompanyTypeDescription[CompanyType.Paper],
+  CompanyTypeDescription[CompanyType.Binding],
+  CompanyTypeDescription[CompanyType.Agency]
+]
 
 interface Props {
   onAdd: (customCompany: CustomCompany) => void;
 }
 
 export default function CustomCompanyFormSection({ onAdd }: Props) {
-  const [form, setForm] = useState<Omit<CustomCompany, "id" | "createdAt">>({
-    companyType: "자재관련",
+  const [form, setForm] = useState<CustomCompany>({
+    companyType: CompanyTypeDescription[CompanyType.Material],
     name: "",
     ceo: "",
     registrationNumber: "",
@@ -32,6 +42,7 @@ export default function CustomCompanyFormSection({ onAdd }: Props) {
       }
     }
 
+    console.log(`Changed ${name} to ${value}`);
     setForm(prev => ({ ...prev, [name]: value }));
   };
 
@@ -52,8 +63,8 @@ export default function CustomCompanyFormSection({ onAdd }: Props) {
     <div className="grid grid-cols-4 gap-4 p-4 bg-white rounded shadow mb-4">
       <div>
         <label>분류 *</label>
-        <select name="category" value={form.companyType} onChange={handleChange} className="w-full border rounded px-2 py-1">
-          {categories.map(c => <option key={c} value={c}>{c}</option>)}
+        <select name="companyType" value={form.companyType} onChange={handleChange} className="w-full border rounded px-2 py-1">
+          {categoriesStringVer.map(c => <option key={c} value={c}>{c}</option>)}
         </select>
       </div>
       <div>
