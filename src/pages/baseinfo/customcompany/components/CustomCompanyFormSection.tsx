@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { type CustomCompany, CompanyType, CompanyTypeDescription } from "../../../../types/baseinfo/CustomCompany";
 
-const categories: CompanyType[] = [
-  CompanyType.Material, CompanyType.Printing, CompanyType.Paper, CompanyType.Binding, CompanyType.Agency
-];
+// const categories: CompanyType[] = [
+//   CompanyType.Material, CompanyType.Printing, CompanyType.Paper, CompanyType.Binding, CompanyType.Agency
+// ];
 
 const categoriesStringVer: string[] = [
   CompanyTypeDescription[CompanyType.Material],
