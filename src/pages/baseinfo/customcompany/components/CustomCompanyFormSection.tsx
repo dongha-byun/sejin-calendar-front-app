@@ -22,7 +22,7 @@ export default function CustomCompanyFormSection({ onAdd }: Props) {
     companyType: CompanyTypeDescription[CompanyType.Material],
     name: "",
     ceo: "",
-    registrationNumber: "",
+    companyNum: "",
     address: "",
     tel: "",
     fax: "",
@@ -56,7 +56,7 @@ export default function CustomCompanyFormSection({ onAdd }: Props) {
       ...form,
       id: Date.now()
     };
-    setForm({ ...form, name: "", ceo: "", registrationNumber: "", address: "", tel: "", fax: "", email: "", webhard: "", discountRate: 0, etc: "" });
+    setForm({ ...form, name: "", ceo: "", companyNum: "", address: "", tel: "", fax: "", email: "", webhard: "", discountRate: 0, etc: "" });
   };
 
   return (
@@ -77,7 +77,7 @@ export default function CustomCompanyFormSection({ onAdd }: Props) {
       </div>
       <div>
         <label>사업자번호</label>
-        <input name="registrationNumber" value={form.registrationNumber} onChange={handleChange} className="w-full border rounded px-2 py-1" />
+        <input name="companyNum" value={form.companyNum} onChange={handleChange} className="w-full border rounded px-2 py-1" />
       </div>
       <div>
         <label>주소</label>

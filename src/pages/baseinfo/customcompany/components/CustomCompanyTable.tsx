@@ -36,7 +36,7 @@ export default function CustomCompanyTable({ data }: Props) {
               <td className="border px-2 py-1">{s.address}</td>
               <td className="border px-2 py-1">{s.tel}</td>
               <td className="border px-2 py-1">{s.fax}</td>
-              <td className="border px-2 py-1">{s.bizNo}</td>
+              <td className="border px-2 py-1">{s.companyNum}</td>
               <td className="border px-2 py-1">{s.email}</td>
               <td className="border px-2 py-1">{s.webhard}</td>
               <td className="border px-2 py-1">{s.createdAt}</td>

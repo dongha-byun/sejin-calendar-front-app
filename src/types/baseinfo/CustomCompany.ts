@@ -19,7 +19,7 @@ export interface CustomCompany {
   companyType: string;
   name: string;
   ceo: string;
-  registrationNumber: string;
+  companyNum: string;
   address: string;
   tel: string;
   fax: string;
@@ -28,4 +28,5 @@ export interface CustomCompany {
   discountType: string;
   discountRate: number;
   etc: string;
+  createdAt?: string; // yyyy-mm-dd
 }
