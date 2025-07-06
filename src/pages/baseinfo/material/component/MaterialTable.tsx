@@ -20,7 +20,7 @@ export default function MaterialTable({ data }: Props) {
             <tbody>
             {data.map((s, idx) => (
                 <tr key={s.id} className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                    <td className="border px-2 py-1 text-center">{data.length - idx}</td>
+                    <td className="border px-2 py-1 text-center">{s.id}</td>
                     <td className="border px-2 py-1">{s.bindMethod}</td>
                     <td className="border px-2 py-1">{s.standard1}</td>
                     <td className="border px-2 py-1">{s.standard2}</td>

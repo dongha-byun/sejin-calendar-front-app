@@ -3,6 +3,7 @@ import LoginPage from "../pages/auth/LoginPage";
 import Layout from "../pages/Layout";
 import BaseInfoCustomCompany from "../pages/baseinfo/customcompany/BaseInfoCustomCompany";
 import BaseInfoMaterial from "../pages/baseinfo/material/BaseInfoMaterial";
+import BaseInfoPaper from "../pages/baseinfo/paper/BaseInfoPaper";
 
 const router = createBrowserRouter([
     {
@@ -31,6 +32,12 @@ const router = createBrowserRouter([
         path: "/base-info/material",
         element: (
             <BaseInfoMaterial />
+        )
+    },
+    {
+        path: "/base-info/paper",
+        element: (
+            <BaseInfoPaper />
         )
     }
 ]);
