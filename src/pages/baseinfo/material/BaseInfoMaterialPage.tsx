@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { Material } from "../../../types/baseinfo/Material";
-import MaterialFormSection from "./component/MaterialFormSection";
-import MaterialTable from "./component/MaterialTable";
+import MaterialFormSection from "./components/MaterialFormSection";
+import MaterialTable from "./components/MaterialTable";
 
 export default function BaseInfoMaterialPage() {
     const [materials, setMaterials] = useState<Material[]>([]);
