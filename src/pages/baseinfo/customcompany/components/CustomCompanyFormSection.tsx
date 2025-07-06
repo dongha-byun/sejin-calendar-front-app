@@ -56,6 +56,7 @@ export default function CustomCompanyFormSection({ onAdd }: Props) {
       ...form,
       id: Date.now()
     };
+    onAdd(newCustomCompany);
     setForm({ ...form, name: "", ceo: "", companyNum: "", address: "", tel: "", fax: "", email: "", webhard: "", discountRate: 0, etc: "" });
   };
 
