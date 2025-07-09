@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { type CustomCompany, CompanyType, CompanyTypeDescription } from "../../../../types/baseinfo/CustomCompany";
+import SelectText from "../../../../component/input/SelectText";
 
 // const categories: CompanyType[] = [
 //   CompanyType.Material, CompanyType.Printing, CompanyType.Paper, CompanyType.Binding, CompanyType.Agency
@@ -64,9 +65,7 @@ export default function CustomCompanyFormSection({ onAdd }: Props) {
     <div className="grid grid-cols-4 gap-4 p-4 bg-white rounded shadow mb-4">
       <div>
         <label>분류 *</label>
-        <select name="companyType" value={form.companyType} onChange={handleChange} className="w-full border rounded px-2 py-1">
-          {categoriesStringVer.map(c => <option key={c} value={c}>{c}</option>)}
-        </select>
+        <SelectText options={categoriesStringVer.map(c => ({ value: c, label: c }))} />
       </div>
       <div>
         <label>업체명 *</label>
