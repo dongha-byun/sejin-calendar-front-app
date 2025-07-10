@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { type CustomCompany, CompanyType, CompanyTypeDescription } from "../../../../types/baseinfo/CustomCompany";
 import SelectText from "../../../../component/input/SelectText";
-
-// const categories: CompanyType[] = [
-//   CompanyType.Material, CompanyType.Printing, CompanyType.Paper, CompanyType.Binding, CompanyType.Agency
-// ];
+import FormItem from "../../../../component/form/FormItem";
 
 const categoriesStringVer: string[] = [
   CompanyTypeDescription[CompanyType.Material],
@@ -63,55 +60,46 @@ export default function CustomCompanyFormSection({ onAdd }: Props) {
 
   return (
     <div className="grid grid-cols-4 gap-4 p-4 bg-white rounded shadow mb-4">
-      <div>
-        <label>분류 *</label>
+      <FormItem label="분류" children={
         <SelectText options={categoriesStringVer.map(c => ({ value: c, label: c }))} />
-      </div>
-      <div>
-        <label>업체명 *</label>
-        <input name="name" value={form.name} onChange={handleChange} className="w-full border rounded px-2 py-1" />
-      </div>
-      <div>
-        <label>대표자</label>
-        <input name="ceo" value={form.ceo} onChange={handleChange} className="w-full border rounded px-2 py-1" />
-      </div>
-      <div>
-        <label>사업자번호</label>
-        <input name="companyNum" value={form.companyNum} onChange={handleChange} className="w-full border rounded px-2 py-1" />
-      </div>
-      <div>
-        <label>주소</label>
-        <input name="address" value={form.address} onChange={handleChange} className="w-full border rounded px-2 py-1" />
-      </div>
-      <div>
-        <label>전화</label>
-        <input name="tel" value={form.tel} onChange={handleChange} className="w-full border rounded px-2 py-1" />
-      </div>
-      <div>
-        <label>팩스</label>
-        <input name="fax" value={form.fax} onChange={handleChange} className="w-full border rounded px-2 py-1" />
-      </div>
-      <div>
-        <label>E-mail</label>
-        <input name="email" value={form.email} onChange={handleChange} className="w-full border rounded px-2 py-1" />
-      </div>
-      <div>
-        <label>Webhard</label>
-        <input name="webhard" value={form.webhard} onChange={handleChange} className="w-full border rounded px-2 py-1" />
-      </div>
-      <div>
-        <label>할인요금</label>
-        <input name="discountType" value={form.discountType} disabled className="w-full border rounded px-2 py-1 bg-gray-100" />
-      </div>
-      <div>
-        <label>할인율 (%)</label>
-        <input name="discountRate" value={form.discountRate} onChange={handleChange} className="w-full border rounded px-2 py-1" />
-      </div>
-      <div>
-        <label>기타</label>
+      } />
+      <FormItem label="업체명" children={
+        <input name="name" value={form.name} onChange={handleChange} className="w-72 border rounded px-2 py-1" />
+      } />
+      <FormItem label="대표자" children={
+        <input name="ceo" value={form.ceo} onChange={handleChange} className="w-72 border rounded px-2 py-1" />
+      } />
+      <FormItem label="사업자번호" children={
+        <input name="companyNum" value={form.companyNum} onChange={handleChange} className="w-72 border rounded px-2 py-1" />
+      } />
+      <FormItem label="주소" children={
+        <input name="address" value={form.address} onChange={handleChange} className="w-72 border rounded px-2 py-1" />
+      } />
+      <FormItem label="전화" children={
+        <input name="tel" value={form.tel} onChange={handleChange} className="w-72 border rounded px-2 py-1" />
+      } />
+      <FormItem label="팩스" children={
+        <input name="fax" value={form.fax} onChange={handleChange} className="w-72 border rounded px-2 py-1" />
+      } />
+      <FormItem label="팩스" children={
+        <input name="fax" value={form.fax} onChange={handleChange} className="w-72 border rounded px-2 py-1" />
+      } />
+      <FormItem label="E-mail" children={
+        <input name="email" value={form.email} onChange={handleChange} className="w-72 border rounded px-2 py-1" />
+      } />
+      <FormItem label="Webhard" children={
+        <input name="webhard" value={form.webhard} onChange={handleChange} className="w-72 border rounded px-2 py-1" />
+      } />
+      <FormItem label="할인요금" children={
+        <input name="discountType" value={form.discountType} disabled className="w-72 border rounded px-2 py-1 bg-gray-100" />
+      } />
+      <FormItem label="할인율 (%)" children={
+        <input name="discountRate" value={form.discountRate} onChange={handleChange} className="w-72 border rounded px-2 py-1" />
+      } />
+      <FormItem label="기타" fullWidth children={
         <input name="etc" value={form.etc} onChange={handleChange} className="w-full border rounded px-2 py-1" />
-      </div>
-      <div className="col-span-4 flex gap-2 justify-end mt-2">
+      } />
+      <div className="col-span-4 flex gap-2 justify-start mt-2">
         <button onClick={handleSubmit} className="bg-green-500 text-white px-4 py-2 rounded">확인</button>
       </div>
     </div>
