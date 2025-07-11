@@ -20,8 +20,8 @@ export default function BaseInfoCustomCompanyPage() {
   };
 
   return (
-    <div className="p-6">
-      <h1 className="text-xl font-bold mb-4">거래처 등록</h1>
+    <div className="px-6 py-3">
+      <h1 className="text-base font-semibold pb-2">기초자료등록 - 거래처</h1>
       <CustomCompanyFormSection onAdd={addCustomCompany} />
       <CustomCompanyTable data={customCompanies} />
     </div>

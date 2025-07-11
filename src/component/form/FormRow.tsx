@@ -6,7 +6,7 @@ interface FormRowProps {
 
 export default function FormRow({ children, full }: FormRowProps) {
   return (
-    <div className={`${full ? "w-full" : "col-span-3 flex mb-2 gap-4 "}`}>
+    <div className={`${full ? "w-full" : "col-span-3 flex gap-4 "}`}>
       {children}
     </div>
   );

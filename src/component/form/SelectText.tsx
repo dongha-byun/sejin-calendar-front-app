@@ -17,9 +17,9 @@ const style = (size: InputTextSize = InputTextSize.Normal) => {
         case InputTextSize.Full:
             return "w-full";
         case InputTextSize.Small:
-            return "w-24";
+            return "w-12";
         default:
-            return "w-48";
+            return "w-full";
     }
 }
 

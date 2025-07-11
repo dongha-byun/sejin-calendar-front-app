@@ -61,7 +61,7 @@ export default function CustomCompanyFormSection({ onAdd }: Props) {
   };
 
   return (
-    <div className="grid grid-cols-3 gap-4 p-4 bg-gray-100 rounded shadow max-w-4xl mb-4">
+    <div className="grid grid-cols-3 gap-4 p-4 bg-gray-200 rounded shadow max-w-4xl mb-4">
       <FormRow>
         <FormItem label="분류" required children={
           <SelectText options={categoriesStringVer.map(c => ({ value: c, label: c }))} />
@@ -69,13 +69,13 @@ export default function CustomCompanyFormSection({ onAdd }: Props) {
       </FormRow>
       <FormRow>
         <FormItem label="업체명" required children={
-          <input name="name" value={form.name} onChange={handleChange} className="w-36 border rounded p-1.5" />
+          <InputText name="name" value={form.name} onChange={handleChange} />
         } />
         <FormItem label="대표자" children={
-          <input name="ceo" value={form.ceo} onChange={handleChange} className="w-36 border rounded px-2 py-1" />
+          <InputText name="ceo" value={form.ceo} onChange={handleChange} />
         } />
         <FormItem label="사업자번호" children={
-          <input name="companyNum" value={form.companyNum} onChange={handleChange} className="w-36 border rounded px-2 py-1" />
+          <InputText name="companyNum" value={form.companyNum} onChange={handleChange} />
         } />
       </FormRow>
       <FormRow>
@@ -85,24 +85,24 @@ export default function CustomCompanyFormSection({ onAdd }: Props) {
       </FormRow>
       <FormRow>
         <FormItem label="전화" children={
-          <input name="tel" value={form.tel} onChange={handleChange} className="w-36 border rounded px-2 py-1" />
+          <InputText name="tel" value={form.tel} onChange={handleChange} />
         } />
         <FormItem label="팩스" children={
-          <input name="fax" value={form.fax} onChange={handleChange} className="w-36 border rounded px-2 py-1" />
+          <InputText name="fax" value={form.fax} onChange={handleChange} />
         } />
         <FormItem label="E-mail" children={
-          <input name="email" value={form.email} onChange={handleChange} className="w-36 border rounded px-2 py-1" />
+          <InputText name="email" value={form.email} onChange={handleChange} />
         } />
       </FormRow>
       <FormRow>
         <FormItem label="Webhard" children={
-          <input name="webhard" value={form.webhard} onChange={handleChange} className="w-36 border rounded px-2 py-1" />
+          <InputText name="webhard" value={form.webhard} onChange={handleChange} />
         } />
         <FormItem label="할인요금" children={
-          <input name="discountType" value={form.discountType} disabled className="w-36 border rounded px-2 py-1 bg-gray-100" />
+          <InputText name="discountType" value={form.discountType} onChange={handleChange} />
         } />
         <FormItem label="할인율 (%)" children={
-          <input name="discountRate" value={form.discountRate} onChange={handleChange} className="w-36 border rounded px-2 py-1" />
+          <InputText name="discountRate" value={form.discountRate} onChange={handleChange} />
         } />
       </FormRow>
       <FormRow>
@@ -111,7 +111,8 @@ export default function CustomCompanyFormSection({ onAdd }: Props) {
         } />
       </FormRow>
       <div className="col-span-4 flex gap-2 justify-start mt-2">
-        <button onClick={handleSubmit} className="bg-green-500 text-white px-4 py-2 rounded">확인</button>
+        <button onClick={handleSubmit} className="bg-green-500 text-white px-4 py-2 rounded">저장</button>
+        <button onClick={handleSubmit} className="bg-red-500 text-white px-4 py-2 rounded">초기화</button>
       </div>
     </div>
   );

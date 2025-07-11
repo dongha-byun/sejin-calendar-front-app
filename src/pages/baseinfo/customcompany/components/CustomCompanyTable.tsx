@@ -6,8 +6,8 @@ interface Props {
 
 export default function CustomCompanyTable({ data }: Props) {
   return (
-    <div className="overflow-x-auto">
-      <table className="table-auto w-full border text-sm">
+    <div className="overflow-x-auto pb-4 -mb-4">
+      <table className="table min-w-max border text-sm">
         <thead className="bg-gray-200">
           <tr>
             <th className="border px-2 py-1">번호</th>

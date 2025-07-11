@@ -18,15 +18,14 @@ const Header: React.FC = () => {
     },[]);
 
     return (
-        <nav className="relative bg-purple-700 text-white">
-            <div className="flex space-x-6 px-6 py-3">
-                {/* <NavMenu items={menus} depth={1} /> */}
+        <nav className="relative bg-gray-700 text-white">
+            <div className="grid grid-cols-11 gap-8 px-6 py-1 text-center">
                 {menus
                     .sort((a, b) => a.order - b.order)
                     .map(menu => (
                         <button
                             key={menu.id}
-                            className="px-4 py-2 rounded hover:bg-purple-600 transition"
+                            className="px-2 py-1 rounded hover:bg-gray-600 transition"
                             onClick={handleTopMenuClick}
                         >
                         {menu.name}
@@ -38,18 +37,17 @@ const Header: React.FC = () => {
             {/* 모든 하위 메뉴를 한 번에 펼침 */}
             {isSubmenuOpen && (
                 <div className="absolute top-full left-0 w-full bg-white text-gray-800 shadow-md border-t border-gray-200 animate-fadeIn z-10">
-                <div className="grid grid-cols-11 gap-8 p-6">
+                <div className="grid grid-cols-11 gap-8 px-6 py-3">
                     {sortedMenus.map((menu) => (
                     <div key={menu.id}>
-                        <div className="font-semibold text-purple-700 mb-2">
+                        {/* <div className="font-semibold text-purple-700 mb-2">
                         {menu.name}
-                        </div>
-                        <ul className="space-y-1">
+                        </div> */}
+                        <ul className="space-y-1 text-center">
                         {(menu.childMenus || []).sort((a, b) => a.order - b.order).map(
                             (child) => (
-                                <li key={child.id}>
+                                <li key={child.id} className="hover:bg-gray-600 hover:text-white hover:rounded transition">
                                     <a  href={child.path || "#"}
-                                        className="hover:text-purple-600 transition"
                                         target="_blank"
                                     >
                                     {child.name}
