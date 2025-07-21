@@ -20,8 +20,8 @@ export default function BaseInfoPaperPage() {
     };
 
     return (
-        <div className="p-6">
-            <h1 className="text-xl font-bold mb-4">용지 등록</h1>
+        <div className="px-6 py-3">
+            <h1 className="text-base font-semibold pb-2">기초자료등록 - 용지</h1>
             <PaperFormSection onAdd={addPaper} />
             <PaperTable data={papers} />
         </div>

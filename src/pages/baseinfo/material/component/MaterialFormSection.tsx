@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import { BindMethod, type Material } from '../../../../types/baseinfo/Material';
+import FormItem from '../../../../component/form/FormItem';
+import FormRow from '../../../../component/form/FormRow';
+import SelectText from '../../../../component/form/SelectText';
+import { InputTextSize } from '../../../../component/form/InputText';
 
 const bindMethods: BindMethod[] = [
     BindMethod.IRON,
@@ -46,31 +50,30 @@ export default function MaterialFormSection({ onAdd }: Props) {
     };
 
     return (
-        <div className="grid grid-cols-4 gap-4 p-4 bg-white rounded shadow mb-4">
-            <div>
-                <label>분류 *</label>
-                <select name="bindMethod" value={form.bindMethod} onChange={handleChange} className="w-full border rounded px-2 py-1">
-                {bindMethods.map(c => <option key={c} value={c}>{c}</option>)}
-                </select>
-            </div>
-            <div>
-                <label>규격1 *</label>
-                <input name="standard1" value={form.standard1} onChange={handleChange} className="w-full border rounded px-2 py-1" />
-            </div>
-            <div>
-                <label>규격2</label>
-                <input name="standard2" value={form.standard2} onChange={handleChange} className="w-full border rounded px-2 py-1" />
-            </div>
-            <div>
-                <label>내역</label>
-                <input name="contents" value={form.contents} onChange={handleChange} className="w-full border rounded px-2 py-1" />
-            </div>
-            <div>
-                <label>색상</label>
-                <input name="color" value={form.color} onChange={handleChange} className="w-full border rounded px-2 py-1" />
-            </div>
+        <div className="grid grid-cols-3 gap-4 p-4 bg-gray-200 rounded shadow max-w-4xl mb-4">
+            <FormRow>
+                <FormItem label="분류" required children={
+                    <SelectText options={bindMethods.map(c => ({ value: c, label: c }))} />
+                } />
+            </FormRow>
+            <FormRow>
+                <FormItem label="규격1" required children={
+                    <SelectText options={bindMethods.map(c => ({ value: c, label: c }))} />
+                } />
+                <FormItem label="규격2" children={
+                    <SelectText options={bindMethods.map(c => ({ value: c, label: c }))} />
+                } />
+            </FormRow>
+            <FormRow>
+                <FormItem label="내역" children={
+                    <SelectText options={bindMethods.map(c => ({ value: c, label: c }))} />
+                } />
+                <FormItem label="색상" children={
+                    <SelectText options={bindMethods.map(c => ({ value: c, label: c }))} />
+                } />
+            </FormRow>
             
-            <div className="col-span-4 flex gap-2 justify-end mt-2">
+            <div className="col-span-4 flex gap-2 justify-start mt-2">
                 <button onClick={handleSubmit} className="bg-green-500 text-white px-4 py-2 rounded">확인</button>
             </div>
         </div>

@@ -20,10 +20,10 @@ export default function BaseInfoMaterialPage() {
     };
 
     return (
-        <div className="p-6">
-          <h1 className="text-xl font-bold mb-4">원자재 등록</h1>
-          <MaterialFormSection onAdd={addMaterial} />
-          <MaterialTable data={materials} />
+        <div className="px-6 py-3">
+            <h1 className="text-base font-semibold pb-2">기초자료등록 - 원자재</h1>
+            <MaterialFormSection onAdd={addMaterial} />
+            <MaterialTable data={materials} />
         </div>
       );
 }
