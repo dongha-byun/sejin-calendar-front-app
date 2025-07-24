@@ -3,7 +3,6 @@ import { BindMethod, type Material } from '../../../../types/baseinfo/Material';
 import FormItem from '../../../../component/form/FormItem';
 import FormRow from '../../../../component/form/FormRow';
 import SelectText from '../../../../component/form/SelectText';
-import { InputTextSize } from '../../../../component/form/InputText';
 
 const bindMethods: BindMethod[] = [
     BindMethod.IRON,
@@ -50,31 +49,72 @@ export default function MaterialFormSection({ onAdd }: Props) {
     };
 
     return (
-        <div className="grid grid-cols-3 gap-4 p-4 bg-gray-200 rounded shadow max-w-4xl mb-4">
+        <div className="grid grid-cols-3 gap-4 p-4 bg-gray-200 rounded shadow max-w-2xl mb-4">
             <FormRow>
                 <FormItem label="분류" required children={
-                    <SelectText options={bindMethods.map(c => ({ value: c, label: c }))} />
+                    <SelectText 
+                        name="bindMethod"
+                        value={form.bindMethod}
+                        onChange={handleChange}
+                        options={bindMethods.map(c => ({ value: c, label: c }))} />
                 } />
             </FormRow>
             <FormRow>
                 <FormItem label="규격1" required children={
-                    <SelectText options={bindMethods.map(c => ({ value: c, label: c }))} />
+                    <SelectText 
+                        name="standard1"
+                        value={form.standard1}
+                        onChange={handleChange}
+                        options={[
+                            { value: '380', label: '380' },
+                            { value: '310', label: '310' },
+                            { value: '400', label: '400' },
+                            { value: '420', label: '420' },
+                            { value: '345', label: '345' }
+                        ]} />
                 } />
                 <FormItem label="규격2" children={
-                    <SelectText options={bindMethods.map(c => ({ value: c, label: c }))} />
+                    <SelectText 
+                        name="standard2"
+                        value={form.standard2}
+                        onChange={handleChange}
+                        options={[
+                            { value: 'A4', label: 'A4' },
+                            { value: 'A3', label: 'A3' },
+                            { value: 'B4', label: 'B4' },
+                            { value: 'B5', label: 'B5' },
+                            { value: 'CUSTOM', label: 'CUSTOM' }
+                        ]} />
                 } />
             </FormRow>
             <FormRow>
                 <FormItem label="내역" children={
-                    <SelectText options={bindMethods.map(c => ({ value: c, label: c }))} />
+                    <SelectText 
+                        name="contents"
+                        value={form.contents}
+                        onChange={handleChange}
+                        options={[
+                            { value: '인쇄', label: '인쇄' },
+                            { value: '제본', label: '제본' },
+                            { value: '후가공', label: '후가공' },
+                            { value: '기타', label: '기타' }
+                        ]} />
                 } />
                 <FormItem label="색상" children={
-                    <SelectText options={bindMethods.map(c => ({ value: c, label: c }))} />
+                    <SelectText 
+                        name="color"
+                        value={form.color}
+                        onChange={handleChange}
+                        options={[
+                            { value: '흑백', label: '흑백' },
+                            { value: '컬러', label: '컬러' },
+                            { value: '혼합', label: '혼합' }
+                        ]} />
                 } />
             </FormRow>
             
             <div className="col-span-4 flex gap-2 justify-start mt-2">
-                <button onClick={handleSubmit} className="bg-green-500 text-white px-4 py-2 rounded">확인</button>
+                <button onClick={handleSubmit} className="bg-green-500 text-white px-4 py-1 rounded">확인</button>
             </div>
         </div>
     );

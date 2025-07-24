@@ -64,7 +64,11 @@ export default function CustomCompanyFormSection({ onAdd }: Props) {
     <div className="grid grid-cols-3 gap-4 p-4 bg-gray-200 rounded shadow max-w-4xl mb-4">
       <FormRow>
         <FormItem label="분류" required children={
-          <SelectText options={categoriesStringVer.map(c => ({ value: c, label: c }))} />
+          <SelectText 
+            name="companyType"
+            value={form.companyType}
+            onChange={handleChange}
+            options={categoriesStringVer.map(c => ({ value: c, label: c }))} />
         } />
       </FormRow>
       <FormRow>
@@ -111,8 +115,8 @@ export default function CustomCompanyFormSection({ onAdd }: Props) {
         } />
       </FormRow>
       <div className="col-span-4 flex gap-2 justify-start mt-2">
-        <button onClick={handleSubmit} className="bg-green-500 text-white px-4 py-2 rounded">저장</button>
-        <button onClick={handleSubmit} className="bg-red-500 text-white px-4 py-2 rounded">초기화</button>
+        <button onClick={handleSubmit} className="bg-green-500 text-white px-4 py-1 rounded">저장</button>
+        <button onClick={handleSubmit} className="bg-red-500 text-white px-4 py-1 rounded">초기화</button>
       </div>
     </div>
   );

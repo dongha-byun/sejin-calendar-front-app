@@ -45,7 +45,6 @@ export default function ModelTable({ data }: Props) {
             <tbody>
             {data.map((s, idx) => (
                 <tr key={s.id} className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                    <td className="border px-2 py-1 text-center">{s.id}</td>
                     <td className="border px-2 py-1">{s.modelNum}</td>
                     <td className="border px-2 py-1">{s.modelName}</td>
                     <td className="border px-2 py-1">{s.width}</td>

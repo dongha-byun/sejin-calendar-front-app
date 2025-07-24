@@ -20,8 +20,8 @@ export default function BaseInfoModelPage() {
     };
 
     return (
-        <div className="p-6">
-            <h1 className="text-xl font-bold mb-4">기초자료등록 - Model</h1>
+        <div className="px-6 py-3">
+            <h1 className="text-base font-semibold pb-2">기초자료등록 - Model</h1>
             <ModelFormSection onAdd={addModel} />
             <ModelTable data={models} />
         </div>

@@ -3,7 +3,10 @@ import { InputTextSize } from "./InputText";
 
 interface Props {
   options: { value: string; label: string }[];
-  size?: InputTextSize
+  size?: InputTextSize;
+  value: any;
+  name: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
 }
 
 /**
@@ -23,7 +26,7 @@ const style = (size: InputTextSize = InputTextSize.Normal) => {
     }
 }
 
-export default function SelectText({options, size}: Props) {
+export default function SelectText({options, size, value, name, onChange}: Props) {
   return (
     <div className={`${style(size)}`}>
       <Select
@@ -31,6 +34,18 @@ export default function SelectText({options, size}: Props) {
         isClearable
         isSearchable
         placeholder=""
+        value={options.find(option => option.value === value)}
+        name={name}
+        onChange={option => {
+          if(onChange) {
+            onChange({
+              target: {
+                name: name || '',
+                value: option ? option.value : ''
+              }
+            } as React.ChangeEvent<HTMLInputElement | HTMLSelectElement>);
+          }
+        }}
       />
     </div>
   );

@@ -55,16 +55,24 @@ export default function PaperFormSection({ onAdd }: Props) {
                 </FormRow>
                 <FormRow>
                     <FormItem label="지질" required children={
-                        <SelectText options={propertiesOptions.map(c => ({ value: c, label: c }))} />
+                        <SelectText 
+                            name="properties"
+                            value={form.properties}
+                            onChange={handleChange}
+                            options={propertiesOptions.map(c => ({ value: c, label: c }))} />
                     } />
                 </FormRow>
                 <FormRow>
                     <FormItem label="규격" required children={
-                        <SelectText options={standardOptions.map(c => ({ value: c, label: c }))} />
+                        <SelectText 
+                            name="standard"
+                            value={form.standard}
+                            onChange={handleChange}
+                            options={standardOptions.map(c => ({ value: c, label: c }))} />
                     } />
                 </FormRow>
                 <div className="flex gap-2 mt-2">
-                    <button onClick={handleSubmit} className="bg-green-500 text-white px-4 py-2 rounded">확인</button>
+                    <button onClick={handleSubmit} className="bg-green-500 text-white px-4 py-1 rounded">확인</button>
                 </div>
             </div>
         </div>
