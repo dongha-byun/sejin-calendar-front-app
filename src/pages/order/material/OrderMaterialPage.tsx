@@ -20,8 +20,8 @@ export default function OrderMaterialPage() {
     };
 
     return (
-        <div className="p-6">
-            <h1 className="text-xl font-bold mb-4">원자재발주</h1>
+        <div className="px-6 py-3">
+            <h1 className="text-base font-semibold pb-2">자재발주 - 원자재</h1>
             <OrderMaterialFormSection onAdd={addModel} />
             <OrderMaterialTable data={models} />
         </div>

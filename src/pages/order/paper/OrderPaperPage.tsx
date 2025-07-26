@@ -20,8 +20,8 @@ export default function OrderPaperPage() {
     };
 
     return (
-        <div className="p-6">
-            <h1 className="text-xl font-bold mb-4">용지발주</h1>
+        <div className="px-6 py-3">
+            <h1 className="text-base font-semibold pb-2">자재발주 - 용지</h1>
             <OrderPaperFormSection onAdd={addOrderPaper} />
             <OrderPaperTable data={orderPapers} />
         </div>
