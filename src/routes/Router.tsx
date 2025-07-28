@@ -7,6 +7,7 @@ import BaseInfoPaper from "../pages/baseinfo/paper/BaseInfoPaper";
 import BaseInfoModel from "../pages/baseinfo/model/BaseInfoModel";
 import OrderMaterial from "../pages/order/material/OrderMaterial";
 import OrderPaper from "../pages/order/paper/OrderPaper";
+import PutinMaterial from "../pages/putin/material/PutinMaterial";
 
 const router = createBrowserRouter([
     {
@@ -59,6 +60,12 @@ const router = createBrowserRouter([
         path: "/order/paper",
         element: (
             <OrderPaper />
+        )
+    },
+    {
+        path: "/putin/material",
+        element: (
+            <PutinMaterial />
         )
     }
 ]);
