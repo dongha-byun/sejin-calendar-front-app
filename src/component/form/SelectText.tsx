@@ -2,7 +2,7 @@ import Select from "react-select";
 import { InputTextSize } from "./InputText";
 
 interface Props {
-  options: { value: string; label: string }[];
+  options: { value: string | number; label: string | number }[];
   size?: InputTextSize;
   value: any;
   name: string;

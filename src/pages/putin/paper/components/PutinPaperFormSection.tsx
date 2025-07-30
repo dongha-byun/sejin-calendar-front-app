@@ -1,23 +1,20 @@
 import { useState } from "react";
-import type { PutinMaterial } from "../../../../types/putin/PutinMaterial";
+import type { PutinPaper } from "../../../../types/putin/PutinPaper";
 import FormItem from "../../../../component/form/FormItem";
 import SelectText from "../../../../component/form/SelectText";
 import InputText from "../../../../component/form/InputText";
 
 interface Props {
-    onAdd: (putinMaterial: PutinMaterial) => void;
+    onAdd: (putinPaper: PutinPaper) => void;
 }
 
-export default function PutinMaterialFormSection({ onAdd }: Props) {
-
-    const [form, setForm] = useState<PutinMaterial>({
+export default function PutinPaperFormSection({ onAdd }: Props) {
+    const [form, setForm] = useState<PutinPaper>({
         id: 0,
-        bindMethod: '',
         companyName: '',
-        standard1: '',
-        standard2: '',
-        contents: '',
-        color: '',
+        weight: 0,
+        properties: '',
+        standard: '',
         amount: 0,
         pricePer: 0,
         price: 0,
@@ -35,19 +32,17 @@ export default function PutinMaterialFormSection({ onAdd }: Props) {
 
     const handleSubmit = () => {
     
-        const newPutinMaterial: PutinMaterial = {
+        const newPutinMaterial: PutinPaper = {
             ...form,
             id: Date.now()
         };
         onAdd(newPutinMaterial);
         setForm({
             id: 0,
-            bindMethod: '',
             companyName: '',
-            standard1: '',
-            standard2: '',
-            contents: '',
-            color: '',
+            weight: 0,
+            properties: '',
+            standard: '',
             amount: 0,
             pricePer: 0,
             price: 0,
@@ -57,94 +52,71 @@ export default function PutinMaterialFormSection({ onAdd }: Props) {
         });
     };
 
-    const bindMethods = [
-        "아르떼", "ART", "판지", "S/W", "미색모조", 
-        "르느와르", "등등"
-    ];
-
     const companyNames = [
         "삼성", "LG", "SK", "현대", "기아"
     ];
 
-    const standard1 = [
+    const weights = [
+        70, 80, 90, 100, 120
+    ];
+
+    const propertiesOptions = [
+        "아르떼", "ART", "판지", "S/W", "미색모조", 
+        "르느와르", "등등"
+    ];
+
+    const standardOptions = [
         "200-300", "788-1091", "880-625", "636-939", "720-590",
-    ];
-
-    const standard2 = [
         "1091-788", "625-880", "939-636", "590-720", "등등"
-    ];
-
-    const contents = [
-        "내역1", "내역2", "내역3", "내역4", "내역5"
-    ];
-
-    const colors = [
-        "빨강", "파랑", "초록", "노랑", "검정", "흰색"
     ];
 
     const approvals = [
         "청구 미", "청구", "결재"
-    ]
+    ];
 
     return (
         <div className="grid grid-cols-3 gap-4 p-4 bg-white rounded shadow mb-4 max-w-[75vw]">
             {/* 1행 */}
-            <FormItem label="분류" required children={
-                <SelectText 
-                    name="bindMethod"
-                    value={form.bindMethod}
-                    onChange={handleChange}
-                    options={bindMethods.map(method => ({ value: method, label: method }))} />
-            } />
-            <div />
-            <div />
-
-            {/* 2행 */}
-            <FormItem label="거래처" children={
+            <FormItem label="지업사명" required children={
                 <SelectText 
                     name="companyName"
                     value={form.companyName}
                     onChange={handleChange}
                     options={companyNames.map(method => ({ value: method, label: method }))} />
             } />
-            <FormItem label="규격1" children={
+            <div />
+            <div />
+
+            {/* 2행 */}
+            <FormItem label="무게" children={
                 <SelectText 
-                    name="standard1"
-                    value={form.standard1}
+                    name="weight"
+                    value={form.weight}
                     onChange={handleChange}
-                    options={standard1.map(method => ({ value: method, label: method }))} />
+                    options={weights.map(method => ({ value: method, label: method }))} />
             } />
-            <FormItem label="규격2" children={
+            <FormItem label="지질" children={
                 <SelectText 
-                    name="standard2"
-                    value={form.standard2}
+                    name="properties"
+                    value={form.properties}
                     onChange={handleChange}
-                    options={standard2.map(method => ({ value: method, label: method }))} />
+                    options={propertiesOptions.map(method => ({ value: method, label: method }))} />
+            } />
+            <FormItem label="규격" children={
+                <SelectText 
+                    name="standard"
+                    value={form.standard}
+                    onChange={handleChange}
+                    options={standardOptions.map(method => ({ value: method, label: method }))} />
             } />
 
             {/* 3행 */}
-            <FormItem label="내역" children={
-                <SelectText 
-                    name="contents"
-                    value={form.contents}
-                    onChange={handleChange}
-                    options={contents.map(method => ({ value: method, label: method }))} />
-            } />
-            <FormItem label="색상" children={
-                <SelectText 
-                    name="color"
-                    value={form.color}
-                    onChange={handleChange}
-                    options={colors.map(method => ({ value: method, label: method }))} />
-            } />
-            <div />
-
-            {/* 4행 */}
             <FormItem label="수량" children={
                 <InputText 
                     name="amount"
                     value={form.amount}
-                    onChange={handleChange} />
+                    onChange={handleChange} 
+                    unitText="R"/>
             } />
             <FormItem label="단가" children={
                 <InputText 
@@ -159,8 +131,8 @@ export default function PutinMaterialFormSection({ onAdd }: Props) {
                     onChange={handleChange} />
             } />
 
-            {/* 5행 */}
-            <FormItem label="발주일자" children={
+            {/* 4행 */}
+            <FormItem label="입고일" children={
                 <InputText 
                     name="iDate"
                     value={form.iDate}
