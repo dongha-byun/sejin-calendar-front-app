@@ -9,6 +9,7 @@ import OrderMaterial from "../pages/order/material/OrderMaterial";
 import OrderPaper from "../pages/order/paper/OrderPaper";
 import PutinMaterial from "../pages/putin/material/PutinMaterial";
 import PutinPaper from "../pages/putin/paper/PutinPaper";
+import CommandPaperDeliveryPage from "../pages/command/paperdelivery/CommandPaperDeliveryPage";
 
 const router = createBrowserRouter([
     {
@@ -73,6 +74,12 @@ const router = createBrowserRouter([
         path: "/putin/paper",
         element: (
             <PutinPaper />
+        )
+    },
+    {
+        path: "/command/paper-delivery",
+        element: (
+            <CommandPaperDeliveryPage />
         )
     }
 ]);
