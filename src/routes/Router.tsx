@@ -9,7 +9,8 @@ import OrderMaterial from "../pages/order/material/OrderMaterial";
 import OrderPaper from "../pages/order/paper/OrderPaper";
 import PutinMaterial from "../pages/putin/material/PutinMaterial";
 import PutinPaper from "../pages/putin/paper/PutinPaper";
-import CommandPaperDeliveryPage from "../pages/command/paperdelivery/CommandPaperDeliveryPage";
+import CommandPaperDelivery from "../pages/command/paperdelivery/CommandPaperDelivery";
+import CommandPrint from "../pages/command/print/CommandPrint";
 
 const router = createBrowserRouter([
     {
@@ -79,7 +80,13 @@ const router = createBrowserRouter([
     {
         path: "/command/paper-delivery",
         element: (
-            <CommandPaperDeliveryPage />
+            <CommandPaperDelivery />
+        )
+    },
+    {
+        path: "/command/print",
+        element: (
+            <CommandPrint />
         )
     }
 ]);
