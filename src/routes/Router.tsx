@@ -12,6 +12,7 @@ import PutinPaper from "../pages/putin/paper/PutinPaper";
 import CommandPaperDelivery from "../pages/command/paperdelivery/CommandPaperDelivery";
 import CommandPrint from "../pages/command/print/CommandPrint";
 import CommandBind from "../pages/command/bind/CommandBind";
+import DiaryMachine from "../pages/diary/machine/DiaryMachine";
 
 const router = createBrowserRouter([
     {
@@ -94,6 +95,12 @@ const router = createBrowserRouter([
         path: "/command/bind",
         element: (
             <CommandBind />
+        )
+    },
+    {
+        path: "/diary/machine",
+        element: (
+            <DiaryMachine />
         )
     }
 ]);
