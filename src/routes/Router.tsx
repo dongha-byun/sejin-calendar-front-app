@@ -13,6 +13,7 @@ import CommandPaperDelivery from "../pages/command/paperdelivery/CommandPaperDel
 import CommandPrint from "../pages/command/print/CommandPrint";
 import CommandBind from "../pages/command/bind/CommandBind";
 import DiaryMachine from "../pages/diary/machine/DiaryMachine";
+import DiaryBind from "../pages/diary/bind/DiaryBind";
 
 const router = createBrowserRouter([
     {
@@ -101,6 +102,12 @@ const router = createBrowserRouter([
         path: "/diary/machine",
         element: (
             <DiaryMachine />
+        )
+    },
+    {
+        path: "/diary/bind",
+        element: (
+            <DiaryBind />
         )
     }
 ]);
