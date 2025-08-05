@@ -14,6 +14,7 @@ import CommandPrint from "../pages/command/print/CommandPrint";
 import CommandBind from "../pages/command/bind/CommandBind";
 import DiaryMachine from "../pages/diary/machine/DiaryMachine";
 import DiaryBind from "../pages/diary/bind/DiaryBind";
+import OrderManagerAccept from "../pages/ordermanager/accept/OrderManagerAccept";
 
 const router = createBrowserRouter([
     {
@@ -108,6 +109,12 @@ const router = createBrowserRouter([
         path: "/diary/bind",
         element: (
             <DiaryBind />
+        )
+    },
+    {
+        path: "/order-manager/accept", // 주문접수
+        element: (
+            <OrderManagerAccept />
         )
     }
 ]);
