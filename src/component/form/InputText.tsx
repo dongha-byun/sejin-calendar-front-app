@@ -2,7 +2,8 @@
 export enum InputTextSize {
     Normal = "normal",
     Full = "full",
-    Small = "small"
+    Small = "small",
+    Medium = "medium"
 }
 
 interface Props {
@@ -28,6 +29,8 @@ const style = (size: InputTextSize = InputTextSize.Normal) => {
             return "w-full";
         case InputTextSize.Small:
             return "w-12";
+        case InputTextSize.Medium:
+            return "w-36";
         default:
             return "w-full";
     }

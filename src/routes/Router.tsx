@@ -16,6 +16,7 @@ import DiaryMachine from "../pages/diary/machine/DiaryMachine";
 import DiaryBind from "../pages/diary/bind/DiaryBind";
 import OrderManagerAccept from "../pages/ordermanager/accept/OrderManagerAccept";
 import CommandCustomPrint from "../pages/command/customprint/CommandCustomPrint";
+import CommandOrderOut from "../pages/command/orderout/CommandOrderOut";
 
 const router = createBrowserRouter([
     {
@@ -104,6 +105,12 @@ const router = createBrowserRouter([
         path: "/command/custom-print",
         element: (
             <CommandCustomPrint />
+        )
+    },
+    {
+        path: "/command/order-out",
+        element: (
+            <CommandOrderOut />
         )
     },
     {

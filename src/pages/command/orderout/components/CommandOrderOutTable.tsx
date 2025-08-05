@@ -4,7 +4,7 @@ interface Props {
   data: Order[];
 }
 
-export default function CommandCustomPrintTable({data} : Props) {
+export default function CommandOrderOutTable({data} : Props) {
     return (
         <div className="overflow-x-auto">
             <table className="table-auto w-full border text-sm">
