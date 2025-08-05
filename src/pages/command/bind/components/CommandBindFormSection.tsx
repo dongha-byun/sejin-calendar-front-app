@@ -56,16 +56,6 @@ export default function CommandBindFormSection({ onAdd }: Props) {
         70, 80, 90, 100, 120
     ];
 
-    const propertiesOptions = [
-        "아르떼", "ART", "판지", "S/W", "미색모조", 
-        "르느와르", "등등"
-    ];
-
-    const standardOptions = [
-        "200-300", "788-1091", "880-625", "636-939", "720-590",
-        "1091-788", "625-880", "939-636", "590-720", "등등"
-    ];
-
     return (
         <div className="grid grid-cols-3 gap-4 p-4 bg-white rounded shadow mb-4 max-w-[50vw]">
             {/* 1행 */}
