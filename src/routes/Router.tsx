@@ -18,6 +18,7 @@ import OrderManagerAccept from "../pages/ordermanager/accept/OrderManagerAccept"
 import CommandCustomPrint from "../pages/command/customprint/CommandCustomPrint";
 import CommandOrderOut from "../pages/command/orderout/CommandOrderOut";
 import OrderManagerCancel from "../pages/ordermanager/cancel/OrderManagerCancel";
+import OrderManagerReturns from "../pages/ordermanager/returns/OrderManagerReturns";
 
 const router = createBrowserRouter([
     {
@@ -136,6 +137,12 @@ const router = createBrowserRouter([
         path: "/order-manager/cancel", // 주문취소
         element: (
             <OrderManagerCancel />
+        )
+    },
+    {
+        path: "/order-manager/returns", // 주문반품
+        element: (
+            <OrderManagerReturns />
         )
     }
 ]);
