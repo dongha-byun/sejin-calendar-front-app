@@ -17,6 +17,7 @@ import DiaryBind from "../pages/diary/bind/DiaryBind";
 import OrderManagerAccept from "../pages/ordermanager/accept/OrderManagerAccept";
 import CommandCustomPrint from "../pages/command/customprint/CommandCustomPrint";
 import CommandOrderOut from "../pages/command/orderout/CommandOrderOut";
+import OrderManagerCancel from "../pages/ordermanager/cancel/OrderManagerCancel";
 
 const router = createBrowserRouter([
     {
@@ -129,6 +130,12 @@ const router = createBrowserRouter([
         path: "/order-manager/accept", // 주문접수
         element: (
             <OrderManagerAccept />
+        )
+    },
+    {
+        path: "/order-manager/cancel", // 주문취소
+        element: (
+            <OrderManagerCancel />
         )
     }
 ]);
