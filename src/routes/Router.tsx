@@ -23,6 +23,7 @@ import MonitorMaterial from "../pages/monitor/material/MonitorMaterial";
 import MonitorPaper from "../pages/monitor/paper/MonitorPaper";
 import MonitorPrint from "../pages/monitor/print/MonitorPrint";
 import MonitorModel from "../pages/monitor/model/MonitorModel";
+import MonitorOrder from "../pages/monitor/order/MonitorOrder";
 
 const router = createBrowserRouter([
     {
@@ -171,6 +172,12 @@ const router = createBrowserRouter([
         path: "/monitor/model", // 호별생산내역조회
         element: (
             <MonitorModel />
+        )
+    },
+    {
+        path: "/monitor/orders", // 접수내역 조회
+        element: (
+            <MonitorOrder />
         )
     }
 ]);
