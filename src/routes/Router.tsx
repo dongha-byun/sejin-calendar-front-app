@@ -21,6 +21,7 @@ import OrderManagerCancel from "../pages/ordermanager/cancel/OrderManagerCancel"
 import OrderManagerReturns from "../pages/ordermanager/returns/OrderManagerReturns";
 import MonitorMaterial from "../pages/monitor/material/MonitorMaterial";
 import MonitorPaper from "../pages/monitor/paper/MonitorPaper";
+import MonitorPrint from "../pages/monitor/print/MonitorPrint";
 
 const router = createBrowserRouter([
     {
@@ -157,6 +158,12 @@ const router = createBrowserRouter([
         path: "/monitor/paper", // 용지재고조회(용지별)
         element: (
             <MonitorPaper />
+        )
+    },
+    {
+        path: "/monitor/print", // 용지재고조회(인쇄소별)
+        element: (
+            <MonitorPrint />
         )
     }
 ]);
