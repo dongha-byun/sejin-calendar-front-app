@@ -22,6 +22,7 @@ import OrderManagerReturns from "../pages/ordermanager/returns/OrderManagerRetur
 import MonitorMaterial from "../pages/monitor/material/MonitorMaterial";
 import MonitorPaper from "../pages/monitor/paper/MonitorPaper";
 import MonitorPrint from "../pages/monitor/print/MonitorPrint";
+import MonitorModel from "../pages/monitor/model/MonitorModel";
 
 const router = createBrowserRouter([
     {
@@ -164,6 +165,12 @@ const router = createBrowserRouter([
         path: "/monitor/print", // 용지재고조회(인쇄소별)
         element: (
             <MonitorPrint />
+        )
+    },
+    {
+        path: "/monitor/model", // 호별생산내역조회
+        element: (
+            <MonitorModel />
         )
     }
 ]);
