@@ -44,7 +44,7 @@ export default function InputText({ name, value, onChange, type, size, placehold
             type={type} name={name} value={value} 
             onChange={onChange} 
             onKeyDown={onKeyDown}
-            className={`${style(size)} border rounded p-1.5`} 
+            className={`${style(size)} border rounded p-1`} // p-1.5 
             placeholder={placeholder} 
 
         /> <span>{unitText}</span>
