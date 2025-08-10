@@ -20,6 +20,7 @@ import CommandOrderOut from "../pages/command/orderout/CommandOrderOut";
 import OrderManagerCancel from "../pages/ordermanager/cancel/OrderManagerCancel";
 import OrderManagerReturns from "../pages/ordermanager/returns/OrderManagerReturns";
 import MonitorMaterial from "../pages/monitor/material/MonitorMaterial";
+import MonitorPaper from "../pages/monitor/paper/MonitorPaper";
 
 const router = createBrowserRouter([
     {
@@ -147,9 +148,15 @@ const router = createBrowserRouter([
         )
     },
     {
-        path: "/monitor/material", // 주문반품
+        path: "/monitor/material", // 원자재재고조회
         element: (
             <MonitorMaterial />
+        )
+    },
+    {
+        path: "/monitor/paper", // 용지재고조회(용지별)
+        element: (
+            <MonitorPaper />
         )
     }
 ]);
