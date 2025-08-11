@@ -24,6 +24,7 @@ import MonitorPaper from "../pages/monitor/paper/MonitorPaper";
 import MonitorPrint from "../pages/monitor/print/MonitorPrint";
 import MonitorModel from "../pages/monitor/model/MonitorModel";
 import MonitorOrder from "../pages/monitor/order/MonitorOrder";
+import AdminMember from "../pages/admin/member/AdminMember";
 
 const router = createBrowserRouter([
     {
@@ -178,6 +179,12 @@ const router = createBrowserRouter([
         path: "/monitor/orders", // 접수내역 조회
         element: (
             <MonitorOrder />
+        )
+    },
+    {
+        path: "/admin/member", // 관리자 - 사용자관리
+        element: (
+            <AdminMember />
         )
     }
 ]);
