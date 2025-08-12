@@ -25,6 +25,7 @@ import MonitorPrint from "../pages/monitor/print/MonitorPrint";
 import MonitorModel from "../pages/monitor/model/MonitorModel";
 import MonitorOrder from "../pages/monitor/order/MonitorOrder";
 import AdminMember from "../pages/admin/member/AdminMember";
+import AdminAuth from "../pages/admin/auth/AdminAuth";
 
 const router = createBrowserRouter([
     {
@@ -185,6 +186,12 @@ const router = createBrowserRouter([
         path: "/admin/member", // 관리자 - 사용자관리
         element: (
             <AdminMember />
+        )
+    },
+    {
+        path: "/admin/auth", // 관리자 - 권한관리
+        element: (
+            <AdminAuth />
         )
     }
 ]);
