@@ -13,7 +13,7 @@ export default function AdminMenuTree({data}: Props) {
     }, []);
 
     return (
-        <div className="w-96 h-96 overflow-y-auto mx-auto p-3 bg-white rounded shadow text-sm leading-tight">
+        <div className="w-96 h-[500px] overflow-y-auto mx-auto p-3 bg-white rounded shadow text-sm leading-tight">
             <DynamicTree menus={data} />
         </div>
     );

@@ -32,7 +32,7 @@ export default function AdminRuleFormSection({onAdd}: Props) {
     };
 
     return (
-        <div className="grid gap-4 p-4 bg-gray-200 rounded shadow max-w-4xl mb-4">
+        <div className="grid gap-4 p-4 bg-gray-200 rounded shadow max-w-xl mb-2 mt-2">
             <div className="mt-2 flex items-center text-sm gap-3">
                 <button className="max-w-[120px] px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">신규룰 추가</button>
                 <button className="max-w-[120px] px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">룰 수정</button>
