@@ -5,6 +5,21 @@ interface Props {
 }
 
 export default function AdminAuthSecondTable({data}: Props) {
+
+    const openRulePopup = () => {
+        // 팝업 window의 크기 지정
+        const width = 1080; 
+        const height = 900; 
+        
+        // 팝업을 부모 브라우저의 정 중앙에 나열
+        const left = window.screenX + (window.outerWidth - width) / 2;
+        const top = window.screenY + (window.outerHeight - height) / 2;
+        const windowFeatures = `width=${width},height=${height},left=${left},top=${top}`;
+        
+        // 팝업을 열고 window 속성 지정
+        const popup = window.open('/admin/auth/rule', 'authRulePop', windowFeatures);
+    };
+
     return (
         <div>
             <div className="overflow-x-auto min-h-[500px] overflow-y-auto bg-white">
@@ -28,7 +43,9 @@ export default function AdminAuthSecondTable({data}: Props) {
                 </table>
             </div>
             <div className="mt-2 flex justify-end items-center text-sm gap-3">
-                <button className="max-w-[120px] px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">Rule 관리</button>
+                <button type="button" onClick={openRulePopup} className="max-w-[120px] px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">
+                    Rule 관리
+                </button>
             </div>
         </div>
     );
