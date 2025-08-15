@@ -30,6 +30,7 @@ import AdminRule from "../pages/admin/rule/AdminRule";
 import DiaryPrint from "../pages/diary/print/DiaryPrint";
 import DiaryPrintCn from "../pages/diary/printcn/DiaryPrintCn";
 import DiaryPackaging from "../pages/diary/packaging/DiaryPackaging";
+import DiaryOrderOut from "../pages/diary/orderout/DiaryOrderOut";
 
 const router = createBrowserRouter([
     {
@@ -154,6 +155,12 @@ const router = createBrowserRouter([
         path: "/diary/packaging", // 작업일지 - 포장
         element: (
             <DiaryPackaging />
+        )
+    },
+    {
+        path: "/diary/order-out", // 작업일지 - 제품출고
+        element: (
+            <DiaryOrderOut />
         )
     },
     {
