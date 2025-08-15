@@ -27,6 +27,7 @@ import MonitorOrder from "../pages/monitor/order/MonitorOrder";
 import AdminMember from "../pages/admin/member/AdminMember";
 import AdminAuth from "../pages/admin/auth/AdminAuth";
 import AdminRule from "../pages/admin/rule/AdminRule";
+import DiaryPrint from "../pages/diary/print/DiaryPrint";
 
 const router = createBrowserRouter([
     {
@@ -124,13 +125,19 @@ const router = createBrowserRouter([
         )
     },
     {
-        path: "/diary/machine",
+        path: "/diary/print", // 작업일지 - 인쇄물입고
+        element: (
+            <DiaryPrint />
+        )
+    },
+    {
+        path: "/diary/machine", // 작업일지 - 정합
         element: (
             <DiaryMachine />
         )
     },
     {
-        path: "/diary/bind",
+        path: "/diary/bind", // 작업일지 - 제본
         element: (
             <DiaryBind />
         )
