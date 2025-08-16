@@ -2,7 +2,7 @@ import axios from "axios";
 import { ACCESS_TOKEN_KEY } from "../context/AuthContext";
 
 export const instance = axios.create({
-    baseURL: "http://localhost:8888",
+    baseURL: "http://localhost:8085",
     timeout: 30000, // 30s
     headers: {
         'Content-Type': 'application/json',

@@ -6,7 +6,7 @@ const authApi = {
         const response = await apiService.post("/api/v1/login", loginData);
         console.log("authService:login ", response);
 
-        const data = response.data;
+        const data = response.data.data;
 
         if(data && data.accessToken) {
             localStorage.setItem(ACCESS_TOKEN_KEY, data.accessToken);
