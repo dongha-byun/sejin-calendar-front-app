@@ -1,28 +1,21 @@
 import React, { useState } from "react";
-import { type CustomCompany, CompanyType, CompanyTypeDescription } from "../../../../types/baseinfo/CustomCompany";
+import { type CustomCompany, CompanyType, CompanyTypeList } from "../../../../types/baseinfo/CustomCompany";
 import SelectText from "../../../../component/form/SelectText";
 import FormItem from "../../../../component/form/FormItem";
 import FormRow from "../../../../component/form/FormRow";
 import InputText, { InputTextSize } from "../../../../component/form/InputText";
 
-const categoriesStringVer: string[] = [
-  CompanyTypeDescription[CompanyType.Material],
-  CompanyTypeDescription[CompanyType.Printing],
-  CompanyTypeDescription[CompanyType.Paper],
-  CompanyTypeDescription[CompanyType.Binding],
-  CompanyTypeDescription[CompanyType.Agency]
-]
-
 interface Props {
   onAdd: (customCompany: CustomCompany) => void;
+  onChangeType: (type: CompanyType) => void;
 }
 
-export default function CustomCompanyFormSection({ onAdd }: Props) {
+export default function CustomCompanyFormSection({ onAdd, onChangeType }: Props) {
   const [form, setForm] = useState<CustomCompany>({
-    companyType: CompanyTypeDescription[CompanyType.Material],
+    companyType: CompanyType.Material,
     name: "",
     ceo: "",
-    companyNum: "",
+    bizNo: "",
     address: "",
     tel: "",
     fax: "",
@@ -35,6 +28,12 @@ export default function CustomCompanyFormSection({ onAdd }: Props) {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
+    console.log(name, value);
+
+    if(name === "companyType") {
+      console.log(value);
+      onChangeType(value as CompanyType);
+    }
 
     if(name === "discountRate") {
       if(!/^\d*\.?\d*$/.test(value)) {
@@ -57,7 +56,7 @@ export default function CustomCompanyFormSection({ onAdd }: Props) {
       id: Date.now()
     };
     onAdd(newCustomCompany);
-    setForm({ ...form, name: "", ceo: "", companyNum: "", address: "", tel: "", fax: "", email: "", webhard: "", discountRate: 0, etc: "" });
+    setForm({ ...form, name: "", ceo: "", bizNo: "", address: "", tel: "", fax: "", email: "", webhard: "", discountRate: 0, etc: "" });
   };
 
   return (
@@ -68,7 +67,7 @@ export default function CustomCompanyFormSection({ onAdd }: Props) {
             name="companyType"
             value={form.companyType}
             onChange={handleChange}
-            options={categoriesStringVer.map(c => ({ value: c, label: c }))} />
+            options={CompanyTypeList.map(c => ({ value: c, label: c }))} />
         } />
       </FormRow>
       <FormRow>
@@ -79,7 +78,7 @@ export default function CustomCompanyFormSection({ onAdd }: Props) {
           <InputText name="ceo" value={form.ceo} onChange={handleChange} />
         } />
         <FormItem label="사업자번호" children={
-          <InputText name="companyNum" value={form.companyNum} onChange={handleChange} />
+          <InputText name="bizNo" value={form.bizNo} onChange={handleChange} />
         } />
       </FormRow>
       <FormRow>

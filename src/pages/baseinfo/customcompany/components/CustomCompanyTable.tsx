@@ -28,15 +28,15 @@ export default function CustomCompanyTable({ data }: Props) {
         </thead>
         <tbody>
           {data.map((s, idx) => (
-            <tr key={s.id} className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-              <td className="border px-2 py-1 text-center">{data.length - idx}</td>
+            <tr key={idx} className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+              <td className="border px-2 py-1 text-center">{s.id}</td>
               <td className="border px-2 py-1">{s.companyType}</td>
               <td className="border px-2 py-1">{s.name}</td>
               <td className="border px-2 py-1">{s.ceo}</td>
               <td className="border px-2 py-1">{s.address}</td>
               <td className="border px-2 py-1">{s.tel}</td>
               <td className="border px-2 py-1">{s.fax}</td>
-              <td className="border px-2 py-1">{s.companyNum}</td>
+              <td className="border px-2 py-1">{s.bizNo}</td>
               <td className="border px-2 py-1">{s.email}</td>
               <td className="border px-2 py-1">{s.webhard}</td>
               <td className="border px-2 py-1">{s.createdAt}</td>

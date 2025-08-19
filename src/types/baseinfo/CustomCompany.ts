@@ -1,10 +1,12 @@
 export enum CompanyType {
-  Material="MATERIAL",
-  Printing="PRINTING",
-  Paper="PAPER",
-  Binding="BINDING",
-  Agency="AGENCY"
+  Material="자재관련",
+  Printing="인쇄소",
+  Paper="지업사",
+  Binding="제본소",
+  Agency="총판"
 }
+
+export const CompanyTypeList = Object.values(CompanyType);
 
 export const CompanyTypeDescription: Record<CompanyType, string> = {
   [CompanyType.Material]: "자재관련",
@@ -16,10 +18,10 @@ export const CompanyTypeDescription: Record<CompanyType, string> = {
 
 export interface CustomCompany {
   id?: number;
-  companyType: string;
+  companyType: CompanyType;
   name: string;
   ceo: string;
-  companyNum: string;
+  bizNo: string;
   address: string;
   tel: string;
   fax: string;
