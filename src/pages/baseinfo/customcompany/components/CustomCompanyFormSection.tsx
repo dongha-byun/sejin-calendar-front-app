@@ -45,6 +45,23 @@ export default function CustomCompanyFormSection({ onAdd, onChangeType }: Props)
     setForm(prev => ({ ...prev, [name]: value }));
   };
 
+  const onInit = () => {
+    setForm({
+      companyType: CompanyType.Material,
+      name: "",
+      ceo: "",
+      bizNo: "",
+      address: "",
+      tel: "",
+      fax: "",
+      email: "",
+      webhard: "",
+      discountType: "국내가",
+      discountRate: 0,
+      etc: ""
+    });
+  }
+
   const handleSubmit = () => {
     if (!form.name.trim()) {
       alert("업체명은 필수입니다.");
@@ -56,7 +73,7 @@ export default function CustomCompanyFormSection({ onAdd, onChangeType }: Props)
       id: Date.now()
     };
     onAdd(newCustomCompany);
-    setForm({ ...form, name: "", ceo: "", bizNo: "", address: "", tel: "", fax: "", email: "", webhard: "", discountRate: 0, etc: "" });
+    onInit();
   };
 
   return (
@@ -115,7 +132,7 @@ export default function CustomCompanyFormSection({ onAdd, onChangeType }: Props)
       </FormRow>
       <div className="col-span-4 flex gap-2 justify-start mt-2">
         <button onClick={handleSubmit} className="bg-green-500 text-white px-4 py-1 rounded">저장</button>
-        <button onClick={handleSubmit} className="bg-red-500 text-white px-4 py-1 rounded">초기화</button>
+        <button onClick={onInit} className="bg-red-500 text-white px-4 py-1 rounded">초기화</button>
       </div>
     </div>
   );
