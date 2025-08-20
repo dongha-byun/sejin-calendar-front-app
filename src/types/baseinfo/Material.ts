@@ -1,7 +1,7 @@
 export enum BindMethod {
     IRON = "금구",
     HOLDER = "홀더",
-    ACTATE = "아크테지",
+    ACTATE = "아스테지",
     TWIN = "TWIN",
     BIG_PAPER = "대지",
     BOX = "Box",
