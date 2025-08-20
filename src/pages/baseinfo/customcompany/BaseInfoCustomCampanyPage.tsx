@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import CustomCompanyFormSection from "./components/CustomCompanyFormSection";
 import CustomCompanyTable from "./components/CustomCompanyTable";
 import { CompanyType, type CustomCompany } from "../../../types/baseinfo/CustomCompany";
-import { customCompanyApi } from "../../../api/baseinfo/customcompany/customCompanyApi";
+import { customCompanyApi } from "../../../api/baseinfo/customCompanyApi";
 
 export default function BaseInfoCustomCompanyPage() {
   const [customCompanies, setCustomCompanies] = useState<CustomCompany[]>([]);

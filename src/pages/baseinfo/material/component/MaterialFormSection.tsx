@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BindMethod, type Material } from '../../../../types/baseinfo/Material';
 import FormItem from '../../../../component/form/FormItem';
 import FormRow from '../../../../component/form/FormRow';
@@ -17,10 +17,12 @@ const bindMethods: BindMethod[] = [
 ];
 
 interface Props {
+    onChangeBindMethod: (type: BindMethod) => void;
     onAdd: (material: Material) => void;
+    list: Material[];
 }
 
-export default function MaterialFormSection({ onAdd }: Props) {
+export default function MaterialFormSection({ onAdd, list, onChangeBindMethod }: Props) {
 
     const [form, setForm] = useState<Material>({
         bindMethod: BindMethod.IRON,
@@ -28,24 +30,41 @@ export default function MaterialFormSection({ onAdd }: Props) {
         standard2: '',
         contents: '',
         color: '', 
-        createdAt: new Date().toISOString().split('T')[0] // yyyy-mm-dd format
     });
+
+    const [standard1s, setStandard1s] = useState<string[]>([]);
+    const [standard2s, setStandard2s] = useState<string[]>([]);
+    const [contents, setContents] = useState<string[]>([]);
+    const [colors, setColors] = useState<string[]>([]);
+
+    useEffect(() => {
+
+    }, []);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
+
+        if(name === "bindMethod") {
+            onChangeBindMethod(value as BindMethod);
+        }
     
         console.log(`Changed ${name} to ${value}`);
         setForm(prev => ({ ...prev, [name]: value }));
     };
 
+    const onInit = () => {
+        setForm({
+            bindMethod: BindMethod.IRON,
+            standard1: '',
+            standard2: '',
+            contents: '',
+            color: '', 
+        });
+    };
+
     const handleSubmit = () => {
-    
-        const newMaterial: Material = {
-          ...form,
-          id: Date.now()
-        };
-        onAdd(newMaterial);
-        setForm({ ...form, bindMethod: BindMethod.IRON, standard1: '', standard2: '', contents: '', color: '', createdAt: new Date().toISOString().split('T')[0] });
+        onAdd(form);
+        onInit();
     };
 
     return (
@@ -115,6 +134,7 @@ export default function MaterialFormSection({ onAdd }: Props) {
             
             <div className="col-span-4 flex gap-2 justify-start mt-2">
                 <button onClick={handleSubmit} className="bg-green-500 text-white px-4 py-1 rounded">확인</button>
+                <button onClick={onInit} className="bg-red-500 text-white px-4 py-1 rounded">취소</button>
             </div>
         </div>
     );

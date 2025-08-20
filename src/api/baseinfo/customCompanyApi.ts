@@ -1,5 +1,5 @@
-import type { CustomCompany } from "../../../types/baseinfo/CustomCompany";
-import apiService from "../../axiosInstance"
+import type { CustomCompany } from "../../types/baseinfo/CustomCompany";
+import apiService from "../axiosInstance"
 
 export const customCompanyApi = {
     save: async (data: CustomCompany) => {
