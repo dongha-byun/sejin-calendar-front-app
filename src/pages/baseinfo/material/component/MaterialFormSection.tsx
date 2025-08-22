@@ -3,7 +3,7 @@ import { BindMethod, type Material } from '../../../../types/baseinfo/Material';
 import FormItem from '../../../../component/form/FormItem';
 import FormRow from '../../../../component/form/FormRow';
 import SelectText from '../../../../component/form/SelectText';
-import { isBlank, isNotBlank } from '../../../../utils/stringUtils';
+import { isNotBlank } from '../../../../utils/stringUtils';
 
 const bindMethods: BindMethod[] = [
     BindMethod.IRON,

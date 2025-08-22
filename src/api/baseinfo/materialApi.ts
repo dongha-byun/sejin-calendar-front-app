@@ -7,7 +7,6 @@ export const materialApi = {
     },
     list: async (bindMethod: string) => {
         const response = await apiService.get("/api/v1/materials?bindMethod=" + bindMethod);
-        console.log("materialApi:list ", response);
         return response.data.data;
     }
 }

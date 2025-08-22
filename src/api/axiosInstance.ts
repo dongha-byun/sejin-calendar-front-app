@@ -46,7 +46,7 @@ instance.interceptors.response.use(
     async (error) => {
         /** 401 Authorization 에러 처리 (토큰 만료시) */
         if (error.response?.status === 401) {
-            const originalRequest = error.config;
+            // const originalRequest = error.config;
     
             // 여기서 리프래시 토큰으로 토큰 재발행 요청 처리
         }

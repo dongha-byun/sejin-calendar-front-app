@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Paper } from "../../../../types/baseinfo/Paper";
 import FormRow from "../../../../component/form/FormRow";
 import FormItem from "../../../../component/form/FormItem";
@@ -7,51 +7,55 @@ import SelectText from "../../../../component/form/SelectText";
 
 interface Props {
     onAdd: (paper: Paper) => void;
+    list: Paper[];
 }
 
-export default function PaperFormSection({ onAdd }: Props) {
+const defaultPropertiesList = ["ART", "S/W", "모조"];
+const defaultStandardList = ["636-939", "939-636", "788-1091", "1091-788"];
+
+export default function PaperFormSection({ onAdd, list }: Props) {
+    const [propertiesList, setPropertiesList] = useState<string[]>(defaultPropertiesList);
+    const [standardList, setStandardList] = useState<string[]>(defaultStandardList);
 
     const [form, setForm] = useState<Paper>({
         weight: 0,
         properties: '',
-        standard: '',
-        createdAt: new Date().toISOString().split('T')[0] // yyyy-mm-dd format
+        standard: ''
     });
 
-    const propertiesOptions = [
-        "아르떼", "ART", "판지", "S/W", "미색모조", 
-        "르느와르", "등등"
-    ];
+    useEffect(() => {
+        // 1. list 에서 properties 추출 + default 까지 합쳐서 중복 없이
+        const uniqueProperties = Array.from(new Set(list.map(p => p.properties).concat(defaultPropertiesList)));
+        setPropertiesList(uniqueProperties);
 
-    const standardOptions = [
-        "200-300", "788-1091", "880-625", "636-939", "720-590",
-        "1091-788", "625-880", "939-636", "590-720", "등등"
-    ];
+        // 2. list 에서 standard 추출 + default 까지 합쳐서 중복 없이
+        const uniqueStandards = Array.from(new Set(list.map(p => p.standard).concat(defaultStandardList)));
+        setStandardList(uniqueStandards);
+
+        onInit();
+
+    }, [list]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-    
-        console.log(`Changed ${name} to ${value}`);
         setForm(prev => ({ ...prev, [name]: value }));
     };
 
     const handleSubmit = () => {
-        
-        const newPaper: Paper = {
-            ...form,
-            id: Date.now()
-        };
-        onAdd(newPaper);
-        setForm({ ...form, weight: 0, properties: '', standard: '', createdAt: new Date().toISOString().split('T')[0] });
+        onAdd(form);
     };
+
+    const onInit = () => {
+        setForm({ weight: 0, properties: '', standard: '' });
+    }
 
     return (
         <div className="min-w-[500px] max-w-[50vw] w-full grid grid-cols-2 gap-4 border p-4 mb-4">
             <div className="flex flex-col gap-2">
                 <FormRow>
                     <FormItem label="무게" required children={
-                        <InputText name="weight" value={form.weight} onChange={handleChange} />
-                    } />g
+                        <InputText name="weight" value={form.weight} onChange={handleChange} unitText="g" />
+                    } />
                 </FormRow>
                 <FormRow>
                     <FormItem label="지질" required children={
@@ -59,7 +63,7 @@ export default function PaperFormSection({ onAdd }: Props) {
                             name="properties"
                             value={form.properties}
                             onChange={handleChange}
-                            options={propertiesOptions.map(c => ({ value: c, label: c }))} />
+                            options={propertiesList.map(c => ({ value: c, label: c }))} />
                     } />
                 </FormRow>
                 <FormRow>
@@ -68,11 +72,12 @@ export default function PaperFormSection({ onAdd }: Props) {
                             name="standard"
                             value={form.standard}
                             onChange={handleChange}
-                            options={standardOptions.map(c => ({ value: c, label: c }))} />
+                            options={standardList.map(c => ({ value: c, label: c }))} />
                     } />
                 </FormRow>
                 <div className="flex gap-2 mt-2">
                     <button onClick={handleSubmit} className="bg-green-500 text-white px-4 py-1 rounded">확인</button>
+                    <button onClick={onInit} className="bg-red-500 text-white px-4 py-1 rounded">취소</button>
                 </div>
             </div>
         </div>

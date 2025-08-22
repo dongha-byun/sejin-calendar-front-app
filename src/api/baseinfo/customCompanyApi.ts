@@ -7,7 +7,6 @@ export const customCompanyApi = {
     },
     list: async (companyType: string) => {
         const response = await apiService.get("/api/v1/custom-company?companyType=" + companyType);
-        console.log("customCompanyApi:list ", response);
         return response.data.data;
     }
 }

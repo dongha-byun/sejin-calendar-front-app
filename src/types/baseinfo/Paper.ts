@@ -3,5 +3,5 @@ export interface Paper {
   weight: number; // 무게
   properties: string; // 지질
   standard: string; // 규격
-  createdAt: string; // yyyy-mm-dd 형식
+  createdAt?: string; // yyyy-mm-dd 형식
 }
