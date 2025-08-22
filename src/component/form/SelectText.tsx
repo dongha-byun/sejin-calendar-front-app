@@ -1,5 +1,6 @@
 import Select from "react-select";
 import { InputTextSize } from "./InputText";
+import CreatableSelect from "react-select/creatable";
 
 interface Props {
   options: { value: string | number; label: string | number }[];
@@ -58,15 +59,16 @@ const style = (size: InputTextSize = InputTextSize.Normal) => {
 }
 
 export default function SelectText({options, size, value, name, onChange}: Props) {
+  
   return (
     <div className={`${style(size)}`}>
-      <Select
+      <CreatableSelect
         styles={smallSelectStyles}
         options={options}
         isClearable
         isSearchable
         placeholder=""
-        value={options.find(option => option.value === value)}
+        value={options.find(option => option.value === value) || (value ? { value, label: value } : null)}
         name={name}
         onChange={option => {
           if(onChange) {

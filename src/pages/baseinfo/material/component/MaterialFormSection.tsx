@@ -3,6 +3,7 @@ import { BindMethod, type Material } from '../../../../types/baseinfo/Material';
 import FormItem from '../../../../component/form/FormItem';
 import FormRow from '../../../../component/form/FormRow';
 import SelectText from '../../../../component/form/SelectText';
+import { isBlank, isNotBlank } from '../../../../utils/stringUtils';
 
 const bindMethods: BindMethod[] = [
     BindMethod.IRON,
@@ -38,8 +39,30 @@ export default function MaterialFormSection({ onAdd, list, onChangeBindMethod }:
     const [colors, setColors] = useState<string[]>([]);
 
     useEffect(() => {
+        setStandard1s(Array.from(new Set(list.map(material => material.standard1))));
 
-    }, []);
+        setForm(prev => ({
+            bindMethod: prev.bindMethod,
+            standard1: '',
+            standard2: '',
+            contents: '',
+            color: '',
+        }));
+
+        setStandard2s([]);
+        setContents(Array.from(new Set(list.map(material => material.contents).filter(value => isNotBlank(value)))));
+        setColors(Array.from(new Set(list.map(material => material.color).filter(value => isNotBlank(value)))));
+    }, [list]);
+
+    useEffect(() => {
+        const filtered = list.filter(material => material.standard1 === form.standard1);
+        const filteredStandard2s = filtered.map(material => material.standard2).filter(value => isNotBlank(value));
+        
+        if(filteredStandard2s && filteredStandard2s.length > 0) {
+            setStandard2s(Array.from(new Set(filteredStandard2s )));
+        }
+        
+    }, [form.standard1]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -84,26 +107,14 @@ export default function MaterialFormSection({ onAdd, list, onChangeBindMethod }:
                         name="standard1"
                         value={form.standard1}
                         onChange={handleChange}
-                        options={[
-                            { value: '380', label: '380' },
-                            { value: '310', label: '310' },
-                            { value: '400', label: '400' },
-                            { value: '420', label: '420' },
-                            { value: '345', label: '345' }
-                        ]} />
+                        options={standard1s.map(c => ({ value: c, label: c }))} />
                 } />
                 <FormItem label="규격2" children={
                     <SelectText 
                         name="standard2"
                         value={form.standard2}
                         onChange={handleChange}
-                        options={[
-                            { value: 'A4', label: 'A4' },
-                            { value: 'A3', label: 'A3' },
-                            { value: 'B4', label: 'B4' },
-                            { value: 'B5', label: 'B5' },
-                            { value: 'CUSTOM', label: 'CUSTOM' }
-                        ]} />
+                        options={standard2s.map(c => ({ value: c, label: c }))} />
                 } />
             </FormRow>
             <FormRow>
@@ -112,23 +123,14 @@ export default function MaterialFormSection({ onAdd, list, onChangeBindMethod }:
                         name="contents"
                         value={form.contents}
                         onChange={handleChange}
-                        options={[
-                            { value: '인쇄', label: '인쇄' },
-                            { value: '제본', label: '제본' },
-                            { value: '후가공', label: '후가공' },
-                            { value: '기타', label: '기타' }
-                        ]} />
+                        options={contents.map(c => ({ value: c, label: c }))} />
                 } />
                 <FormItem label="색상" children={
                     <SelectText 
                         name="color"
                         value={form.color}
                         onChange={handleChange}
-                        options={[
-                            { value: '흑백', label: '흑백' },
-                            { value: '컬러', label: '컬러' },
-                            { value: '혼합', label: '혼합' }
-                        ]} />
+                        options={colors.map(c => ({ value: c, label: c }))} />
                 } />
             </FormRow>
             
