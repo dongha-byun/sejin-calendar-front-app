@@ -1,3 +1,5 @@
+import CommonTd from "../../../../component/grid/CommonTd";
+import CommonTh from "../../../../component/grid/CommonTh";
 import type { Model } from "../../../../types/baseinfo/Model";
 
 interface Props {
@@ -11,69 +13,69 @@ export default function ModelTable({ data }: Props) {
         <table className="table-auto w-full border text-sm">
             <thead className="bg-gray-200">
                 <tr>
-                    <th className="border px-2 py-1">모델</th>
-                    <th className="border px-2 py-1">모델명</th>
-                    <th className="border px-2 py-1">가로</th>
-                    <th className="border px-2 py-1">세로</th>
-                    <th className="border px-2 py-1">규격(inch)</th>
-                    <th className="border px-2 py-1">매수</th>
-                    <th className="border px-2 py-1">국내가</th>
-                    <th className="border px-2 py-1">해외A1가</th>
-                    <th className="border px-2 py-1">해외A2가</th>
-                    <th className="border px-2 py-1">해외B가</th>
-                    <th className="border px-2 py-1">용지무게(표)</th>
-                    <th className="border px-2 py-1">용지지질(표)</th>
-                    <th className="border px-2 py-1">용지규격(표)</th>
-                    <th className="border px-2 py-1">부당용지소요량(표)</th>
-                    <th className="border px-2 py-1">소부(표)</th>
-                    <th className="border px-2 py-1">도수(표)</th>
-                    <th className="border px-2 py-1">용지무게(내)</th>
-                    <th className="border px-2 py-1">용지지질(내)</th>
-                    <th className="border px-2 py-1">용지규격(내)</th>
-                    <th className="border px-2 py-1">부당용지소요량(내)</th>
-                    <th className="border px-2 py-1">소부(내)</th>
-                    <th className="border px-2 py-1">도수(내)</th>
-                    <th className="border px-2 py-1">제본방식</th>
-                    <th className="border px-2 py-1">제본단가</th>
-                    <th className="border px-2 py-1">상호규격(cm)</th>
-                    <th className="border px-2 py-1">상호규격(inch)</th>
-                    <th className="border px-2 py-1">BOX</th>
-                    <th className="border px-2 py-1">부수/box</th>
-                    <th className="border px-2 py-1">쇄입방법</th>
+                    <CommonTh>모델</CommonTh>
+                    <CommonTh>모델명</CommonTh>
+                    <CommonTh>가로</CommonTh>
+                    <CommonTh>세로</CommonTh>
+                    <CommonTh>규격(inch)</CommonTh>
+                    <CommonTh>매수</CommonTh>
+                    <CommonTh>국내가</CommonTh>
+                    <CommonTh>해외A1가</CommonTh>
+                    <CommonTh>해외A2가</CommonTh>
+                    <CommonTh>해외B가</CommonTh>
+                    <CommonTh>용지무게(표)</CommonTh>
+                    <CommonTh>용지지질(표)</CommonTh>
+                    <CommonTh>용지규격(표)</CommonTh>
+                    <CommonTh>부당용지소요량(표)</CommonTh>
+                    <CommonTh>소부(표)</CommonTh>
+                    <CommonTh>도수(표)</CommonTh>
+                    <CommonTh>용지무게(내)</CommonTh>
+                    <CommonTh>용지지질(내)</CommonTh>
+                    <CommonTh>용지규격(내)</CommonTh>
+                    <CommonTh>부당용지소요량(내)</CommonTh>
+                    <CommonTh>소부(내)</CommonTh>
+                    <CommonTh>도수(내)</CommonTh>
+                    <CommonTh>제본방식</CommonTh>
+                    <CommonTh>제본단가</CommonTh>
+                    <CommonTh>상호규격(cm)</CommonTh>
+                    <CommonTh>상호규격(inch)</CommonTh>
+                    <CommonTh>BOX</CommonTh>
+                    <CommonTh>부수/box</CommonTh>
+                    <CommonTh>쇄입방법</CommonTh>
                 </tr>
             </thead>
             <tbody>
             {data.map((s, idx) => (
                 <tr key={s.id} className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                    <td className="border px-2 py-1">{s.modelNum}</td>
-                    <td className="border px-2 py-1">{s.modelName}</td>
-                    <td className="border px-2 py-1">{s.width}</td>
-                    <td className="border px-2 py-1">{s.height}</td>
-                    <td className="border px-2 py-1">{s.standardInch}</td>
-                    <td className="border px-2 py-1 text-right">{s.pages}</td>
-                    <td className="border px-2 py-1 text-right">{s.priceInternal}</td>
-                    <td className="border px-2 py-1 text-right">{s.priceExternalA1}</td>
-                    <td className="border px-2 py-1 text-right">{s.priceExternalA2}</td>
-                    <td className="border px-2 py-1 text-right">{s.priceExternalB}</td>
-                    <td className="border px-2 py-1">{s.coverWeight}</td>
-                    <td className="border px-2 py-1">{s.coverProperties}</td>
-                    <td className="border px-2 py-1">{s.coverStandard}</td>
-                    <td className="border px-2 py-1 text-right">{s.coverRequirePaper}</td>
-                    <td className="border px-2 py-1 text-right">{s.coverSobu}</td>
-                    <td className="border px-2 py-1 text-right">{s.coverDosu}</td>
-                    <td className="border px-2 py-1">{s.innerWeight}</td>
-                    <td className="border px-2 py-1">{s.innerProperties}</td>
-                    <td className="border px-2 py-1">{s.innerStandard}</td>
-                    <td className="border px-2 py-1 text-right">{s.innerRequirePaper}</td>
-                    <td className="border px-2 py-1 text-right">{s.innerSobu}</td>
-                    <td className="border px-2 py-1 text-right">{s.innerDosu}</td>
-                    <td className="border px-2 py-1">{s.bindMethod}</td>
-                    <td className="border px-2 py-1 text-right">{s.pricePerBinding}</td>
-                    <td className="border px-2 py-1">{s.companyNameCm}</td>
-                    <td className="border px-2 py-1">{s.companyNameInch}</td>
-                    <td className="border px-2 py-1">{s.box}</td>
-                    <td className="border px-2 py-1 text-right">{s.countPerBox}</td>
-                    <td className="border px-2 py-1">{s.printMethod}</td>
+                    <CommonTd>{s.modelNum}</CommonTd>
+                    <CommonTd>{s.modelName}</CommonTd>
+                    <CommonTd>{s.width}</CommonTd>
+                    <CommonTd>{s.height}</CommonTd>
+                    <CommonTd>{s.standardInch}</CommonTd>
+                    <CommonTd additionalClasses="text-right">{s.pages}</CommonTd>
+                    <CommonTd additionalClasses="text-right">{s.priceInternal}</CommonTd>
+                    <CommonTd additionalClasses="text-right">{s.priceExternalA1}</CommonTd>
+                    <CommonTd additionalClasses="text-right">{s.priceExternalA2}</CommonTd>
+                    <CommonTd additionalClasses="text-right">{s.priceExternalB}</CommonTd>
+                    <CommonTd>{s.coverWeight}</CommonTd>
+                    <CommonTd>{s.coverProperties}</CommonTd>
+                    <CommonTd>{s.coverStandard}</CommonTd>
+                    <CommonTd additionalClasses="text-right">{s.coverRequirePaper}</CommonTd>
+                    <CommonTd additionalClasses="text-right">{s.coverSobu}</CommonTd>
+                    <CommonTd additionalClasses="text-right">{s.coverDosu}</CommonTd>
+                    <CommonTd>{s.innerWeight}</CommonTd>
+                    <CommonTd>{s.innerProperties}</CommonTd>
+                    <CommonTd>{s.innerStandard}</CommonTd>
+                    <CommonTd additionalClasses="text-right">{s.innerRequirePaper}</CommonTd>
+                    <CommonTd additionalClasses="text-right">{s.innerSobu}</CommonTd>
+                    <CommonTd additionalClasses="text-right">{s.innerDosu}</CommonTd>
+                    <CommonTd>{s.bindMethod}</CommonTd>
+                    <CommonTd additionalClasses="text-right">{s.pricePerBinding}</CommonTd>
+                    <CommonTd>{s.companyNameCm}</CommonTd>
+                    <CommonTd>{s.companyNameInch}</CommonTd>
+                    <CommonTd>{s.box}</CommonTd>
+                    <CommonTd additionalClasses="text-right">{s.countPerBox}</CommonTd>
+                    <CommonTd>{s.printMethod}</CommonTd>
                 </tr>
             ))}
             </tbody>

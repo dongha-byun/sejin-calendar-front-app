@@ -6,13 +6,14 @@ type FormItemProps = {
     required?: boolean;
     additionClass?: string;
     checkEvent?: () => void;
+    labelWidth?: string;
 }
 
-export default function FormItem ({label, children, required, additionClass, checkEvent}: FormItemProps) {
+export default function FormItem ({label, children, required, additionClass, checkEvent, labelWidth}: FormItemProps) {
     return (
         <div className={`flex items-center gap-2 flex-1 ${additionClass}`}>
             {label.length > 0 && 
-            <div className="w-20 shrink-0 flex justify-end">
+            <div className={`${labelWidth ? labelWidth : 'w-20'} shrink-0 flex justify-end`}>
                 <label className="inline-flex items-center space-x-1">
                     {checkEvent && 
                     <input 

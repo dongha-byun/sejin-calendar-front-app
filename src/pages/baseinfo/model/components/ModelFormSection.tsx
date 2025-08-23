@@ -1,14 +1,23 @@
-import { useState } from "react";
-import type { Model } from "../../../../types/baseinfo/Model";
+import { useEffect, useState } from "react";
+import { ModelBindMethod, type Model } from "../../../../types/baseinfo/Model";
 import FormItem from "../../../../component/form/FormItem";
 import SelectText from "../../../../component/form/SelectText";
 import InputText from "../../../../component/form/InputText";
+import CommonSelect from "../../../../component/form/CommonSelect";
+import type { Paper } from "../../../../types/baseinfo/Paper";
 
 interface Props {
     onAdd: (model: Model) => void;
+    papers: Paper[];
 }
 
-export default function ModelFormSection({ onAdd }: Props) {
+interface PaperOption {
+    weights: number[];
+    properties: string[];
+    standards: string[];
+}
+
+export default function ModelFormSection({ onAdd, papers }: Props) {
     const [form, setForm] = useState<Model>({
         modelNum: '',
         modelName: '',
@@ -42,21 +51,99 @@ export default function ModelFormSection({ onAdd }: Props) {
         createdAt: new Date().toISOString().split('T')[0] // yyyy-mm-dd format
     });
 
+    const [coverPaperInfo, setCoverPaperInfo] = useState<PaperOption>({
+        weights: [],
+        properties: [],
+        standards: []
+    });
+
+    const [innerPaperInfo, setInnerPaperInfo] = useState<PaperOption>({
+        weights: [],
+        properties: [],
+        standards: []
+    });
+
+    // 1. 일단 무게만 초기화
+    useEffect(() => {
+       setCoverPaperInfo({
+            weights: Array.from(new Set(papers.map(p => p.weight))),
+            properties: [],
+            standards: []
+       });
+       setInnerPaperInfo({
+            weights: Array.from(new Set(papers.map(p => p.weight))),
+            properties: [],
+            standards: []
+       });
+    }, [papers]); 
+
+    const initPaperProperties = (weight: number, type: string) => {
+        const filtered = papers.filter(p => p.weight === weight);
+        if(type === 'cover') {
+            setCoverPaperInfo({
+                ...coverPaperInfo,
+                properties: Array.from(new Set(filtered.map(p => p.properties))),
+                standards: []
+            });
+        }
+        if(type === 'inner') {
+            setInnerPaperInfo({
+                ...innerPaperInfo,
+                properties: Array.from(new Set(filtered.map(p => p.properties))),
+                standards: []
+            });
+        }
+    };
+
+    const initPaperStandard = (properties: string, type: string) => {
+        const filtered = papers.filter(p => p.properties === properties);
+        if(type === 'cover') {
+            setCoverPaperInfo({
+                ...coverPaperInfo,
+                standards: Array.from(new Set(filtered.map(p => p.standard)))
+            });
+        }
+        if(type === 'inner') {
+            setInnerPaperInfo({
+                ...innerPaperInfo,
+                standards: Array.from(new Set(filtered.map(p => p.standard)))
+            });
+        }
+    };
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
+        
+        if(name === 'coverWeight') {
+            initPaperProperties(Number(value), 'cover');
+            setForm(prev => ({ ...prev, coverProperties: '', coverStandard: '' }));
+        }
+
+        if(name === 'coverProperties') {
+            initPaperStandard(value, 'cover');
+            setForm(prev => ({ ...prev, coverStandard: '' }));
+        }
+
+        if(name === 'innerWeight') {
+            initPaperProperties(Number(value), 'inner');
+            setForm(prev => ({ ...prev, innerProperties: '', innerStandard: '' }));
+        }
+
+        if(name === 'innerProperties') {
+            initPaperStandard(value, 'inner');
+            setForm(prev => ({ ...prev, innerStandard: '' }));
+        }
     
         console.log(`Changed ${name} to ${value}`);
         setForm(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = () => {
-
-        const newModel: Model = {
-            ...form,
-            id: Date.now()
-        };
-        onAdd(newModel);
+    const onInit = () => {
         setForm({ ...form, modelNum: '', modelName: '', width: '', height: '', standardInch: '', pages: 0, bindMethod: '', priceInternal: 0, priceExternalA1: 0, priceExternalA2: 0, priceExternalB: 0, coverWeight: '', coverProperties: '', coverStandard: '', coverRequirePaper: 0, innerWeight: '', innerProperties: '', innerStandard: '', innerRequirePaper: 0, pricePerBinding: 0, companyNameCm: '', companyNameInch: '', box: '', countPerBox: 0, printMethod: '', coverSobu: 0, coverDosu: 0, innerSobu: 0, innerDosu: 0, createdAt: new Date().toISOString().split('T')[0] });
+    }
+
+    const handleSubmit = () => {
+        onAdd(form);
     };
     return (
         <div className="grid grid-cols-4 gap-4 p-4 bg-gray-200 rounded shadow max-w-6xl mb-4">
@@ -79,107 +166,77 @@ export default function ModelFormSection({ onAdd }: Props) {
             <FormItem label="규격(inch)">
                 <InputText name="standardInch" value={form.standardInch} onChange={handleChange} />
             </FormItem>
-            <FormItem label="매수">
+            <FormItem label="매수" labelWidth="w-28">
                 <InputText name="pages" value={form.pages} onChange={handleChange} />
             </FormItem>
 
             {/* 3행 */}
             <FormItem label="국내가">
-                <InputText name="priceInternal" value={form.priceInternal} onChange={handleChange} /> 원
+                <InputText name="priceInternal" value={form.priceInternal} onChange={handleChange} unitText="원"/>
             </FormItem>
             <FormItem label="해외A1가">
-                <InputText name="priceExternalA1" value={form.priceExternalA1} onChange={handleChange} /> $
+                <InputText name="priceExternalA1" value={form.priceExternalA1} onChange={handleChange} unitText="$" />
             </FormItem>
             <FormItem label="해외A2가">
-                <InputText name="priceExternalA2" value={form.priceExternalA2} onChange={handleChange} /> $
+                <InputText name="priceExternalA2" value={form.priceExternalA2} onChange={handleChange} unitText="$" />
             </FormItem>
-            <FormItem label="해외B가">
-                <InputText name="priceExternalB" value={form.priceExternalB} onChange={handleChange} /> $
+            <FormItem label="해외B가" labelWidth="w-28">
+                <InputText name="priceExternalB" value={form.priceExternalB} onChange={handleChange} unitText="$" />
             </FormItem>
 
             {/* 4행 */}
             <FormItem label="용지무게(표)">
-                <SelectText 
+                <CommonSelect 
                     name="coverWeight" value={form.coverWeight} onChange={handleChange} 
-                    options={[
-                        { value: '80g', label: '80g' },
-                        { value: '100g', label: '100g' },
-                        { value: '120g', label: '120g' },
-                        { value: '150g', label: '150g' },
-                        { value: '200g', label: '200g' },
-                ]} />
+                    options={coverPaperInfo.weights.map(weight => ({ value: weight, label: weight }))} />
             </FormItem>
             <FormItem label="용지지질(표)">
-                <SelectText 
+                <CommonSelect 
                     name="coverProperties" value={form.coverProperties} onChange={handleChange} 
-                    options={[
-                        { value: 'ART', label: 'ART' },
-                        { value: 'S/W', label: 'S/W' },
-                ]} />
+                    options={coverPaperInfo.properties.map(property => ({ value: property, label: property }))} />
             </FormItem>
             <FormItem label="용지규격(표)">
-                <SelectText 
+                <CommonSelect 
                     name="coverStandard" value={form.coverStandard} onChange={handleChange} 
-                    options={[
-                        { value: '939-720', label: '939-720' },
-                        { value: '880-625', label: '880-625' },
-                        { value: '788-710', label: '788-710' },
-                ]} />
+                    options={coverPaperInfo.standards.map(standard => ({ value: standard, label: standard }))} />
             </FormItem>
-            <FormItem label="부당용지소요량(표)">
+            <FormItem label="부당용지소요량(표)" labelWidth="w-28">
                 <InputText name="coverRequirePaper" value={form.coverRequirePaper} onChange={handleChange} />
             </FormItem>
 
             {/* 5행 */}
             <FormItem label="용지무게(내)">
-                <SelectText 
+                <CommonSelect 
                     name="innerWeight" value={form.innerWeight} onChange={handleChange} 
-                    options={[
-                        { value: '80g', label: '80g' },
-                        { value: '100g', label: '100g' },
-                        { value: '120g', label: '120g' },
-                        { value: '150g', label: '150g' },
-                        { value: '200g', label: '200g' },
-                ]} />
+                    options={innerPaperInfo.weights.map(weight => ({ value: weight, label: weight }))} />
             </FormItem>
             <FormItem label="용지지질(내)">
-                <SelectText 
+                <CommonSelect 
                     name="innerProperties" value={form.innerProperties} onChange={handleChange} 
-                    options={[
-                        { value: 'ART', label: 'ART' },
-                        { value: 'S/W', label: 'S/W' },
-                ]} />
+                    options={innerPaperInfo.properties.map(property => ({ value: property, label: property }))} />
             </FormItem>
             <FormItem label="용지규격(내)">
-                <SelectText 
+                <CommonSelect 
                     name="innerStandard" value={form.innerStandard} onChange={handleChange} 
-                    options={[
-                        { value: '939-720', label: '939-720' },
-                        { value: '880-625', label: '880-625' },
-                        { value: '788-710', label: '788-710' },
-                ]} />
+                    options={innerPaperInfo.standards.map(standard => ({ value: standard, label: standard }))} />
             </FormItem>
-            <FormItem label="부당용지소요량(내)">
+            <FormItem label="부당용지소요량(내)" labelWidth="w-28">
                 <InputText name="innerRequirePaper" value={form.innerRequirePaper} onChange={handleChange} />
             </FormItem>
 
             {/* 6행: 소부(표) 도수(표) | 제본방식 | 제본단가 */}
-            <div className="flex gap-2">
-                <FormItem label="소부(표)" additionClass="flex-1">
+            <div className="flex gap-1">
+                <FormItem label="소부(표)" additionClass="p-0 m-0 flex-[5.5]">
                     <InputText name="coverSobu" value={form.coverSobu} onChange={handleChange} />
                 </FormItem>
-                <FormItem label="도수(표)" additionClass="flex-1">
+                <FormItem label="도수(표)" additionClass="p-0 m-0 flex-[4.5]" labelWidth="w-14">
                     <InputText name="coverDosu" value={form.coverDosu} onChange={handleChange} />
                 </FormItem>
             </div>
             <FormItem label="제본방식">
                 <SelectText 
                     name="bindMethod" value={form.bindMethod} onChange={handleChange} 
-                    options={[
-                        { value: '탁상대지', label: '탁상대지' },
-                        { value: '금구', label: '금구' },
-                        { value: '탄자크', label: '탄자크' },
-                ]} />
+                    options={Object.entries(ModelBindMethod).map(([value, label]) => ({ value, label }))} />
             </FormItem>
             <FormItem label="제본단가">
                 <InputText name="pricePerBinding" value={form.pricePerBinding} onChange={handleChange} />
@@ -187,11 +244,11 @@ export default function ModelFormSection({ onAdd }: Props) {
             <div />
 
             {/* 7행: 소부(내) 도수(내) */}
-            <div className="flex gap-2">
-                <FormItem label="소부(내)" additionClass="flex-1">
+            <div className="flex gap-1">
+                <FormItem label="소부(내)" additionClass="p-0 m-0 flex-[5.5]">
                     <InputText name="innerSobu" value={form.innerSobu} onChange={handleChange} />
                 </FormItem>
-                <FormItem label="도수(내)" additionClass="flex-1">
+                <FormItem label="도수(내)" additionClass="p-0 m-0 flex-[4.5]" labelWidth="w-14">
                     <InputText name="innerDosu" value={form.innerDosu} onChange={handleChange} />
                 </FormItem>
             </div>
@@ -232,6 +289,7 @@ export default function ModelFormSection({ onAdd }: Props) {
             {/* 버튼 */}
             <div className="col-span-4 flex gap-2 justify-start mt-2">
                 <button onClick={handleSubmit} className="bg-green-500 text-white px-4 py-1 rounded">확인</button>
+                <button onClick={onInit} className="bg-red-500 text-white px-4 py-1 rounded">취소</button>
             </div>
         </div>
     );
