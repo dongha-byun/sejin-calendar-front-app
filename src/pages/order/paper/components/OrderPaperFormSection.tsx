@@ -1,15 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { OrderPaper } from "../../../../types/order/OrderPaper";
-import FormRow from "../../../../component/form/FormRow";
 import FormItem from "../../../../component/form/FormItem";
-import SelectText from "../../../../component/form/SelectText";
 import InputText from "../../../../component/form/InputText";
+import type { CustomCompany } from "../../../../types/baseinfo/CustomCompany";
+import CommonSelect from "../../../../component/form/CommonSelect";
+import { nowDate } from "../../../../utils/dateUtils";
+import type { Paper } from "../../../../types/baseinfo/Paper";
+import { makeDistinctArray } from "../../../../utils/arrayUtils";
 
 interface Props {
     onAdd: (orderPaper: OrderPaper) => void;
+    companies: CustomCompany[];
+    papers: Paper[];
 }
 
-export default function OrderPaperFormSection({ onAdd }: Props) {
+export default function OrderPaperFormSection({ onAdd, companies, papers }: Props) {
     const [form, setForm] = useState<OrderPaper>({
         statementNum: '',
         companyName: '',
@@ -17,9 +22,32 @@ export default function OrderPaperFormSection({ onAdd }: Props) {
         properties: '',
         standard: '',
         amount: 0,
-        iDate: '',
+        iDate: nowDate,
         etc: ''
     });
+
+    const [weights, setWeights] = useState<number[]>([]);
+    const [propertiesList, setPropertiesList] = useState<string[]>([]);
+    const [standardsList, setStandardsList] = useState<string[]>([]);
+
+    useEffect(() => {
+        setWeights(makeDistinctArray(papers.map(paper => paper.weight)));
+        setPropertiesList([]);
+        setStandardsList([]);
+    }, [papers]);
+
+    useEffect(() => {
+        const filteredPropertiesList = papers.filter(p => p.weight === form.weight).map(p => p.properties);
+        setPropertiesList(makeDistinctArray(filteredPropertiesList));
+        setStandardsList([]);
+    }, [form.weight]);
+
+    useEffect(() => {
+        const filteredStandardsList = papers
+            .filter(p => p.weight === form.weight && p.properties === form.properties)
+            .map(p => p.standard);
+        setStandardsList(makeDistinctArray(filteredStandardsList));
+    }, [form.properties]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -28,39 +56,22 @@ export default function OrderPaperFormSection({ onAdd }: Props) {
         setForm(prev => ({ ...prev, [name]: value }));
     };
 
+    const onInit = () => {
+        setForm({ ...form, statementNum: '', companyName: '', weight: 0, properties: '', standard: '', amount: 0, iDate: nowDate, etc: '' });
+    }
+
     const handleSubmit = () => {
+        onAdd(form);
+        onInit();
+    };
 
-        const newModel: OrderPaper = {
-            ...form,
-            id: Date.now()
-        };
-        onAdd(newModel);
-        setForm({ ...form, statementNum: '', companyName: '', weight: 0, properties: '', standard: '', amount: 0, iDate: '', etc: '' });
-    };    
-
-    const paperCompanyName = [
-        "삼성", "LG", "SK", "현대", "기아"
-    ];
-
-    const weights = [
-        "100g", "120g", "150g", "200g", "250g"
-    ];
-
-    const propertiesOptions = [
-        "아르떼", "ART", "판지", "S/W", "미색모조", 
-        "르느와르", "등등"
-    ];
-
-    const standardOptions = [
-        "200-300", "788-1091", "880-625", "636-939", "720-590",
-        "1091-788", "625-880", "939-636", "590-720", "등등"
-    ];
+    const paperCompanyName = companies.map(c => c.name);
 
     return (
         <div className="grid grid-cols-3 gap-4 p-4 bg-white rounded shadow mb-4 min-w-[500px] max-w-[50vw]">
             {/* 1행 */}
             <FormItem label="지업사명" required children={
-                <SelectText 
+                <CommonSelect 
                     name="companyName"
                     value={form.companyName}
                     onChange={handleChange}
@@ -71,25 +82,25 @@ export default function OrderPaperFormSection({ onAdd }: Props) {
         
             {/* 2행 */}
             <FormItem label="무게" required children={
-                <SelectText 
+                <CommonSelect 
                     name="weight"
                     value={form.weight}
                     onChange={handleChange}
                     options={weights.map(c => ({ value: c, label: c }))} />
             } />
             <FormItem label="지질" required children={
-                <SelectText 
+                <CommonSelect 
                     name="properties"
                     value={form.properties}
                     onChange={handleChange}
-                    options={propertiesOptions.map(c => ({ value: c, label: c }))} />
+                    options={propertiesList.map(c => ({ value: c, label: c }))} />
             } />
             <FormItem label="규격" required children={
-                <SelectText 
+                <CommonSelect 
                     name="standard"
                     value={form.standard}
                     onChange={handleChange}
-                    options={standardOptions.map(c => ({ value: c, label: c }))} />
+                    options={standardsList.map(c => ({ value: c, label: c }))} />
             } />
         
             {/* 3행 */}
@@ -111,6 +122,7 @@ export default function OrderPaperFormSection({ onAdd }: Props) {
 
             <div className="flex gap-2 mt-2">
                 <button onClick={handleSubmit} className="bg-green-500 text-white px-4 py-1 rounded">확인</button>
+                <button onClick={onInit} className="bg-red-500 text-white px-4 py-1 rounded">취소</button>
             </div>
         </div>
     );
