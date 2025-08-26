@@ -1,4 +1,5 @@
 import type { PutinMaterial } from "../../../../types/putin/PutinMaterial";
+import { formatNumber } from "../../../../utils/numberUtils";
 
 interface Props {
   data: PutinMaterial[];
@@ -33,9 +34,9 @@ export default function PutinMaterialTable({ data }: Props) {
                     <td className="border px-2 py-1">{s.standard2}</td>
                     <td className="border px-2 py-1">{s.contents}</td>
                     <td className="border px-2 py-1">{s.color}</td>
-                    <td className="border px-2 py-1 text-right">{s.amount}</td>
-                    <td className="border px-2 py-1 text-right">{s.pricePer}</td>
-                    <td className="border px-2 py-1 text-right">{s.price}</td>
+                    <td className="border px-2 py-1 text-right">{formatNumber(s.amount)}</td>
+                    <td className="border px-2 py-1 text-right">{formatNumber(s.pricePer)}</td>
+                    <td className="border px-2 py-1 text-right">{formatNumber(s.price)}</td>
                     <td className="border px-2 py-1">{s.iDate}</td>
                     <td className="border px-2 py-1">{s.approval}</td>
                     <td className="border px-2 py-1">{s.etc}</td>
