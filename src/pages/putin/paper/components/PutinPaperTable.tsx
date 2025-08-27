@@ -1,10 +1,12 @@
-import type { PutinPaper } from "../../../../types/putin/PutinPaper";
+import type { PutinPaperDto } from "../../../../types/putin/PutinPaper";
+import { formatNumber } from "../../../../utils/numberUtils";
 
 interface Props {
-  data: PutinPaper[];
+  data: PutinPaperDto[];
 }
 
 export default function PutinPaperTable({ data }: Props) {
+    console.log(data);
     return (
     <div className="overflow-x-auto">
         <table className="table-auto w-full border text-sm">
@@ -29,10 +31,10 @@ export default function PutinPaperTable({ data }: Props) {
                     <td className="border px-2 py-1">{s.weight}</td>
                     <td className="border px-2 py-1">{s.properties}</td>
                     <td className="border px-2 py-1">{s.standard}</td>
-                    <td className="border px-2 py-1">{s.amount}</td>
-                    <td className="border px-2 py-1">{s.pricePer}</td>
-                    <td className="border px-2 py-1">{s.price}</td>
-                    <td className="border px-2 py-1">{s.iDate}</td>
+                    <td className="border px-2 py-1">{formatNumber(s.amount)}</td>
+                    <td className="border px-2 py-1">{formatNumber(s.pricePer)}</td>
+                    <td className="border px-2 py-1">{formatNumber(s.price)}</td>
+                    <td className="border px-2 py-1">{s.issueDate}</td>
                     <td className="border px-2 py-1">{s.approval}</td>
                     <td className="border px-2 py-1">{s.etc}</td>
                 </tr>
