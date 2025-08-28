@@ -1,5 +1,5 @@
 import type { PutinPaperDto } from "../../../../types/putin/PutinPaper";
-import { formatNumber } from "../../../../utils/numberUtils";
+import { formatNumber, padDecimal } from "../../../../utils/numberUtils";
 
 interface Props {
   data: PutinPaperDto[];
@@ -31,10 +31,10 @@ export default function PutinPaperTable({ data }: Props) {
                     <td className="border px-2 py-1">{s.weight}</td>
                     <td className="border px-2 py-1">{s.properties}</td>
                     <td className="border px-2 py-1">{s.standard}</td>
-                    <td className="border px-2 py-1">{formatNumber(s.amount)}</td>
-                    <td className="border px-2 py-1">{formatNumber(s.pricePer)}</td>
-                    <td className="border px-2 py-1">{formatNumber(s.price)}</td>
-                    <td className="border px-2 py-1">{s.issueDate}</td>
+                    <td className="border px-2 py-1 text-right">{padDecimal(formatNumber(s.amount))}</td>
+                    <td className="border px-2 py-1 text-right">{padDecimal(formatNumber(s.pricePer))}</td>
+                    <td className="border px-2 py-1 text-right">{padDecimal(formatNumber(s.price))}</td>
+                    <td className="border px-2 py-1 text-right">{s.issueDate}</td>
                     <td className="border px-2 py-1">{s.approval}</td>
                     <td className="border px-2 py-1">{s.etc}</td>
                 </tr>

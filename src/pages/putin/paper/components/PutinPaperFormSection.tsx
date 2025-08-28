@@ -8,7 +8,7 @@ import type { Paper } from "../../../../types/baseinfo/Paper";
 import { makeDistinctArray } from "../../../../utils/arrayUtils";
 import CommonSelect from "../../../../component/form/CommonSelect";
 import { approvals, defaultApproval } from "../../../../types/values/GlobalValues";
-import { formatNumber } from "../../../../utils/numberUtils";
+import { formatNumber, padDecimal } from "../../../../utils/numberUtils";
 
 interface Props {
     onAdd: (putinPaper: PutinPaperDto) => void;
@@ -91,6 +91,13 @@ export default function PutinPaperFormSection({ onAdd, companies, papers }: Prop
         });
     }
 
+    const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+            const { name, value } = e.target;
+            if (name === "amount" || name === "price") {
+                setForm(prev => ({ ...prev, [name]: padDecimal(value) }));
+            }
+        };
+
     const handleSubmit = () => {
         onAdd(form);
         onInit();
@@ -140,6 +147,7 @@ export default function PutinPaperFormSection({ onAdd, companies, papers }: Prop
                     name="amount"
                     value={formatNumber(form.amount)}
                     onChange={handleChange} 
+                    onBlur={handleBlur}
                     unitText="R"/>
             } />
             <FormItem label="단가" children={
@@ -152,7 +160,8 @@ export default function PutinPaperFormSection({ onAdd, companies, papers }: Prop
                 <InputText 
                     name="price"
                     value={formatNumber(form.price)}
-                    onChange={handleChange} />
+                    onChange={handleChange} 
+                    onBlur={handleBlur}/>
             } />
 
             {/* 4행 */}
