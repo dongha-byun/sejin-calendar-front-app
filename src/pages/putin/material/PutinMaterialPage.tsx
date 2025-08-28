@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { PutinMaterial } from "../../../types/putin/PutinMaterial";
+import type { PutinMaterialDto } from "../../../types/putin/PutinMaterial";
 import PutinMaterialFormSection from "./components/PutinMaterialFormSection";
 import PutinMaterialTable from "./components/PutinMaterialTable";
 import { putinMaterialApi } from "../../../api/putin/putinMaterialApi";
@@ -10,7 +10,7 @@ import { materialApi } from "../../../api/baseinfo/materialApi";
 
 
 export default function PutinMaterialPage() {
-    const [putinMaterials, setPutinMaterials] = useState<PutinMaterial[]>([]);
+    const [putinMaterials, setPutinMaterials] = useState<PutinMaterialDto[]>([]);
     const [selectedBindMethod, setSelectedBindMethod] = useState<BindMethod>(BindMethod.IRON);
     const [companies, setCompanies] = useState<CustomCompany[]>([]);
     const [materials, setMaterials] = useState<Material[]>([]);
@@ -29,13 +29,8 @@ export default function PutinMaterialPage() {
         putinMaterialApi.list(selectedBindMethod).then(setPutinMaterials);
     }
 
-    const addPutinMaterial = (putinMaterial: PutinMaterial) => {
-        const payload = {
-            ...putinMaterial,
-            price: parseFloat(putinMaterial.price),      // string → float
-            pricePer: parseFloat(putinMaterial.pricePer) // string → float
-        };
-        putinMaterialApi.save(payload).then(() => {
+    const addPutinMaterial = (putinMaterial: PutinMaterialDto) => {
+        putinMaterialApi.save(putinMaterial).then(() => {
             fetch();
         });
     };

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { PutinMaterial } from "../../../../types/putin/PutinMaterial";
+import type { PutinMaterialDto } from "../../../../types/putin/PutinMaterial";
 import FormItem from "../../../../component/form/FormItem";
 import InputText from "../../../../component/form/InputText";
 import { BindMethod, type Material } from "../../../../types/baseinfo/Material";
@@ -8,10 +8,10 @@ import CommonSelect from "../../../../component/form/CommonSelect";
 import { approvals, defaultApproval } from "../../../../types/values/GlobalValues";
 import { makeDistinctArray } from "../../../../utils/arrayUtils";
 import { nowDate } from "../../../../utils/dateUtils";
-import { formatNumber } from "../../../../utils/numberUtils";
+import { formatNumber, padDecimal } from "../../../../utils/numberUtils";
 
 interface Props {
-    onAdd: (putinMaterial: PutinMaterial) => void;
+    onAdd: (putinMaterial: PutinMaterialDto) => void;
     selectedBindMethod: BindMethod;
     setSelectedBindMethod: (method: BindMethod) => void;
     companies: CustomCompany[];
@@ -19,14 +19,14 @@ interface Props {
 }
 
 export default function PutinMaterialFormSection({ onAdd, setSelectedBindMethod, companies, materials, selectedBindMethod }: Props) {
-    const [form, setForm] = useState<PutinMaterial>({
+    const [form, setForm] = useState<PutinMaterialDto>({
         bindMethod: selectedBindMethod,
         companyName: '',
         standard1: '',
         standard2: '',
         contents: '',
         color: '',
-        amount: 0,
+        amount: "0",
         pricePer: "0.00",
         price: "0.00",
         iDate: nowDate,
@@ -52,10 +52,10 @@ export default function PutinMaterialFormSection({ onAdd, setSelectedBindMethod,
     }, [form.standard1]);
 
     useEffect(() => {
-        const price = form.amount * Number(form.pricePer);
+        const price = Number(form.amount.replace(/,/g, "")) * Number(form.pricePer.replace(/,/g, ""));
         setForm(prev => ({
             ...prev,
-            price: price.toFixed(2)
+            price: formatNumber(price.toFixed(2))
         }));
     }, [form.amount, form.pricePer]);
 
@@ -67,10 +67,11 @@ export default function PutinMaterialFormSection({ onAdd, setSelectedBindMethod,
         }
 
         if(name === "pricePer") {
+            console.log(value);
             // 소수점 둘째자리까지 허용
             const raw = value.replace(/,/g, "");
             if(/^\d*\.?\d{0,2}$/.test(raw)) {
-                setForm(prev => ({ ...prev, pricePer: raw }));
+                setForm(prev => ({ ...prev, [name]: raw }));
             }
             return;
         }
@@ -79,7 +80,7 @@ export default function PutinMaterialFormSection({ onAdd, setSelectedBindMethod,
             // 정수만 허용
             const raw = value.replace(/,/g, "");
             if(/^\d*$/.test(raw)) {
-                setForm(prev => ({ ...prev, amount: raw === "" ? 0 : Number(raw) }));
+                setForm(prev => ({ ...prev, [name]: raw }));
             }
             return;
         }
@@ -96,7 +97,7 @@ export default function PutinMaterialFormSection({ onAdd, setSelectedBindMethod,
             standard2: '',
             contents: '',
             color: '',
-            amount: 0,
+            amount: "0",
             pricePer: "0.00",
             price: "0.00",
             iDate: nowDate,
@@ -104,6 +105,13 @@ export default function PutinMaterialFormSection({ onAdd, setSelectedBindMethod,
             etc: ''
         });
     }
+
+    const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        if (name === "pricePer" || name === "price") {
+            setForm(prev => ({ ...prev, [name]: padDecimal(value) }));
+        }
+    };
 
     const handleSubmit = () => {
         onAdd(form);
@@ -167,20 +175,23 @@ export default function PutinMaterialFormSection({ onAdd, setSelectedBindMethod,
             <FormItem label="수량" children={
                 <InputText 
                     name="amount"
-                    value={form.amount ? formatNumber(form.amount) : "0"}
+                    value={formatNumber(form.amount)}
                     onChange={handleChange} />
             } />
             <FormItem label="단가" children={
                 <InputText 
                     name="pricePer"
-                    value={form.pricePer}
-                    onChange={handleChange} />
+                    value={formatNumber(form.pricePer)}
+                    onChange={handleChange} 
+                    onBlur={handleBlur}
+                />
             } />
             <FormItem label="금액" children={
                 <InputText 
                     name="price"
-                    value={form.price}
-                    onChange={handleChange} />
+                    value={formatNumber(form.price)}
+                    onChange={handleChange} 
+                    onBlur={handleBlur}/>
             } />
 
             {/* 5행 */}

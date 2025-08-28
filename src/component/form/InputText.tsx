@@ -15,6 +15,7 @@ interface Props {
     placeholder?: string;
     onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
     unitText?: string;
+    onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
 }
 
 /**
@@ -36,7 +37,7 @@ const style = (size: InputTextSize = InputTextSize.Normal) => {
     }
 }
 
-export default function InputText({ name, value, onChange, type, size, placeholder, onKeyDown, unitText }: Props) {
+export default function InputText({ name, value, onChange, type, size, placeholder, onKeyDown, unitText, onBlur }: Props) {
 
     return (
         <>
@@ -46,6 +47,7 @@ export default function InputText({ name, value, onChange, type, size, placehold
             onKeyDown={onKeyDown}
             className={`${style(size)} border rounded p-1`} // p-1.5 
             placeholder={placeholder} 
+            onBlur={onBlur}
         /> <span>{unitText}</span>
         </>
     );
