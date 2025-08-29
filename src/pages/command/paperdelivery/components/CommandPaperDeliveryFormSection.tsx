@@ -1,116 +1,146 @@
-import { useState } from "react";
-import type { CommandPaperDelivery } from "../../../../types/command/CommandPaperDelivery";
+import { useEffect, useState } from "react";
+import type { CommandPaperDeliveryDto } from "../../../../types/command/CommandPaperDelivery";
 import FormItem from "../../../../component/form/FormItem";
-import SelectText from "../../../../component/form/SelectText";
 import InputText from "../../../../component/form/InputText";
+import type { CustomCompany } from "../../../../types/baseinfo/CustomCompany";
+import type { Paper } from "../../../../types/baseinfo/Paper";
+import { makeDistinctArray } from "../../../../utils/arrayUtils";
+import { nowDate } from "../../../../utils/dateUtils";
+import { formatNumber, padDecimal } from "../../../../utils/numberUtils";
+import CommonSelect from "../../../../component/form/CommonSelect";
 
 interface Props {
-    onAdd: (commandPaperDelivery: CommandPaperDelivery) => void;
+    onAdd: (commandPaperDelivery: CommandPaperDeliveryDto) => void;
+    paperCompanies: CustomCompany[];
+    printCompanies: CustomCompany[];
+    papers: Paper[];
 }
 
-export default function CommandPaperDeliveryFormSection({ onAdd }: Props) {
-    const [form, setForm] = useState<CommandPaperDelivery>({
-        id: 0,
+export default function CommandPaperDeliveryFormSection({ onAdd, paperCompanies, printCompanies, papers }: Props) {
+    const paperCompanyNames = paperCompanies.map(c => c.name);
+    const printCompanyNames = printCompanies.map(c => c.name);
+    const [form, setForm] = useState<CommandPaperDeliveryDto>({
         paperCompanyName: '',
         printCompanyName: '',
         weight: 0,
         properties: '',
         standard: '',
-        amount: 0,
-        iDate: '',
+        amount: "0",
+        iDate: nowDate,
         etc: ''
     });
+    const [weights, setWeights] = useState<number[]>([]);
+    const [properties, setProperties] = useState<string[]>([]);
+    const [standards, setStandards] = useState<string[]>([]);
+
+    useEffect(() => {
+        const weights = makeDistinctArray(papers.map(p => p.weight));
+        setWeights(weights);
+        setProperties([]);
+        setStandards([]);
+    }, [papers]);
+
+    useEffect(() => {
+        const properties = makeDistinctArray(papers.filter(p => p.weight === form.weight).map(p => p.properties));
+        setProperties(properties);
+        setStandards([]);
+    }, [form.weight]);
+
+    useEffect(() => {
+       const standards = makeDistinctArray(papers.filter(p => p.weight === form.weight && p.properties === form.properties).map(p => p.standard));
+       setStandards(standards);
+    }, [form.properties]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
+
+        if(name === "amount") {
+            console.log(value);
+            // 소수점 둘째자리까지 허용
+            const raw = value.replace(/,/g, "");
+            if(/^\d*\.?\d{0,2}$/.test(raw)) {
+                setForm(prev => ({ ...prev, [name]: raw }));
+            }
+            return;
+        }
+
         setForm(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = () => {
-        const newCommandPaperDelivery: CommandPaperDelivery = {
-            ...form,
-            id: Date.now()
-        };
-        onAdd(newCommandPaperDelivery);
+    const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        if (name === "amount") {
+            setForm(prev => ({ ...prev, [name]: padDecimal(value) }));
+        }
+    };
+
+    const onInit = () => {
         setForm({
-            id: 0,
             paperCompanyName: '',
             printCompanyName: '',
             weight: 0,
             properties: '',
             standard: '',
-            amount: 0,
-            iDate: '',
+            amount: "0",
+            iDate: nowDate,
             etc: ''
         });
+    }
+
+    const handleSubmit = () => {
+        onAdd(form);
+        onInit();
     };
 
-    const companyNames = [
-        "삼성", "LG", "SK", "현대", "기아"
-    ];
-
-    const weights = [
-        70, 80, 90, 100, 120
-    ];
-
-    const propertiesOptions = [
-        "아르떼", "ART", "판지", "S/W", "미색모조", 
-        "르느와르", "등등"
-    ];
-
-    const standardOptions = [
-        "200-300", "788-1091", "880-625", "636-939", "720-590",
-        "1091-788", "625-880", "939-636", "590-720", "등등"
-    ];
-
     return (
-        <div className="grid grid-cols-3 gap-4 p-4 bg-white rounded shadow mb-4 max-w-[75vw]">
+        <div className="grid grid-cols-3 gap-4 p-4 bg-white rounded shadow mb-4 max-w-[50vw]">
             {/* 1행 */}
             <FormItem label="지업사명" required children={
-                <SelectText 
+                <CommonSelect 
                     name="paperCompanyName"
                     value={form.paperCompanyName}
                     onChange={handleChange}
-                    options={companyNames.map(method => ({ value: method, label: method }))} />
+                    options={paperCompanyNames.map(c => ({ value: c, label: c }))} />
             } />
             <FormItem label="인쇄소명" required children={
-                <SelectText 
+                <CommonSelect 
                     name="printCompanyName"
                     value={form.printCompanyName}
                     onChange={handleChange}
-                    options={companyNames.map(method => ({ value: method, label: method }))} />
+                    options={printCompanyNames.map(c => ({ value: c, label: c }))} />
             } />
             <div />
 
             {/* 2행 */}
             <FormItem label="무게" required children={
-                <SelectText 
+                <CommonSelect 
                     name="weight"
                     value={form.weight}
                     onChange={handleChange}
-                    options={weights.map(method => ({ value: method, label: method }))} />
+                    options={weights.map(w => ({ value: w, label: w }))} />
             } />
             <FormItem label="지질" required children={
-                <SelectText 
+                <CommonSelect 
                     name="properties"
                     value={form.properties}
                     onChange={handleChange}
-                    options={propertiesOptions.map(method => ({ value: method, label: method }))} />
+                    options={properties.map(p => ({ value: p, label: p }))} />
             } />
             <FormItem label="규격" required children={
-                <SelectText 
+                <CommonSelect 
                     name="standard"
                     value={form.standard}
                     onChange={handleChange}
-                    options={standardOptions.map(method => ({ value: method, label: method }))} />
+                    options={standards.map(s => ({ value: s, label: s }))} />
             } />
 
             {/* 3행 */}
             <FormItem label="수량" required children={
                 <InputText 
                     name="amount"
-                    value={form.amount}
+                    value={formatNumber(form.amount)}
                     onChange={handleChange} 
+                    onBlur={handleBlur}
                     unitText="R"/>
             } />
             <div />
@@ -133,6 +163,7 @@ export default function CommandPaperDeliveryFormSection({ onAdd }: Props) {
 
             <div className="flex gap-2 mt-2">
                 <button onClick={handleSubmit} className="bg-green-500 text-white px-4 py-1 rounded">확인</button>
+                <button onClick={onInit} className="bg-red-500 text-white px-4 py-1 rounded">취소</button>
             </div>
         </div>
     );
