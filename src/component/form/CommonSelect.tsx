@@ -1,12 +1,20 @@
-import Select from "react-select";
+import Select, { createFilter } from "react-select";
 import { InputTextSize } from "./InputText";
 
+type Option = {
+  value: string | number;
+  label: string | number;
+  isDisabled?: boolean
+}
+
 interface Props {
-  options: { value: string | number; label: string | number }[];
+  options: Option[];
   size?: InputTextSize;
   value: any;
   name: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  defaultOption?: string[]; 
+  isFilterStartWith?: boolean
 }
 
 const smallSelectStyles = {
@@ -57,17 +65,33 @@ const style = (size: InputTextSize = InputTextSize.Normal) => {
     }
 }
 
-export default function CommonSelect({options, size, value, name, onChange}: Props) {
+const startWithFilter = createFilter({
+  ignoreCase: true,
+  ignoreAccents: true,
+  matchFrom: "start", // ← "any" 대신 "start"로 설정
+});
+
+export default function CommonSelect({options, size, value, name, onChange, defaultOption, isFilterStartWith}: Props) {
+  let finalOptions = options;
+  if(defaultOption) {
+    finalOptions = [
+      ...options,
+      { value: "---------", label: "---------", isDisabled: true },
+      ...defaultOption.map(o => ({ value: o, label: o, isDisabled: false }))
+    ];
+  }
+  
   
   return (
     <div className={`${style(size)}`}>
-      <Select
+      <Select<Option>
         styles={smallSelectStyles}
-        options={options}
+        options={finalOptions}
         isClearable
         isSearchable
+        filterOption={isFilterStartWith ? startWithFilter : undefined}
         placeholder=""
-        value={options.find(option => option.value === value) || (value ? { value, label: value } : null)}
+        value={finalOptions.find(option => option.value === value) || (value ? { value, label: value } : null)}
         name={name}
         onChange={option => {
           if(onChange) {

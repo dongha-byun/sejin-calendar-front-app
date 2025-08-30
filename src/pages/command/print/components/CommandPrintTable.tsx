@@ -1,7 +1,8 @@
-import type { CommandPrint } from "../../../../types/command/CommandPrint";
+import type { CommandPrintDto } from "../../../../types/command/CommandPrint";
+import { formatNumber, padDecimal } from "../../../../utils/numberUtils";
 
 interface Props {
-    data: CommandPrint[];
+    data: CommandPrintDto[];
 }
 export default function CommandPrintTable({ data }: Props) { 
     return (
@@ -46,13 +47,13 @@ export default function CommandPrintTable({ data }: Props) {
                         <td className="border px-2 py-1">{s.coverWeight}</td>
                         <td className="border px-2 py-1">{s.coverProperties}</td>
                         <td className="border px-2 py-1">{s.coverStandard}</td>
-                        <td className="border px-2 py-1">{s.coverRequirePaper}</td>
+                        <td className="border px-2 py-1">{padDecimal(formatNumber(s.coverRequirePaper))}</td>
                         <td className="border px-2 py-1">{s.coverSobu}</td>
                         <td className="border px-2 py-1">{s.coverDosu}</td>
                         <td className="border px-2 py-1">{s.innerWeight}</td>
                         <td className="border px-2 py-1">{s.innerProperties}</td>
                         <td className="border px-2 py-1">{s.innerStandard}</td>
-                        <td className="border px-2 py-1">{s.innerRequirePaper}</td>
+                        <td className="border px-2 py-1">{padDecimal(formatNumber(s.innerRequirePaper))}</td>
                         <td className="border px-2 py-1">{s.innerSobu}</td>
                         <td className="border px-2 py-1">{s.innerDosu}</td>
                         <td className="border px-2 py-1">{s.iDate}</td>

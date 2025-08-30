@@ -1,29 +1,45 @@
 import { useEffect, useState } from "react";
-import type { CommandPrint } from "../../../types/command/CommandPrint";
+import type { CommandPrintDto } from "../../../types/command/CommandPrint";
 import CommandPrintFormSection from "./components/CommandPrintFormSection";
 import CommandPrintTable from "./components/CommandPrintTable";
+import { commandPrintApi } from "../../../api/command/commandPrintApi";
+import { CompanyType, type CustomCompany } from "../../../types/baseinfo/CustomCompany";
+import { customCompanyApi } from "../../../api/baseinfo/customCompanyApi";
+import type { Model } from "../../../types/baseinfo/Model";
+import { modelApi } from "../../../api/baseinfo/modelApi";
+import type { Paper } from "../../../types/baseinfo/Paper";
+import { paperApi } from "../../../api/baseinfo/paperApi";
 
 
 export default function CommandPrintPage() {
-    const [commandPrints, setCommandPrints] = useState<CommandPrint[]>([]);
+    const [commandPrints, setCommandPrints] = useState<CommandPrintDto[]>([]);
+    const [companies, setCompanies] = useState<CustomCompany[]>([]);
+    const [models, setModels] = useState<Model[]>([]);
+    const [papers, setPapers] = useState<Paper[]>([]);
 
     useEffect(() => {
-        const saved = localStorage.getItem("commandPrints");
-        if (saved) setCommandPrints(JSON.parse(saved));
+        fetch();
+        customCompanyApi.list(CompanyType.Printing).then(setCompanies);
+        modelApi.list().then(setModels);
+        paperApi.list().then(setPapers);
     }, []);
 
-    useEffect(() => {
-        localStorage.setItem("commandPrints", JSON.stringify(commandPrints));
-    }, [commandPrints]);
+    const fetch = () => {
+        commandPrintApi.list().then(setCommandPrints);
+    }
 
-    const addCommandPrint = (commandPrint: CommandPrint) => {
-        setCommandPrints(prev => [...prev, commandPrint]);
+    const addCommandPrint = (commandPrint: CommandPrintDto) => {
+        commandPrintApi.save(commandPrint).then(() => {
+            fetch();
+        });
     };
 
     return (
         <div className="px-6 py-3">
             <h1 className="text-base font-semibold pb-2">작업지시 - 인쇄지시</h1>
-            <CommandPrintFormSection onAdd={addCommandPrint} />
+            <CommandPrintFormSection 
+                onAdd={addCommandPrint} companies={companies} models={models} papers={papers}
+            />
             <CommandPrintTable data={commandPrints} />
         </div>
     );
