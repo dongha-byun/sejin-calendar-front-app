@@ -63,6 +63,7 @@ export default function CommandPrintFormSection({ onAdd, companies, models, pape
 
     useEffect(() => {
         const model = models.find(model => model.modelNum === form.modelNum);
+
         setForm((prev) => ({
             ...prev,
             modelName: model?.modelName || "",
@@ -77,6 +78,8 @@ export default function CommandPrintFormSection({ onAdd, companies, models, pape
         }));
     }, [form.modelNum]);
 
+    // TODO : 소요량 표시 관련 기능 확인 후 구현 추가 필요 (티켓 SJC-107 확인)
+
     useEffect(() => {
         const propertiesList = papers.filter(p => p.weight === form.innerWeight).map(p => p.properties);
         setInnerPropertiesList(makeDistinctArray(propertiesList));
@@ -88,6 +91,7 @@ export default function CommandPrintFormSection({ onAdd, companies, models, pape
             .map(p => p.standard);
         setInnerStandardList(standardList);
     }, [form.innerProperties]);
+
 
     useEffect(() => {
         const propertiesList = papers.filter(p => p.weight === form.coverWeight).map(p => p.properties);

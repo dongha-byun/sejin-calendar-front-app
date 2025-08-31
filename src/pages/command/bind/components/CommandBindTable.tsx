@@ -1,7 +1,7 @@
-import type { CommandBind } from "../../../../types/command/CommandBind";
+import type { CommandBindDto } from "../../../../types/command/CommandBind";
 
 interface Props {
-  data: CommandBind[];
+  data: CommandBindDto[];
 }
 
 export default function CommandBindTable({ data }: Props) {
