@@ -1,82 +1,90 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FormItem from "../../../../component/form/FormItem";
 import InputText from "../../../../component/form/InputText";
-import type { Order } from "../../../../types/ordermanager/Order";
-import SelectText from "../../../../component/form/SelectText";
+import type { OrderCreateRequestDto } from "../../../../types/ordermanager/Order";
+import { nowDate } from "../../../../utils/dateUtils";
+import type { Model } from "../../../../types/baseinfo/Model";
+import { makeDistinctArray } from "../../../../utils/arrayUtils";
+import CommonSelect from "../../../../component/form/CommonSelect";
+import { formatNumber } from "../../../../utils/numberUtils";
 
 interface Props {
-    onAdd: (order: Order) => void;
+    onAdd: (order: OrderCreateRequestDto) => void;
+    models: Model[];
 }
 
-export default function OrderManagerAcceptFormSection({ onAdd }: Props) {
-    const [form, setForm] = useState<Order>({
-        id: 0,
-        orderNum: '',
-        customerName: '',
-        modelNum: '',
-        modelName: '',
-        amount: 0,
-        printCn: '',
-        dosu: '',
-        iDate: '',
-        pricePer: 0,
-        price: 0,
-        deliveryMethod: '',
-        pDate: '',
-        pMethod: '',
-        pCompleteDate: '',
-        boxDate: '',
-        boxNum: '',
-        boxAmount: 0,
-        rNum: '',
-        rDate: '',
-        rCompleteDate: '',
-        state: '',
-        shipNum: '',
-        etc1: '',
-        etc2: '',
-        etc3: ''
+const defaultPrintCn = "백제본";
+
+export default function OrderManagerAcceptFormSection({ onAdd, models }: Props) {
+    const [form, setForm] = useState<OrderCreateRequestDto>({
+        orderNum: '', // 접수번호
+        customerName: '', // 주문인
+        modelNum: '', // 모델
+        modelName: '', // 모델명
+        amount: "0", // 주문량
+        printCn: defaultPrintCn, // 상호
+        dosu: '', // 도수
+        iDate: nowDate, // 주문일자
+        pricePer: "0.00", // 단가
+        price: "0.00", // 금액
+        deliveryMethod: '', // 납품방법
+        shipNum: '', // 선방번호
+        etc1: '', // 비고1
+        etc2: '', // 비고2
+        etc3: '', // 비고3
+        checkedReleaseNumAutoCreate: false, // 출고증 번호 자동 부여
     });
+
+    const modelNums = makeDistinctArray(models.map(model => model.modelNum));
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setForm(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = () => {
-        const newOrder: Order = {
-            ...form,
-            id: Date.now()
-        };
-        onAdd(newOrder);
+    useEffect(() => {
+        const model = models.find(model => model.modelNum === form.modelNum);
+        setForm((prev) => ({
+            ...prev,
+            modelName: model?.modelName || "",
+            pricePer: formatNumber(model?.priceInternal || 0),
+        }));
+    }, [form.modelNum]);
+
+    useEffect(() => {
+        const amount = Number(form.amount.replace(/,/g, ""));
+        const pricePer = Number(form.pricePer.replace(/,/g, ""));
+        setForm((prev) => ({
+            ...prev,
+            price: formatNumber(amount * pricePer),
+        }));
+
+    }, [form.amount, form.pricePer]);
+
+    const onInit = () => {
         setForm({
-            id: 0,
-            orderNum: '',
-            customerName: '',
-            modelNum: '',
-            modelName: '',
-            amount: 0,
-            printCn: '',
-            dosu: '',
-            iDate: '',
-            pricePer: 0,
-            price: 0,
-            deliveryMethod: '',
-            pDate: '',
-            pMethod: '',
-            pCompleteDate: '',
-            boxDate: '',
-            boxNum: '',
-            boxAmount: 0,
-            rNum: '',
-            rDate: '',
-            rCompleteDate: '',
-            state: '',
-            shipNum: '',
-            etc1: '',
-            etc2: '',
-            etc3: ''
+            orderNum: '', // 접수번호
+            customerName: '', // 주문인
+            modelNum: '', // 모델
+            modelName: '', // 모델명
+            amount: "0", // 주문량
+            printCn: defaultPrintCn, // 상호
+            dosu: '', // 도수
+            iDate: nowDate, // 주문일자
+            pricePer: "0.00", // 단가
+            price: "0.00", // 금액
+            deliveryMethod: '', // 납품방법
+            shipNum: '', // 선방번호
+            etc1: '', // 비고1
+            etc2: '', // 비고2
+            etc3: '', // 비고3
+            checkedReleaseNumAutoCreate: false, // 출고증 번호 자동 부여
         });
+    }
+
+    const handleSubmit = () => {
+        onAdd(form);
+        onInit();
     };
     
     const addCustomer = () => {
@@ -97,10 +105,6 @@ export default function OrderManagerAcceptFormSection({ onAdd }: Props) {
         "총판1", "총판2", "총판3"
     ];
 
-    const models = [
-        "모델 A", "모델 B", "모델 C", "모델 D"
-    ];
-
     const deliveryMethod = [
         "납품방법 A", "납품방법 B", "납품방법 C", "납품방법 D",
     ];
@@ -116,7 +120,7 @@ export default function OrderManagerAcceptFormSection({ onAdd }: Props) {
             } />
             <div className="flex gap-2 col-span-2">
                 <FormItem label="주문인" required children={
-                    <SelectText 
+                    <CommonSelect 
                         name="customerName"
                         value={form.customerName}
                         onChange={handleChange}
@@ -129,11 +133,13 @@ export default function OrderManagerAcceptFormSection({ onAdd }: Props) {
 
             {/* 2행 */}
             <FormItem label="모델" required children={
-                <SelectText 
+                <CommonSelect 
                     name="modelNum"
                     value={form.modelNum}
                     onChange={handleChange}
-                    options={models.map(method => ({ value: method, label: method }))} />
+                    options={modelNums.map(method => ({ value: method, label: method }))} 
+                    isFilterStartWith
+                />
             } />
             <div className="flex gap-2 col-span-3">
                 <FormItem label="모델명" children={
@@ -148,7 +154,7 @@ export default function OrderManagerAcceptFormSection({ onAdd }: Props) {
             <FormItem label="주문량" required children={
                 <InputText 
                     name="amount"
-                    value={form.amount}
+                    value={formatNumber(form.amount)}
                     onChange={handleChange} />
             } />
             <div className="flex gap-2 col-span-3">
@@ -180,13 +186,13 @@ export default function OrderManagerAcceptFormSection({ onAdd }: Props) {
             <FormItem label="단가" children={
                 <InputText 
                     name="pricePer"
-                    value={form.pricePer}
+                    value={formatNumber(form.pricePer)}
                     onChange={handleChange} />
             } />
             <FormItem label="금액" children={
                 <InputText 
                     name="price"
-                    value={form.price}
+                    value={formatNumber(form.price)}
                     onChange={handleChange} />
             } />
             <div />
@@ -194,7 +200,7 @@ export default function OrderManagerAcceptFormSection({ onAdd }: Props) {
 
             {/* 6행 */}
             <FormItem label="납품방법" children={
-                <SelectText 
+                <CommonSelect 
                     name="deliveryMethod"
                     value={form.deliveryMethod}
                     onChange={handleChange} 
