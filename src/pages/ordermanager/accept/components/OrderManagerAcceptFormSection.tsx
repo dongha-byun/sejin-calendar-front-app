@@ -1,21 +1,24 @@
 import { useEffect, useState } from "react";
 import FormItem from "../../../../component/form/FormItem";
 import InputText from "../../../../component/form/InputText";
-import type { OrderCreateRequestDto } from "../../../../types/ordermanager/Order";
+import { deliveryMethods, type OrderCreateRequestDto } from "../../../../types/ordermanager/Order";
 import { nowDate } from "../../../../utils/dateUtils";
 import type { Model } from "../../../../types/baseinfo/Model";
 import { makeDistinctArray } from "../../../../utils/arrayUtils";
 import CommonSelect from "../../../../component/form/CommonSelect";
-import { formatNumber } from "../../../../utils/numberUtils";
+import { formatNumber, padDecimal } from "../../../../utils/numberUtils";
+import type { CustomCompany } from "../../../../types/baseinfo/CustomCompany";
 
 interface Props {
     onAdd: (order: OrderCreateRequestDto) => void;
     models: Model[];
+    companies: CustomCompany[];
+    nextOrderNum: string;
 }
 
 const defaultPrintCn = "백제본";
 
-export default function OrderManagerAcceptFormSection({ onAdd, models }: Props) {
+export default function OrderManagerAcceptFormSection({ onAdd, models, companies, nextOrderNum }: Props) {
     const [form, setForm] = useState<OrderCreateRequestDto>({
         orderNum: '', // 접수번호
         customerName: '', // 주문인
@@ -36,11 +39,19 @@ export default function OrderManagerAcceptFormSection({ onAdd, models }: Props) 
     });
 
     const modelNums = makeDistinctArray(models.map(model => model.modelNum));
+    const companyNames = makeDistinctArray(companies.map(company => company.name));
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setForm(prev => ({ ...prev, [name]: value }));
     };
+
+    useEffect(() => {
+        setForm(prev => ({
+            ...prev,
+            orderNum: nextOrderNum
+        }));
+    }, [nextOrderNum]);
 
     useEffect(() => {
         const model = models.find(model => model.modelNum === form.modelNum);
@@ -92,22 +103,16 @@ export default function OrderManagerAcceptFormSection({ onAdd, models }: Props) 
         alert("거래처총판추가 호출됨");
     }
 
-    const doInit = () => {
-        // 취소 동작 구현
-        alert("취소 버튼 호출");
-    }
-
     const checkPrintCn = () => {
         alert("상호 체크박스 체크");
     }
 
-    const customerNames = [
-        "총판1", "총판2", "총판3"
-    ];
-
-    const deliveryMethod = [
-        "납품방법 A", "납품방법 B", "납품방법 C", "납품방법 D",
-    ];
+    const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        if (name === "pricePer" || name === "price") {
+            setForm(prev => ({ ...prev, [name]: padDecimal(value) }));
+        }
+    };
 
     return(
         <div className="grid grid-cols-4 gap-4 p-4 bg-white rounded shadow mb-4 max-w-[75vw]">
@@ -116,7 +121,9 @@ export default function OrderManagerAcceptFormSection({ onAdd, models }: Props) 
                 <InputText 
                     name="orderNum"
                     value={form.orderNum}
-                    onChange={handleChange} />
+                    onChange={handleChange} 
+                    readOnly
+                />
             } />
             <div className="flex gap-2 col-span-2">
                 <FormItem label="주문인" required children={
@@ -124,7 +131,9 @@ export default function OrderManagerAcceptFormSection({ onAdd, models }: Props) 
                         name="customerName"
                         value={form.customerName}
                         onChange={handleChange}
-                        options={customerNames.map(method => ({ value: method, label: method }))} />
+                        options={companyNames.map(name => ({ value: name, label: name }))} 
+                        isFilterStartWith
+                    />
                 } />
             </div>
             <div className="flex gap-2 items-center">
@@ -187,13 +196,17 @@ export default function OrderManagerAcceptFormSection({ onAdd, models }: Props) 
                 <InputText 
                     name="pricePer"
                     value={formatNumber(form.pricePer)}
-                    onChange={handleChange} />
+                    onChange={handleChange} 
+                    onBlur={handleBlur}
+                />
             } />
             <FormItem label="금액" children={
                 <InputText 
                     name="price"
                     value={formatNumber(form.price)}
-                    onChange={handleChange} />
+                    onChange={handleChange} 
+                    onBlur={handleBlur}
+                />
             } />
             <div />
             <div />
@@ -204,7 +217,7 @@ export default function OrderManagerAcceptFormSection({ onAdd, models }: Props) 
                     name="deliveryMethod"
                     value={form.deliveryMethod}
                     onChange={handleChange} 
-                    options={deliveryMethod.map(dm => ({ value: dm, label: dm }))}/>
+                    options={deliveryMethods.map(dm => ({ value: dm, label: dm }))}/>
             } />
             <FormItem label="선방번호" children={
                 <InputText 
@@ -247,7 +260,7 @@ export default function OrderManagerAcceptFormSection({ onAdd, models }: Props) 
 
             <div className="flex gap-2 mt-2">
                 <button onClick={handleSubmit} className="bg-green-500 text-white px-4 py-1 rounded">확인</button>
-                <button onClick={doInit} className="bg-red-500 text-white px-4 py-1 rounded">취소</button>
+                <button onClick={onInit} className="bg-red-500 text-white px-4 py-1 rounded">취소</button>
             </div>
             <div className="flex gap-2 items-center">
                 <label className="inline-flex items-center space-x-2 cursor-pointer px-2 py-1 rounded">

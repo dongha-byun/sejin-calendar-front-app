@@ -1,4 +1,4 @@
-import { toOrderCreateRequest, type OrderCreateRequestDto } from "../../types/ordermanager/Order";
+import { toOrderCreateRequest, toOrderDto, type OrderCreateRequestDto } from "../../types/ordermanager/Order";
 import apiService from "../axiosInstance";
 
 export const orderApi = {
@@ -8,6 +8,11 @@ export const orderApi = {
     },
     list: async() => {
         const response = await apiService.get("/api/v1/order-manager/accept");
+        const list = response.data.data;
+        return list.map(toOrderDto);
+    },
+    nextOrderNum: async() => {
+        const response = await apiService.get("/api/v1/order-manager/next-order-num");
         return response.data.data;
-    }
+    },
 }

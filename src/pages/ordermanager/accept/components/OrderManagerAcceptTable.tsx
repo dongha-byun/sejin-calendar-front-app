@@ -1,7 +1,8 @@
-import type { Order } from "../../../../types/ordermanager/Order";
+import type { OrderDto } from "../../../../types/ordermanager/Order";
+import { formatNumber, padDecimal } from "../../../../utils/numberUtils";
 
 interface Props {
-    data: Order[];
+    data: OrderDto[];
 }
 
 export default function OrderManagerAcceptTable({ data }: Props) {
@@ -36,12 +37,12 @@ export default function OrderManagerAcceptTable({ data }: Props) {
                         <td className="border px-2 py-1">{s.customerName}</td>
                         <td className="border px-2 py-1">{s.modelNum}</td>
                         <td className="border px-2 py-1">{s.modelName}</td>
-                        <td className="border px-2 py-1">{s.amount}</td>
+                        <td className="border px-2 py-1">{padDecimal(formatNumber(s.amount))}</td>
                         <td className="border px-2 py-1">{s.printCn}</td>
                         <td className="border px-2 py-1">{s.dosu}</td>
                         <td className="border px-2 py-1">{s.iDate}</td>
-                        <td className="border px-2 py-1">{s.pricePer}</td>
-                        <td className="border px-2 py-1">{s.price}</td>
+                        <td className="border px-2 py-1">{padDecimal(formatNumber(s.pricePer))}</td>
+                        <td className="border px-2 py-1">{padDecimal(formatNumber(s.price))}</td>
                         <td className="border px-2 py-1">{s.deliveryMethod}</td>
                         <td className="border px-2 py-1">{s.shipNum}</td>
                         <td className="border px-2 py-1">{s.etc1}</td>

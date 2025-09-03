@@ -1,4 +1,9 @@
 
+export const deliveryMethods: string[] = [
+    "착불택배", "선불택배", "공장보관", "직납/시내", "직납/기타"
+];
+
+
 export interface Order {
     id?: number;
     orderNum: string; // 접수번호

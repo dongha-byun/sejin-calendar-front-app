@@ -16,6 +16,7 @@ interface Props {
     onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
     unitText?: string;
     onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+    readOnly?: boolean
 }
 
 /**
@@ -37,7 +38,9 @@ const style = (size: InputTextSize = InputTextSize.Normal) => {
     }
 }
 
-export default function InputText({ name, value, onChange, type, size, placeholder, onKeyDown, unitText, onBlur }: Props) {
+export default function InputText({ name, value, onChange, type, size, placeholder, onKeyDown, unitText, onBlur, readOnly }: Props) {
+
+    const readOnlyStyle = readOnly ? "bg-gray-200" : "";
 
     return (
         <>
@@ -45,9 +48,10 @@ export default function InputText({ name, value, onChange, type, size, placehold
             type={type} name={name} value={value} 
             onChange={onChange} 
             onKeyDown={onKeyDown}
-            className={`${style(size)} border rounded p-1`} // p-1.5 
+            className={`${style(size)} border rounded p-1 ${readOnlyStyle}`} // p-1.5 
             placeholder={placeholder} 
             onBlur={onBlur}
+            readOnly = {readOnly}
         /> <span>{unitText}</span>
         </>
     );
