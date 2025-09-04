@@ -5,7 +5,7 @@ type FormItemProps = {
     children: React.ReactNode;
     required?: boolean;
     additionClass?: string;
-    checkEvent?: () => void;
+    checkEvent?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     labelWidth?: string;
 }
 

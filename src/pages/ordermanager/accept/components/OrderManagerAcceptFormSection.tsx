@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import FormItem from "../../../../component/form/FormItem";
-import InputText from "../../../../component/form/InputText";
+import InputText, { TextAlign } from "../../../../component/form/InputText";
 import { deliveryMethods, type OrderCreateRequestDto } from "../../../../types/ordermanager/Order";
 import { nowDate } from "../../../../utils/dateUtils";
 import type { Model } from "../../../../types/baseinfo/Model";
@@ -10,7 +10,7 @@ import { formatNumber, padDecimal } from "../../../../utils/numberUtils";
 import type { CustomCompany } from "../../../../types/baseinfo/CustomCompany";
 
 interface Props {
-    onAdd: (order: OrderCreateRequestDto) => void;
+    onAdd: (order: OrderCreateRequestDto, onSuccess: () => void) => void;
     models: Model[];
     companies: CustomCompany[];
     nextOrderNum: string;
@@ -19,6 +19,7 @@ interface Props {
 const defaultPrintCn = "백제본";
 
 export default function OrderManagerAcceptFormSection({ onAdd, models, companies, nextOrderNum }: Props) {
+    const printCnRef = useRef<HTMLInputElement>(null);
     const [form, setForm] = useState<OrderCreateRequestDto>({
         orderNum: '', // 접수번호
         customerName: '', // 주문인
@@ -28,7 +29,7 @@ export default function OrderManagerAcceptFormSection({ onAdd, models, companies
         printCn: defaultPrintCn, // 상호
         dosu: '', // 도수
         iDate: nowDate, // 주문일자
-        pricePer: "0.00", // 단가
+        pricePer: "0", // 단가
         price: "0.00", // 금액
         deliveryMethod: '', // 납품방법
         shipNum: '', // 선방번호
@@ -37,6 +38,8 @@ export default function OrderManagerAcceptFormSection({ onAdd, models, companies
         etc3: '', // 비고3
         checkedReleaseNumAutoCreate: false, // 출고증 번호 자동 부여
     });
+    const [selectedModel, setSelectedModel] = useState<Model>();
+    const [selectedCompany, setSelectedCompany] = useState<CustomCompany>();
 
     const modelNums = makeDistinctArray(models.map(model => model.modelNum));
     const companyNames = makeDistinctArray(companies.map(company => company.name));
@@ -54,7 +57,13 @@ export default function OrderManagerAcceptFormSection({ onAdd, models, companies
     }, [nextOrderNum]);
 
     useEffect(() => {
+        const company = companies.find(company => company.name === form.customerName);
+        setSelectedCompany(company);
+    }, [form.customerName]);
+
+    useEffect(() => {
         const model = models.find(model => model.modelNum === form.modelNum);
+        setSelectedModel(model);
         setForm((prev) => ({
             ...prev,
             modelName: model?.modelName || "",
@@ -72,9 +81,18 @@ export default function OrderManagerAcceptFormSection({ onAdd, models, companies
 
     }, [form.amount, form.pricePer]);
 
+    useEffect(() => {
+        if(form.printCn === defaultPrintCn) {
+            setForm(prev => ({
+                ...prev,
+                dosu : "1"
+            }));
+        }
+    }, [form.printCn]);
+
     const onInit = () => {
         setForm({
-            orderNum: '', // 접수번호
+            orderNum: nextOrderNum, // 접수번호
             customerName: '', // 주문인
             modelNum: '', // 모델
             modelName: '', // 모델명
@@ -82,7 +100,7 @@ export default function OrderManagerAcceptFormSection({ onAdd, models, companies
             printCn: defaultPrintCn, // 상호
             dosu: '', // 도수
             iDate: nowDate, // 주문일자
-            pricePer: "0.00", // 단가
+            pricePer: "0", // 단가
             price: "0.00", // 금액
             deliveryMethod: '', // 납품방법
             shipNum: '', // 선방번호
@@ -94,8 +112,7 @@ export default function OrderManagerAcceptFormSection({ onAdd, models, companies
     }
 
     const handleSubmit = () => {
-        onAdd(form);
-        onInit();
+        onAdd(form, onInit);
     };
     
     const addCustomer = () => {
@@ -103,8 +120,19 @@ export default function OrderManagerAcceptFormSection({ onAdd, models, companies
         alert("거래처총판추가 호출됨");
     }
 
-    const checkPrintCn = () => {
-        alert("상호 체크박스 체크");
+    const checkPrintCn = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if(e.target.checked) {
+            // 상호 input text 선택(텍스트 블럭)처리
+            if(printCnRef.current) {
+                printCnRef.current.focus();
+                printCnRef.current.setSelectionRange(0, printCnRef.current.value.length);
+            }
+        } else {
+            setForm(prev => ({
+                ...prev,
+                printCn: defaultPrintCn
+            }));
+        }
     }
 
     const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -164,14 +192,17 @@ export default function OrderManagerAcceptFormSection({ onAdd, models, companies
                 <InputText 
                     name="amount"
                     value={formatNumber(form.amount)}
-                    onChange={handleChange} />
+                    onChange={handleChange} 
+                    textAlign={TextAlign.Right} />
             } />
             <div className="flex gap-2 col-span-3">
                 <FormItem label="상호" checkEvent={checkPrintCn} children={
                     <InputText 
                         name="printCn"
                         value={form.printCn}
-                        onChange={handleChange} />
+                        onChange={handleChange} 
+                        ref={printCnRef}
+                    />
                 } />
             </div>
 
@@ -198,6 +229,7 @@ export default function OrderManagerAcceptFormSection({ onAdd, models, companies
                     value={formatNumber(form.pricePer)}
                     onChange={handleChange} 
                     onBlur={handleBlur}
+                    textAlign={TextAlign.Right}
                 />
             } />
             <FormItem label="금액" children={
@@ -206,6 +238,7 @@ export default function OrderManagerAcceptFormSection({ onAdd, models, companies
                     value={formatNumber(form.price)}
                     onChange={handleChange} 
                     onBlur={handleBlur}
+                    textAlign={TextAlign.Right}
                 />
             } />
             <div />

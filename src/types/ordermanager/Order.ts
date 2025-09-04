@@ -66,7 +66,7 @@ export const toOrderType = (dto: OrderDto): Order => ({
     ...dto,
     amount: Number(dto.amount.replace(/,/g, "")),
     pricePer: Number(dto.pricePer.replace(/,/g, "")),
-    price: Number(dto.pricePer.replace(/,/g, "")),
+    price: Number(dto.price.replace(/,/g, "")),
     boxAmount: Number(dto.boxAmount.replace(/,/g, "")),
 });
 
@@ -121,7 +121,7 @@ export const toOrderCreateRequest = (dto: OrderCreateRequestDto): OrderCreateReq
     ...dto,
     amount: Number(dto.amount.replace(/,/g, "")),
     pricePer: Number(dto.pricePer.replace(/,/g, "")),
-    price: Number(dto.pricePer.replace(/,/g, "")),
+    price: Number(dto.price.replace(/,/g, "")),
 });
 
 export const toOrderCreateRequestDto = (data: OrderCreateRequest): OrderCreateRequestDto => ({

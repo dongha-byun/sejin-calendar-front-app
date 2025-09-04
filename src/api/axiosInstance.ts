@@ -14,7 +14,10 @@ export const apiService = {
         return await instance.get(url);
     },
     post: async(url: string, body: any) => {
-        return await instance.post(url, body);
+        return await instance.post(url, body).catch(error => {
+            alert(error.result.message);
+            throw error;
+        });
     },
     delete: async(url: string) => {
         return await instance.delete(url);

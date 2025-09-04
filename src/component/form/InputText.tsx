@@ -1,9 +1,15 @@
+import { forwardRef } from "react";
 
 export enum InputTextSize {
     Normal = "normal",
     Full = "full",
     Small = "small",
     Medium = "medium"
+}
+
+export enum TextAlign {
+    Right = "text-right",
+    Left = "text-left",
 }
 
 interface Props {
@@ -16,7 +22,8 @@ interface Props {
     onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
     unitText?: string;
     onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
-    readOnly?: boolean
+    readOnly?: boolean;
+    textAlign?: TextAlign;
 }
 
 /**
@@ -38,7 +45,8 @@ const style = (size: InputTextSize = InputTextSize.Normal) => {
     }
 }
 
-export default function InputText({ name, value, onChange, type, size, placeholder, onKeyDown, unitText, onBlur, readOnly }: Props) {
+const InputText = forwardRef<HTMLInputElement, Props>(
+    ({ name, value, onChange, type, size, placeholder, onKeyDown, unitText, onBlur, readOnly, textAlign }, ref) => {
 
     const readOnlyStyle = readOnly ? "bg-gray-200" : "";
 
@@ -48,11 +56,14 @@ export default function InputText({ name, value, onChange, type, size, placehold
             type={type} name={name} value={value} 
             onChange={onChange} 
             onKeyDown={onKeyDown}
-            className={`${style(size)} border rounded p-1 ${readOnlyStyle}`} // p-1.5 
+            className={`${style(size)} border rounded p-1 ${readOnlyStyle} ${textAlign}`} // p-1.5 
             placeholder={placeholder} 
             onBlur={onBlur}
             readOnly = {readOnly}
+            ref={ref}
         /> <span>{unitText}</span>
         </>
     );
-}
+});
+
+export default InputText;

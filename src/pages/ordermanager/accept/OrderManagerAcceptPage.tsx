@@ -33,11 +33,13 @@ export default function OrderManagerAcceptPage () {
         });
     }
 
-    const addOrder = (order: OrderCreateRequestDto) => {
-        orderApi.save(order).then(() => {
-            fetch();
-            getNextOrderNum();
-        });
+    const addOrder = (order: OrderCreateRequestDto, onSuccess: () => void) => {
+        orderApi.save(order)
+            .then(() => {
+                onSuccess();
+                fetch();
+                getNextOrderNum();
+            });
     };
 
     return (
