@@ -27,6 +27,13 @@ export default function OrderManagerAcceptPage () {
         });
     }
 
+    const getNextReleaseNum = (callbackFun: (r_num: string) => void) => {
+        orderApi.nextReleaseNum().then((result) => {
+            console.log(result);
+            callbackFun(result.nextReleaseNum);
+        });
+    }
+
     const getNextOrderNum = () => {
         orderApi.nextOrderNum().then((result) => {
             setNextOrderNum(result.nextOrderNum);
@@ -47,7 +54,7 @@ export default function OrderManagerAcceptPage () {
             <h1 className="text-base font-semibold pb-2">주문접수</h1>
             <OrderManagerAcceptFormSection 
                 onAdd={addOrder} models={models} companies={companies}
-                nextOrderNum={nextOrderNum}
+                nextOrderNum={nextOrderNum} getNextReleaseNumFunc={getNextReleaseNum}
             />
             <OrderManagerAcceptTable data={orders} />
         </div>

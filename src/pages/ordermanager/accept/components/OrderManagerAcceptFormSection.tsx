@@ -14,11 +14,12 @@ interface Props {
     models: Model[];
     companies: CustomCompany[];
     nextOrderNum: string;
+    getNextReleaseNumFunc: (onCallback: (r_num: string) => void) => any;
 }
 
 const defaultPrintCn = "백제본";
 
-export default function OrderManagerAcceptFormSection({ onAdd, models, companies, nextOrderNum }: Props) {
+export default function OrderManagerAcceptFormSection({ onAdd, models, companies, nextOrderNum, getNextReleaseNumFunc }: Props) {
     const printCnRef = useRef<HTMLInputElement>(null);
     const [form, setForm] = useState<OrderCreateRequestDto>({
         orderNum: '', // 접수번호
@@ -40,6 +41,7 @@ export default function OrderManagerAcceptFormSection({ onAdd, models, companies
     });
     const [selectedModel, setSelectedModel] = useState<Model>();
     const [selectedCompany, setSelectedCompany] = useState<CustomCompany>();
+    const [nextReleaseNum, setNextReleaseNum] = useState<string>('');
 
     const modelNums = makeDistinctArray(models.map(model => model.modelNum));
     const companyNames = makeDistinctArray(companies.map(company => company.name));
@@ -141,6 +143,18 @@ export default function OrderManagerAcceptFormSection({ onAdd, models, companies
             setForm(prev => ({ ...prev, [name]: padDecimal(value) }));
         }
     };
+
+    const checkedAutoReleaseNum = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if(e.target.checked) {
+            getNextReleaseNumFunc(setNextReleaseNum);
+        } else {
+            setNextReleaseNum('');
+        }
+        setForm(prev => ({
+            ...prev,
+            checkedReleaseNumAutoCreate: e.target.checked,
+        }));
+    }
 
     return(
         <div className="grid grid-cols-4 gap-4 p-4 bg-white rounded shadow mb-4 max-w-[75vw]">
@@ -298,9 +312,13 @@ export default function OrderManagerAcceptFormSection({ onAdd, models, companies
             <div className="flex gap-2 items-center">
                 <label className="inline-flex items-center space-x-2 cursor-pointer px-2 py-1 rounded">
                     <input type="checkbox"
-                        className="form-checkbox text-indigo-600 transition duration-150 ease-in-out items-center"/>
+                        className="form-checkbox text-indigo-600 transition duration-150 ease-in-out items-center"
+                        checked={form.checkedReleaseNumAutoCreate}
+                        onChange={checkedAutoReleaseNum}
+                    />
                     <span className="text-sm text-gray-700">출고증 번호 자동 부여</span>
                 </label>
+                {form.checkedReleaseNumAutoCreate && <span>출고증# : {nextReleaseNum}</span>}
             </div>
         </div>
     );

@@ -15,4 +15,8 @@ export const orderApi = {
         const response = await apiService.get("/api/v1/order-manager/next-order-num");
         return response.data.data;
     },
+    nextReleaseNum: async() => {
+        const response = await apiService.get("/api/v1/order-manager/next-release-num");
+        return response.data.data;
+    }
 }
