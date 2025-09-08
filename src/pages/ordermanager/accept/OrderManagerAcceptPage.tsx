@@ -44,6 +44,8 @@ export default function OrderManagerAcceptPage () {
         orderApi.save(order)
             .then(() => {
                 onSuccess();
+            })
+            .finally(() => {
                 fetch();
                 getNextOrderNum();
             });
