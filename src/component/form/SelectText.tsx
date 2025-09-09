@@ -1,4 +1,4 @@
-import Select from "react-select";
+import { createFilter } from "react-select";
 import { InputTextSize } from "./InputText";
 import CreatableSelect from "react-select/creatable";
 
@@ -8,6 +8,8 @@ interface Props {
   value: any;
   name: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+  isFilterStartWith?: boolean
 }
 
 const smallSelectStyles = {
@@ -58,7 +60,13 @@ const style = (size: InputTextSize = InputTextSize.Normal) => {
     }
 }
 
-export default function SelectText({options, size, value, name, onChange}: Props) {
+const startWithFilter = createFilter({
+  ignoreCase: true,
+  ignoreAccents: true,
+  matchFrom: "start", // ← "any" 대신 "start"로 설정
+});
+
+export default function SelectText({options, size, value, name, onChange, onBlur, isFilterStartWith}: Props) {
   
   return (
     <div className={`${style(size)}`}>
@@ -67,9 +75,11 @@ export default function SelectText({options, size, value, name, onChange}: Props
         options={options}
         isClearable
         isSearchable
+        filterOption={isFilterStartWith ? startWithFilter : undefined}
         placeholder=""
         value={options.find(option => option.value === value) || (value ? { value, label: value } : null)}
         name={name}
+        onBlur={onBlur}
         onChange={option => {
           if(onChange) {
             onChange({
