@@ -3,6 +3,8 @@ import MonitorOrderPage from "./MonitorOrderPage";
 
 export default function MonitorOrder() {
     return (
-        <Layout child={MonitorOrderPage} />
+        <Layout child={
+            <MonitorOrderPage />
+        } />
     );
 }

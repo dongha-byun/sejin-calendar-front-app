@@ -3,7 +3,9 @@ import BaseInfoModelPage from "./BaseInfoModelPage";
 
 const BaseInfoModel: React.FC = () => {
     return (
-        <Layout child={BaseInfoModelPage}></Layout>
+        <Layout child={
+            <BaseInfoModelPage />
+        } />
     );
 };
 

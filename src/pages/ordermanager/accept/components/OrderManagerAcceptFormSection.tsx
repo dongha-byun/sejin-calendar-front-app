@@ -8,6 +8,7 @@ import { makeDistinctArray } from "../../../../utils/arrayUtils";
 import CommonSelect from "../../../../component/form/CommonSelect";
 import { formatNumber, padDecimal } from "../../../../utils/numberUtils";
 import type { CustomCompany } from "../../../../types/baseinfo/CustomCompany";
+import SelectText from "../../../../component/form/SelectText";
 
 interface Props {
     onAdd: (order: OrderCreateRequestDto, onSuccess: () => void) => void;
@@ -21,6 +22,7 @@ const defaultPrintCn = "백제본";
 
 export default function OrderManagerAcceptFormSection({ onAdd, models, companies, nextOrderNum, getNextReleaseNumFunc }: Props) {
     const printCnRef = useRef<HTMLInputElement>(null);
+    const [checkedPrintCn, setCheckedPrintCn] = useState<boolean>(false);
     const [form, setForm] = useState<OrderCreateRequestDto>({
         orderNum: '', // 접수번호
         customerName: '', // 주문인
@@ -42,6 +44,7 @@ export default function OrderManagerAcceptFormSection({ onAdd, models, companies
     const [selectedModel, setSelectedModel] = useState<Model>();
     const [selectedCompany, setSelectedCompany] = useState<CustomCompany>();
     const [nextReleaseNum, setNextReleaseNum] = useState<string>('');
+    const [validateReleaseNum, setValidateReleaseNum] = useState<string>('');
 
     const modelNums = makeDistinctArray(models.map(model => model.modelNum));
     const companyNames = makeDistinctArray(companies.map(company => company.name));
@@ -114,6 +117,24 @@ export default function OrderManagerAcceptFormSection({ onAdd, models, companies
     }
 
     const handleSubmit = () => {
+        if(form.checkedReleaseNumAutoCreate) {
+            if(checkedPrintCn) {
+                if(!window.confirm("백제본이 아닙니다. 출고증 번호를 자동 입력하시겠습니까? \n출고증 번호를 추가하지 않을 경우 체크를 빼주시고 다시 시도해주세요.")) {
+                    return ;
+                }
+            }
+
+            // 출고증 번호 사용 여부 확인 
+            // 1. newNextReleaseNum !== nextReleaseNum
+            getNextReleaseNumFunc(setValidateReleaseNum);
+            if(validateReleaseNum !== nextReleaseNum) {
+                setNextReleaseNum(validateReleaseNum);
+                if(!window.confirm("출고증번호가 이미 다른 곳에서 사용 중 입니다. 갱신이 필요합니다. \n갱신하고 바로 적용하시겠습니까?")) {
+                    return ;
+                }
+            }
+                
+        }
         onAdd(form, onInit);
     };
     
@@ -123,6 +144,7 @@ export default function OrderManagerAcceptFormSection({ onAdd, models, companies
     }
 
     const checkPrintCn = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setCheckedPrintCn(e.target.checked);
         if(e.target.checked) {
             // 상호 input text 선택(텍스트 블럭)처리
             if(printCnRef.current) {
@@ -143,6 +165,20 @@ export default function OrderManagerAcceptFormSection({ onAdd, models, companies
             setForm(prev => ({ ...prev, [name]: padDecimal(value) }));
         }
     };
+
+    const checkExistsCustomer = () => {
+        if(companyNames.includes(form.customerName)) {
+            return ;
+        }
+        
+        if(!window.confirm("등록된 주문인이 아닙니다. 추가하시겠습니까?")) {
+            setForm(prev => ({
+                ...prev,
+                customerName: ''
+            }));
+            return ;
+        }
+    }
 
     const checkedAutoReleaseNum = (e: React.ChangeEvent<HTMLInputElement>) => {
         if(e.target.checked) {
@@ -169,11 +205,12 @@ export default function OrderManagerAcceptFormSection({ onAdd, models, companies
             } />
             <div className="flex gap-2 col-span-2">
                 <FormItem label="주문인" required children={
-                    <CommonSelect 
+                    <SelectText 
                         name="customerName"
                         value={form.customerName}
                         onChange={handleChange}
                         options={companyNames.map(name => ({ value: name, label: name }))} 
+                        onBlur={checkExistsCustomer}
                         isFilterStartWith
                     />
                 } />

@@ -50,7 +50,7 @@ const router = createBrowserRouter([
         )
     },
     {
-        path: "/base-info/custom-company",
+        path: "/base-info/custom-company", // 기초자료 등록 - 거래처
         element: (
             <BaseInfoCustomCompany />
         )

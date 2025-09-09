@@ -4,7 +4,9 @@ import PutinPaperPage from "./PutinPaperPage";
 const PutinPaper: React.FC = () => {
 
     return (
-        <Layout child={PutinPaperPage}></Layout>
+        <Layout child={
+            <PutinPaperPage />
+        }/>
     );
 };
 

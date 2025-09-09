@@ -5,7 +5,9 @@ import CommandCustomPrintPage from "./CommandCustomPrintPage";
 const CommandCustomPrint: React.FC = () => {
 
     return (
-        <Layout child={CommandCustomPrintPage}></Layout>
+        <Layout child={
+            <CommandCustomPrintPage />
+        } />
     );
 };
 

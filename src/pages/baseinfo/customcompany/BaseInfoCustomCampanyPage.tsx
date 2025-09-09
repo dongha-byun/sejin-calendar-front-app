@@ -4,11 +4,17 @@ import CustomCompanyTable from "./components/CustomCompanyTable";
 import { CompanyType, type CustomCompany } from "../../../types/baseinfo/CustomCompany";
 import { customCompanyApi } from "../../../api/baseinfo/customCompanyApi";
 
-export default function BaseInfoCustomCompanyPage() {
+interface Props {
+  companyType?: string;
+  companyName?: string;
+}
+
+const BaseInfoCustomCompanyPage: React.FC<Props> = ({ companyType, companyName }) => {
   const [customCompanies, setCustomCompanies] = useState<CustomCompany[]>([]);
   const [selectedType, setSelectedType] = useState<CompanyType>(CompanyType.Material);
 
   useEffect(() => {
+    console.log(companyType, companyName);
     fetch();
   }, [selectedType]);
 
@@ -33,4 +39,6 @@ export default function BaseInfoCustomCompanyPage() {
       <CustomCompanyTable data={customCompanies} />
     </div>
   );
-}
+};
+
+export default BaseInfoCustomCompanyPage;

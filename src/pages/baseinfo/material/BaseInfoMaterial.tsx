@@ -5,7 +5,9 @@ import BaseInfoMaterialPage from "./BaseInfoMaterialPage";
 const BaseInfoMaterial: React.FC = () => {
 
     return (
-        <Layout child={BaseInfoMaterialPage}></Layout>
+        <Layout child={
+            <BaseInfoMaterialPage /> 
+        }/>
     );
 };
 

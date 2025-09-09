@@ -3,6 +3,8 @@ import AdminMemberPage from "./AdminMemberPage";
 
 export default function AdminMember() {
     return (
-        <Layout child={AdminMemberPage} />
+        <Layout child={
+            <AdminMemberPage />
+        } />
     );
 }

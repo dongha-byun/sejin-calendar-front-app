@@ -3,6 +3,8 @@ import CommandOrderOutPage from "./CommandOrderOutPage";
 
 export default function CommandOrderOut() {
     return (
-        <Layout child={CommandOrderOutPage}></Layout>
+        <Layout child={
+            <CommandOrderOutPage />
+        } />
     );
 };

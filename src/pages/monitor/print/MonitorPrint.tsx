@@ -5,6 +5,8 @@ import MonitorPrintPage from "./MonitorPrintPage";
 
 export default function MonitorPrint() {
     return (
-        <Layout child={MonitorPrintPage}></Layout>
+        <Layout child={
+            <MonitorPrintPage />
+        }/>
     );
 }

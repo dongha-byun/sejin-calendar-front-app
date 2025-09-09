@@ -3,6 +3,8 @@ import OrderManagerCancelPage from "./OrderManagerCancelPage";
 
 export default function OrderManagerCancel() {
     return (
-        <Layout child={OrderManagerCancelPage}></Layout>
+        <Layout child={
+            <OrderManagerCancelPage />
+        }/>
     );
 }

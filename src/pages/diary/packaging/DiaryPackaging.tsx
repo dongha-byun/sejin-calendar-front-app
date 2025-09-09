@@ -4,6 +4,8 @@ import DiaryPackagingPage from "./DiaryPackagingPage";
 export default function DiaryPackaging() {
 
     return (
-        <Layout child={DiaryPackagingPage} />
+        <Layout child={
+            <DiaryPackagingPage />
+        } />
     );
 }

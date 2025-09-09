@@ -4,6 +4,8 @@ import DiaryPrintCnPage from "./DiaryPrintCnPage";
 export default function DiaryPrintCn() {
 
     return (
-        <Layout child={DiaryPrintCnPage} />
+        <Layout child={
+            <DiaryPrintCnPage />
+        } />
     );
 }

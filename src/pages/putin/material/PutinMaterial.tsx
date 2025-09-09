@@ -4,7 +4,9 @@ import PutinMaterialPage from "./PutinMaterialPage";
 const PutinMaterial: React.FC = () => {
 
     return (
-        <Layout child={PutinMaterialPage}></Layout>
+        <Layout child={
+            <PutinMaterialPage />
+        }/>
     );
 };
 

@@ -3,7 +3,9 @@ import BaseInfoPaperPage from "./BaseInfoPaperPage";
 
 const BaseInfoPaper: React.FC = () => {
     return (
-        <Layout child={BaseInfoPaperPage} />
+        <Layout child={
+            <BaseInfoPaperPage />
+        } />
     );
 }
 

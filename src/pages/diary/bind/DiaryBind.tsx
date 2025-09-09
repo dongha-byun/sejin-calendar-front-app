@@ -3,6 +3,8 @@ import DiaryBindPage from "./DiaryBindPage";
 
 export default function DiaryBind() {
     return (
-        <Layout child={DiaryBindPage}></Layout>
+        <Layout child={
+            <DiaryBindPage />
+        }/>
     );
 };

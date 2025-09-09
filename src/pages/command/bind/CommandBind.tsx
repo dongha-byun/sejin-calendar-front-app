@@ -5,7 +5,9 @@ import CommandBindPage from "./CommandBindPage";
 const CommandBind: React.FC = () => {
 
     return (
-        <Layout child={CommandBindPage}></Layout>
+        <Layout child={
+            <CommandBindPage />
+        } />
     );
 };
 

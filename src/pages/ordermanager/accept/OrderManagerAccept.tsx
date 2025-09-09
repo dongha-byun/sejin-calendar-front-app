@@ -3,6 +3,8 @@ import OrderManagerAcceptPage from "./OrderManagerAcceptPage";
 
 export default function OrderManagerAccept() {
     return (
-        <Layout child={OrderManagerAcceptPage}></Layout>
+        <Layout child={
+            <OrderManagerAcceptPage />
+        }/>
     );
 }

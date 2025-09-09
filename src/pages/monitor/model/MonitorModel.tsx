@@ -3,6 +3,8 @@ import MonitorModelPage from "./MonitorModelPage";
 
 export default function MonitorModel() {
     return (
-        <Layout child={MonitorModelPage} />
+        <Layout child={
+            <MonitorModelPage />
+        } />
     );
 }

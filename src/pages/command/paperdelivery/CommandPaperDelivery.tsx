@@ -4,7 +4,9 @@ import CommandPaperDeliveryPage from "./CommandPaperDeliveryPage";
 const CommandPaperDelivery: React.FC = () => {
 
     return (
-        <Layout child={CommandPaperDeliveryPage}></Layout>
+        <Layout child={
+            <CommandPaperDeliveryPage />
+        } />
     );
 };
 
