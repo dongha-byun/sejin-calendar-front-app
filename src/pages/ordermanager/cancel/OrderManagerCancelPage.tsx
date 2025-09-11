@@ -58,7 +58,7 @@ export default function OrderManagerCancelPage() {
     }
 
     const onExit = () => {
-        console.log('종료 버튼 로직 호출');
+        window.close();
     }
     
     return (
