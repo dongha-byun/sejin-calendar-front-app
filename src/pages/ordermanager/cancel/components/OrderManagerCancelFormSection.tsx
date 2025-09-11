@@ -11,6 +11,8 @@ interface Props {
     models: Model[];
     setSelectedCompany: React.Dispatch<React.SetStateAction<CustomCompany | undefined>>;
     setSelectedModel: React.Dispatch<React.SetStateAction<Model | undefined>>;
+    form: SearchReq;
+    setForm: React.Dispatch<React.SetStateAction<SearchReq>>;
 }
 
 interface SearchReq {
@@ -20,13 +22,9 @@ interface SearchReq {
     orderNum?: string;    
 }
 
-export default function OrderManagerCancelFormSection ({companies, models, setSelectedCompany, setSelectedModel}: Props) {
-    const [form, setForm] = useState<SearchReq>({
-        customerName: undefined,
-        modelNum: undefined,
-        modelName: '',
-        orderNum: ''
-    });
+export default function OrderManagerCancelFormSection (
+    {companies, models, setSelectedCompany, setSelectedModel, form, setForm}: Props
+) {
     const [companyNames, setCompanyNames] = useState<option[]>([]);
     const [modelNums, setModelNums] = useState<option[]>([]);
 
@@ -57,18 +55,6 @@ export default function OrderManagerCancelFormSection ({companies, models, setSe
         const { name, value } = e.target;
         setForm(prev => ({ ...prev, [name]: value }));
     };
-
-    const onInit = () => {
-        console.log('취소 버튼 로직 호출');
-    };
-
-    const handleSubmit = () => {
-        console.log('선택완료 버튼 로직 호출');
-    }
-
-    const onExit = () => {
-        console.log('종료 버튼 로직 호출');
-    }
 
     return (
         <div className="grid grid-cols-5 gap-4 p-4 bg-white rounded shadow mb-4 max-w-[75vw]">
@@ -101,12 +87,6 @@ export default function OrderManagerCancelFormSection ({companies, models, setSe
                     <button className="border border-gray-400 text-black px-4 py-1">접수번호검색</button>
                     </>
                 } />
-            </div>
-
-            <div className="flex gap-2 mt-2">
-                <button onClick={onInit} className="bg-red-500 text-white px-4 py-1 rounded">취소</button>
-                <button onClick={handleSubmit} className="bg-green-500 text-white px-4 py-1 rounded">확인</button>
-                <button onClick={onExit} className="bg-red-500 text-white px-4 py-1 rounded">종료</button>
             </div>
         </div>
     );
