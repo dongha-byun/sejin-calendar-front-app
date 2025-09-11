@@ -18,5 +18,15 @@ export const orderApi = {
     nextReleaseNum: async() => {
         const response = await apiService.get("/api/v1/order-manager/next-release-num");
         return response.data.data;
+    },
+    searchOrderCancelList: async(customerName?: string, modelNum?: string) => {
+        let endpoint = "/api/v1/order/cancel/search";
+        const param = {
+            customerName: customerName || undefined,
+            modelNum: modelNum || undefined,
+        };
+
+        const response = await apiService.get(endpoint, param);
+        return response.data.data;
     }
 }

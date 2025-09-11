@@ -10,8 +10,8 @@ export const instance = axios.create({
 });
 
 export const apiService = {
-    get: async(url: string) => {
-        return await instance.get(url);
+    get: async(url: string, param?: any) => {
+        return await instance.get(url, {params: param});
     },
     post: async(url: string, body: any) => {
         return await instance.post(url, body).catch(error => {
