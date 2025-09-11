@@ -3,7 +3,7 @@ import { InputTextSize } from "./InputText";
 import CreatableSelect from "react-select/creatable";
 
 interface Props {
-  options: { value: string | number; label: string | number }[];
+  options: { value?: string | number; label: string | number; }[];
   size?: InputTextSize;
   value: any;
   name: string;

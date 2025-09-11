@@ -1,14 +1,9 @@
 import Select, { createFilter } from "react-select";
 import { InputTextSize } from "./InputText";
-
-type Option = {
-  value: string | number;
-  label: string | number;
-  isDisabled?: boolean
-}
+import type { option } from "../../types/values/OptionType";
 
 interface Props {
-  options: Option[];
+  options: option[];
   size?: InputTextSize;
   value: any;
   name: string;
@@ -84,7 +79,7 @@ export default function CommonSelect({options, size, value, name, onChange, defa
   
   return (
     <div className={`${style(size)}`}>
-      <Select<Option>
+      <Select<option>
         styles={smallSelectStyles}
         options={finalOptions}
         isClearable

@@ -1,7 +1,7 @@
-import type { Order } from "../../../../types/ordermanager/Order";
+import type { OrderCancelSearch } from "../../../../types/ordermanager/OrderCancelSearch";
 
 interface Props {
-    data: Order[];
+    data: OrderCancelSearch[];
 }
 
 export default function OrderManagerCancelTable ({ data }: Props) {
