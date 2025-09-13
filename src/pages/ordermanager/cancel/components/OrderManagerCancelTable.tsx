@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import ListCheckBox from "../../../../component/grid/ListCheckBox";
 import type { OrderCancelSearch } from "../../../../types/ordermanager/OrderCancelSearch";
 
@@ -5,9 +6,20 @@ interface Props {
     data: OrderCancelSearch[];
     checkIds: number[];
     checkOrder: (id: number, isChecked: boolean) => void;
+    searchOrder?: OrderCancelSearch;
 }
 
-export default function OrderManagerCancelTable ({ data, checkIds, checkOrder }: Props) {
+export default function OrderManagerCancelTable ({ data, checkIds, checkOrder, searchOrder }: Props) {
+    useEffect(() => {
+        if(searchOrder) {
+            const row = document.getElementById(`row-${searchOrder.id}`);
+            console.log(row);
+            if (row) {
+                row.scrollIntoView({ behavior: "smooth", block: "center" }); // 화면 중앙으로 스크롤
+                row.focus(); // focus 적용 (tabIndex 필요)
+            }
+        }
+    }, [searchOrder, data]);
 
     return (
         <div className="overflow-y-auto h-[400px] w-[1100px]">
@@ -25,8 +37,13 @@ export default function OrderManagerCancelTable ({ data, checkIds, checkOrder }:
                 </thead>
                 <tbody>
                 {data.map((s, idx) => (
-                    <tr key={s.id} className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                        <ListCheckBox key={"chx" + s.id + idx} checked={checkIds.includes(s.id)} onChange={(e) => checkOrder(s.id, e.target.checked)} />
+                    <tr key={s.id} className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}
+                        id={`row-${s.id}`}
+                        tabIndex={-1}
+                    >
+                        <td className="border px-2 py-1 text-center">
+                            <ListCheckBox key={"chx" + s.id + idx} checked={checkIds.includes(s.id)} onChange={(e) => checkOrder(s.id, e.target.checked)} />
+                        </td>
                         <td className="border px-2 py-1">{s.orderNum}</td>
                         <td className="border px-2 py-1">{s.customerName}</td>
                         <td className="border px-2 py-1">{s.modelNum}</td>

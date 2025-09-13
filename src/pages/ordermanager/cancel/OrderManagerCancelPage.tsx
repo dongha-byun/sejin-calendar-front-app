@@ -26,6 +26,7 @@ export default function OrderManagerCancelPage() {
     const [form, setForm] = useState<SearchReq>({
         modelName: ''
     });
+    const [searchOrder, setSearchOrder] = useState<OrderCancelSearch>();
         
     useEffect(() => {
         fetch();
@@ -40,6 +41,7 @@ export default function OrderManagerCancelPage() {
         ).then((result) => {
             setOrders(result);
             setCheckedIds([]);
+            setSearchOrder(undefined);
         });
     }
 
@@ -54,6 +56,7 @@ export default function OrderManagerCancelPage() {
             modelName: '',
             orderNum: undefined
         });
+        setSearchOrder(undefined);
     };
 
     const checkOrder = (id: number, isChecked: boolean) => {
@@ -74,6 +77,11 @@ export default function OrderManagerCancelPage() {
         }
     }
 
+    const focusOrder = (orderNum: string) => {
+        const findOrder = orders.find(order => order.orderNum.toString() === orderNum);
+        setSearchOrder(findOrder);
+    }
+
     const onExit = () => {
         window.close();
     }
@@ -85,8 +93,12 @@ export default function OrderManagerCancelPage() {
                 companies={companies} setSelectedCompany={setSelectedCompany}
                 models={models} setSelectedModel={setSelectedModel}
                 form={form} setForm={setForm}
+                focusOrder={focusOrder}
             />
-            <OrderManagerCancelTable data={orders} checkOrder={checkOrder} checkIds={checkedIds}/>
+            <OrderManagerCancelTable 
+                data={orders} checkOrder={checkOrder} checkIds={checkedIds}
+                searchOrder={searchOrder}
+            />
 
             <div className="mt-6 flex flex-col justify-center text-sm gap-3">
                 <div className="flex gap-4">

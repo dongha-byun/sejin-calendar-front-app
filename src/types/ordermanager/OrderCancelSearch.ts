@@ -1,7 +1,7 @@
 
 export interface OrderCancelSearch {
     id: number;
-    orderNum: string;
+    orderNum: number;
     customerName: string;
     modelNum: string;
     modelName: string;

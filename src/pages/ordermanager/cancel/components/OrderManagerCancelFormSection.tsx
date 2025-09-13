@@ -13,6 +13,7 @@ interface Props {
     setSelectedModel: React.Dispatch<React.SetStateAction<Model | undefined>>;
     form: SearchReq;
     setForm: React.Dispatch<React.SetStateAction<SearchReq>>;
+    focusOrder: (orderNum: string) => void;
 }
 
 interface SearchReq {
@@ -23,7 +24,7 @@ interface SearchReq {
 }
 
 export default function OrderManagerCancelFormSection (
-    {companies, models, setSelectedCompany, setSelectedModel, form, setForm}: Props
+    {companies, models, setSelectedCompany, setSelectedModel, form, setForm, focusOrder}: Props
 ) {
     const [companyNames, setCompanyNames] = useState<option[]>([]);
     const [modelNums, setModelNums] = useState<option[]>([]);
@@ -83,8 +84,14 @@ export default function OrderManagerCancelFormSection (
                         name="orderNum"
                         size={InputTextSize.Medium}
                         value={form.orderNum}
-                        onChange={handleChange} />
-                    <button className="border border-gray-400 text-black px-4 py-1">접수번호검색</button>
+                        onChange={handleChange} 
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                focusOrder(form.orderNum || '');
+                            }
+                        }}
+                        />
+                    <button className="border border-gray-400 text-black px-4 py-1" onClick={() => focusOrder(form.orderNum || '')}>접수번호검색</button>
                     </>
                 } />
             </div>
