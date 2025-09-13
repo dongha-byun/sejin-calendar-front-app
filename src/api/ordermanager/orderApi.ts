@@ -28,5 +28,11 @@ export const orderApi = {
 
         const response = await apiService.get(endpoint, param);
         return response.data.data;
-    }
+    },
+    cancel: async(ids: number[]) => {
+        const body = {
+            orderIds: ids
+        };
+        await apiService.put("/api/v1/order-manager/cancel", body);
+    },
 }

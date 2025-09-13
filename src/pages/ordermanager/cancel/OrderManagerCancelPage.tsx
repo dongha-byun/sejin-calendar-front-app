@@ -22,6 +22,7 @@ export default function OrderManagerCancelPage() {
     const [models, setModels] = useState<Model[]>([]);
     const [selectedCompany, setSelectedCompany] = useState<CustomCompany>();
     const [selectedModel, setSelectedModel] = useState<Model>();
+    const [checkedIds, setCheckedIds] = useState<number[]>([]);
     const [form, setForm] = useState<SearchReq>({
         modelName: ''
     });
@@ -36,11 +37,13 @@ export default function OrderManagerCancelPage() {
         orderApi.searchOrderCancelList(
             selectedCompany?.name,
             selectedModel?.modelNum
-        ).then(setOrders);
+        ).then((result) => {
+            setOrders(result);
+            setCheckedIds([]);
+        });
     }
 
     useEffect(() => {
-        console.log(selectedModel);
         fetch();
     },[selectedModel, selectedCompany]);
 
@@ -53,8 +56,22 @@ export default function OrderManagerCancelPage() {
         });
     };
 
+    const checkOrder = (id: number, isChecked: boolean) => {
+        if(isChecked) {
+            setCheckedIds(prev => [...prev, id]);
+        } else {
+            setCheckedIds(prev => prev.filter(value => value !== id));
+        }
+    }
+
     const handleSubmit = () => {
-        console.log('선택완료 버튼 로직 호출');
+        if(checkedIds.length === 0) {
+            return;
+        }
+
+        if(window.confirm("선택한 주문을 취소 시키겠습니까?")) {
+            orderApi.cancel(checkedIds).then(fetch);
+        }
     }
 
     const onExit = () => {
@@ -69,7 +86,7 @@ export default function OrderManagerCancelPage() {
                 models={models} setSelectedModel={setSelectedModel}
                 form={form} setForm={setForm}
             />
-            <OrderManagerCancelTable data={orders} />
+            <OrderManagerCancelTable data={orders} checkOrder={checkOrder} checkIds={checkedIds}/>
 
             <div className="mt-6 flex flex-col justify-center text-sm gap-3">
                 <div className="flex gap-4">

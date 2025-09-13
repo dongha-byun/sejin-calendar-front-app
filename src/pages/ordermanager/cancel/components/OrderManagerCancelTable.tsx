@@ -1,10 +1,13 @@
+import ListCheckBox from "../../../../component/grid/ListCheckBox";
 import type { OrderCancelSearch } from "../../../../types/ordermanager/OrderCancelSearch";
 
 interface Props {
     data: OrderCancelSearch[];
+    checkIds: number[];
+    checkOrder: (id: number, isChecked: boolean) => void;
 }
 
-export default function OrderManagerCancelTable ({ data }: Props) {
+export default function OrderManagerCancelTable ({ data, checkIds, checkOrder }: Props) {
 
     return (
         <div className="overflow-y-auto h-[400px] w-[1100px]">
@@ -23,10 +26,7 @@ export default function OrderManagerCancelTable ({ data }: Props) {
                 <tbody>
                 {data.map((s, idx) => (
                     <tr key={s.id} className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                        <td className="border px-2 py-1 text-center">
-                            <input type="checkbox"
-                                className="form-checkbox transition duration-150 ease-in-out items-center"/>
-                        </td>
+                        <ListCheckBox key={"chx" + s.id + idx} checked={checkIds.includes(s.id)} onChange={(e) => checkOrder(s.id, e.target.checked)} />
                         <td className="border px-2 py-1">{s.orderNum}</td>
                         <td className="border px-2 py-1">{s.customerName}</td>
                         <td className="border px-2 py-1">{s.modelNum}</td>
