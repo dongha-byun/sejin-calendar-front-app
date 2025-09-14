@@ -20,6 +20,7 @@ export interface CommandPrint {
     innerSobu: number; // 소부(내)
     innerDosu: number; // 도수(내)
     iDate: string; // 지시일
+    rDate: string; // 출고일
     contents: string; // 지시사항
     etc: string; // 비고
 }
@@ -46,6 +47,7 @@ export interface CommandPrintDto {
     innerSobu: number; // 소부(내)
     innerDosu: number; // 도수(내)
     iDate: string; // 지시일
+    rDate: string;
     contents: string; // 지시사항
     etc: string; // 비고
 }

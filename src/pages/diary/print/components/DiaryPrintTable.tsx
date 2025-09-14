@@ -1,11 +1,12 @@
-import CheckBoxRow from "../../../../component/form/CheckBoxRow";
-import type { DiaryPrint } from "../../../../types/diary/DiaryPrint";
+import ListCheckBox from "../../../../component/grid/ListCheckBox";
+import type { CommandPrint } from "../../../../types/command/CommandPrint";
 
 interface Props {
-    data: DiaryPrint[];
+    data: CommandPrint[];
+    onCheckId: (isChecked: boolean, id?: number) => void;
 }
 
-export default function DiaryPrintTable({data}: Props) {
+export default function DiaryPrintTable({data, onCheckId}: Props) {
     const allSelected = () => {
         console.log('모두 선택 버튼 호출됨');
     }
@@ -41,14 +42,14 @@ export default function DiaryPrintTable({data}: Props) {
                     {data.map((s, idx) => (
                         <tr key={s.id} className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}>
                             <td className="border px-2 py-1 text-center">
-                                <CheckBoxRow />
+                                <ListCheckBox onChange={(e) => onCheckId(e.target.checked, s.id)}/>
                             </td>
                             <td className="border px-2 py-1">{s.printCompanyName}</td>
                             <td className="border px-2 py-1">{s.modelNum}</td>
                             <td className="border px-2 py-1">{s.modelName}</td>
-                            <td className="border px-2 py-1">{s.amount}</td>
+                            <td className="border px-2 py-1">{s.totalCount}</td>
                             <td className="border px-2 py-1">{s.iDate}</td>
-                            <td className="border px-2 py-1">출고일(?)</td>
+                            <td className="border px-2 py-1">{s.rDate}</td>
                         </tr>
                     ))}
                     </tbody>

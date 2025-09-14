@@ -1,17 +1,39 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SelectText from "../../../../component/form/SelectText";
 import FormItem from "../../../../component/form/FormItem";
+import type { Model } from "../../../../types/baseinfo/Model";
+import type { CustomCompany } from "../../../../types/baseinfo/CustomCompany";
+
+interface Props {
+    models: Model[];
+    companies: CustomCompany[];
+    searchFunc: (companyName: string, modelNum: string) => void;
+}
 
 interface SearchReq {
     modelNum: string;
     printCompanyName: string;
 }
 
-export default function DiaryPrintFormSection() {
+export default function DiaryPrintFormSection({models, companies, searchFunc}: Props) {
     const [form, setForm] = useState<SearchReq>({
         modelNum: '',
         printCompanyName: ''
     });
+    const [modelNums, setModelNums] = useState<string[]>([]);
+    const [companyNames, setCompanyNames] = useState<string[]>([]);
+
+    useEffect(() => {
+        setModelNums(models.map(m => m.modelNum));
+    }, [models]);
+
+    useEffect(() => {
+        setCompanyNames(companies.map(c => c.name));
+    }, [companies]);
+
+    useEffect(() => {
+        searchFunc(form.printCompanyName, form.modelNum);
+    }, [form.modelNum, form.printCompanyName]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -19,14 +41,6 @@ export default function DiaryPrintFormSection() {
         console.log(`Changed ${name} to ${value}`);
         setForm(prev => ({ ...prev, [name]: value }));
     };
-
-    const modelNums = [
-        "모델A", "모델B", "모델C", "모델D",
-    ];
-
-    const companyNames = [
-        "인쇄소1", "인쇄소2", "인쇄소3", "인쇄소4",
-    ];
 
     return (
         <div className="grid grid-cols-2 gap-4 p-4 bg-gray-200 rounded shadow max-w-xl mb-2 mt-2">

@@ -1,7 +1,7 @@
 
 interface Props {
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    checked: boolean;
+    checked?: boolean;
 }
 
 export default function ListCheckBox({onChange, checked} : Props) {
