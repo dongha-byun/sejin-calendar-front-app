@@ -3,23 +3,17 @@ import SelectText from "../../../../component/form/SelectText";
 import FormItem from "../../../../component/form/FormItem";
 import type { Model } from "../../../../types/baseinfo/Model";
 import type { CustomCompany } from "../../../../types/baseinfo/CustomCompany";
+import type { SearchReqForDiaryPrintPage } from "../DiaryPrintPage";
 
 interface Props {
     models: Model[];
     companies: CustomCompany[];
     searchFunc: (companyName: string, modelNum: string) => void;
+    form: SearchReqForDiaryPrintPage;
+    setForm: React.Dispatch<React.SetStateAction<SearchReqForDiaryPrintPage>>;
 }
 
-interface SearchReq {
-    modelNum: string;
-    printCompanyName: string;
-}
-
-export default function DiaryPrintFormSection({models, companies, searchFunc}: Props) {
-    const [form, setForm] = useState<SearchReq>({
-        modelNum: '',
-        printCompanyName: ''
-    });
+export default function DiaryPrintFormSection({models, companies, searchFunc, form, setForm}: Props) {
     const [modelNums, setModelNums] = useState<string[]>([]);
     const [companyNames, setCompanyNames] = useState<string[]>([]);
 

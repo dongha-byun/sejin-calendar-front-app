@@ -7,22 +7,15 @@ interface Props {
 }
 
 export default function DiaryPrintTable({data, onCheckId}: Props) {
-    const allSelected = () => {
+
+    const allChecked = () => {
         console.log('모두 선택 버튼 호출됨');
     }
-
-    const onCancel = () => {
-        console.log('취소 버튼 눌림');
-    }
-
-    const handleSubmit = () => {
-        console.log('선택완료 버튼 눌림');
-    }
-
+    
     return (
         <div>
             <div className="flex my-2 items-center text-sm gap-3">
-                <button onClick={allSelected} className="max-w-[120px] px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">모두선택</button>
+                <button onClick={allChecked} className="max-w-[120px] px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">모두선택</button>
             </div>
 
             <div className="overflow-x-auto">
@@ -55,12 +48,6 @@ export default function DiaryPrintTable({data, onCheckId}: Props) {
                     </tbody>
                 </table>
             </div>
-
-            <div className="flex my-2 items-center text-sm gap-3">
-                <button onClick={onCancel} className="max-w-[120px] px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">취소</button>
-                <button onClick={handleSubmit} className="max-w-[120px] px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">선택완료</button>
-            </div>
-
         </div>
     );
 }
