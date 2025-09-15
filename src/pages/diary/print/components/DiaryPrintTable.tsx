@@ -9,9 +9,13 @@ interface Props {
 export default function DiaryPrintTable({data, onCheckId}: Props) {
 
     const allChecked = () => {
-        console.log('모두 선택 버튼 호출됨');
+        data.forEach(s => {
+            if(!s.rDate) {
+                onCheckId(true, s.id);
+            }
+        });
     }
-    
+
     return (
         <div>
             <div className="flex my-2 items-center text-sm gap-3">
@@ -35,7 +39,7 @@ export default function DiaryPrintTable({data, onCheckId}: Props) {
                     {data.map((s, idx) => (
                         <tr key={s.id} className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}>
                             <td className="border px-2 py-1 text-center">
-                                <ListCheckBox onChange={(e) => onCheckId(e.target.checked, s.id)}/>
+                                {s.rDate && <ListCheckBox onChange={(e) => onCheckId(e.target.checked, s.id)}/>}
                             </td>
                             <td className="border px-2 py-1">{s.printCompanyName}</td>
                             <td className="border px-2 py-1">{s.modelNum}</td>

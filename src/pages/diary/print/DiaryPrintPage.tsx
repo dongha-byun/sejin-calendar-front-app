@@ -7,6 +7,7 @@ import { modelApi } from "../../../api/baseinfo/modelApi";
 import { customCompanyApi } from "../../../api/baseinfo/customCompanyApi";
 import { commandPrintApi } from "../../../api/command/commandPrintApi";
 import type { CommandPrint } from "../../../types/command/CommandPrint";
+import { diaryPrintApi } from "../../../api/diary/diaryPrintApi";
 
 export interface SearchReqForDiaryPrintPage {
     modelNum: string;
@@ -51,7 +52,11 @@ export default function DiaryPrintPage() {
     }
 
     const handleSubmit = () => {
-        console.log('선택완료 버튼 눌림');
+        if(checkedIds.length < 1) {
+            alert("체크된 값이 없습니다.");
+        }
+
+        diaryPrintApi.create(checkedIds).then(() => search());
     }
 
     const onExit = () => {
