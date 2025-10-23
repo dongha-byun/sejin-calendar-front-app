@@ -1,5 +1,5 @@
 export interface DiaryMachine {
-    id: number; // ID
+    id?: number; // ID
     modelNum: string; // 모델번호
     modelName: string; // 모델명
     machineNum: string; // 기계번호

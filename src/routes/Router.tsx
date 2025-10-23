@@ -182,25 +182,25 @@ const router = createBrowserRouter([
         )
     },
     {
-        path: "/monitor/material", // 원자재재고조회
+        path: "/monitor/material", // 각종조회 - 원자재재고조회
         element: (
             <MonitorMaterial />
         )
     },
     {
-        path: "/monitor/paper", // 용지재고조회(용지별)
+        path: "/monitor/paper", // 각종조회 - 용지재고조회(용지별)
         element: (
             <MonitorPaper />
         )
     },
     {
-        path: "/monitor/print", // 용지재고조회(인쇄소별)
+        path: "/monitor/print", // 각종조회 - 용지재고조회(인쇄소별)
         element: (
             <MonitorPrint />
         )
     },
     {
-        path: "/monitor/model", // 호별생산내역조회
+        path: "/monitor/model", // 각종조회 - 호별생산내역조회
         element: (
             <MonitorModel />
         )

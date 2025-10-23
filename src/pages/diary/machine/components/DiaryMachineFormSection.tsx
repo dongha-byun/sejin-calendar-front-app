@@ -1,24 +1,42 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FormItem from "../../../../component/form/FormItem";
 import SelectText from "../../../../component/form/SelectText";
 import InputText from "../../../../component/form/InputText";
 import type { DiaryMachine } from "../../../../types/diary/DiaryMachine";
+import type { Model } from "../../../../types/baseinfo/Model";
+import { nowDate } from "../../../../utils/dateUtils";
+import CommonSelect from "../../../../component/form/CommonSelect";
 
 interface Props {
     onAdd: (diaryMachine: DiaryMachine) => void;
+    models: Model[];
+    onChangeModel: (modelNum: string) => void;
+    printCnList: string[];
 }
 
-export default function DiaryMachineFormSection({ onAdd }: Props) {
+const machines = ["1호기", "2호기", "3호기", "기타"]; 
+
+export default function DiaryMachineFormSection({ onAdd, models, onChangeModel, printCnList }: Props) {
     const [form, setForm] = useState<DiaryMachine>({
-        id: 0,
         machineNum: '',
         modelNum: '',
         modelName: '',
         amount: 0,
         printCn: '',
-        iDate: '',
+        iDate: nowDate,
         etc: ''
     });
+
+    useEffect(() => {
+        const selectedModel = models.find(model => model.modelNum === form.modelNum);
+        if (selectedModel) {
+            setForm(prev => ({ ...prev, modelName: selectedModel.modelName }));
+        }
+
+        // 상위 컴포넌트에서 상호명 재조회 처리
+        onChangeModel(form.modelNum);
+    }, [form.modelNum]);
+
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -26,44 +44,27 @@ export default function DiaryMachineFormSection({ onAdd }: Props) {
     };
 
     const handleSubmit = () => {
-        const newDiaryMachine: DiaryMachine = {
-            ...form,
-            id: Date.now()
-        };
-        onAdd(newDiaryMachine);
+        onAdd(form);
         setForm({
-            id: 0,
             machineNum: '',
             modelNum: '',
             modelName: '',
             amount: 0,
             printCn: '',
-            iDate: '',
+            iDate: nowDate,
             etc: ''
         });
     };
-
-    const machines = [
-        "1호기", "2호기", "3호기", "4호기", "5호기"
-    ];
-
-    const models = [
-        "모델A", "모델B", "모델C", "모델D", "모델E"
-    ];
-
-    const printCns = [
-        "상호A", "상호B", "상호C", "상호D", "상호E"
-    ];
 
     return (
         <div className="grid grid-cols-3 gap-4 p-4 bg-white rounded shadow mb-4 max-w-[50vw]">
             {/* 1행 */}
             <FormItem label="기계" required children={
-                <SelectText 
+                <CommonSelect 
                     name="machineNum"
                     value={form.machineNum}
                     onChange={handleChange}
-                    options={machines.map(method => ({ value: method, label: method }))} />
+                    options={machines.map(machine => ({ value: machine, label: machine }))} />
             } />
             <FormItem label="작업일" required children={
                 <InputText 
@@ -75,11 +76,11 @@ export default function DiaryMachineFormSection({ onAdd }: Props) {
 
             {/* 2행 */}
             <FormItem label="모델" required children={
-                <SelectText 
+                <CommonSelect 
                     name="modelNum"
                     value={form.modelNum}
                     onChange={handleChange}
-                    options={models.map(method => ({ value: method, label: method }))} />
+                    options={models.map(model => ({ value: model.modelNum, label: model.modelNum }))} />
             } />
             <div className="flex gap-2 col-span-2">
                 <FormItem label="모델명" children={
@@ -103,7 +104,7 @@ export default function DiaryMachineFormSection({ onAdd }: Props) {
                         name="printCn"
                         value={form.printCn}
                         onChange={handleChange}
-                        options={printCns.map(method => ({ value: method, label: method }))} />
+                        options={printCnList.map(printCn => ({ value: printCn, label: printCn }))} />
                 } />
             </div>
 
