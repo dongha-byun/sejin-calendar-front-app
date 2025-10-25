@@ -8,3 +8,8 @@ export interface DiaryMachine {
     iDate: string; // 지시일자
     etc: string; // 비고
 }
+
+export interface CombinableQuantityResponse {
+    modelNum: string;
+    quantity: number;
+}

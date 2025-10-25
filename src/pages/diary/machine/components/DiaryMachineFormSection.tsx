@@ -12,11 +12,12 @@ interface Props {
     models: Model[];
     onChangeModel: (modelNum: string) => void;
     printCnList: string[];
+    combinableQuantity: number;
 }
 
 const machines = ["1호기", "2호기", "3호기", "기타"]; 
 
-export default function DiaryMachineFormSection({ onAdd, models, onChangeModel, printCnList }: Props) {
+export default function DiaryMachineFormSection({ onAdd, models, onChangeModel, printCnList, combinableQuantity }: Props) {
     const [form, setForm] = useState<DiaryMachine>({
         machineNum: '',
         modelNum: '',
@@ -122,7 +123,7 @@ export default function DiaryMachineFormSection({ onAdd, models, onChangeModel, 
                 <button onClick={handleSubmit} className="bg-green-500 text-white px-4 py-1 rounded">확인</button>
             </div>
             <div className="items-center flex gap-2">
-                <span>정합가능량 : </span>
+                <span>정합가능량 : {combinableQuantity}</span>
             </div>
         </div>
     );
