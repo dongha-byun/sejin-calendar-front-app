@@ -45,6 +45,16 @@ export default function DiaryMachineFormSection({ onAdd, models, onChangeModel, 
     };
 
     const handleSubmit = () => {
+        if (form.amount < 1) {
+            alert("수량은 1 이상이어야 합니다.");
+            return;
+        }
+
+        if (form.amount > combinableQuantity) {
+            alert("수량이 정합 가능량을 초과할 수 없습니다.");
+            return;
+        }
+
         onAdd(form);
         setForm({
             machineNum: '',
