@@ -1,12 +1,18 @@
+import { Helmet } from "react-helmet-async";
 import Layout from "../../Layout";
 import OrderMaterialPage from "./OrderMaterialPage";
 
 const OrderMaterial: React.FC = () => {
 
     return (
-        <Layout child={
-            <OrderMaterialPage />
-        }/>
+        <>
+            <Helmet>
+                <title>세진정판 - 원자재발주</title>
+            </Helmet>
+            <Layout child={
+                <OrderMaterialPage />
+            }/>
+        </>
     );
 };
 

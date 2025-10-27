@@ -1,12 +1,19 @@
+import { Helmet } from "react-helmet-async";
 import Layout from "../../Layout";
 import PutinPaperPage from "./PutinPaperPage";
 
 const PutinPaper: React.FC = () => {
 
     return (
-        <Layout child={
-            <PutinPaperPage />
-        }/>
+        <>
+            <Helmet>
+                <title>세진정판 - 용지입고</title>
+            </Helmet>
+            <Layout child={
+                <PutinPaperPage />
+            }/>
+        </>
+        
     );
 };
 

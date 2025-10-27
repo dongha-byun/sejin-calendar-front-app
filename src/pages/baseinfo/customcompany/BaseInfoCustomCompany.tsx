@@ -2,6 +2,7 @@ import React from "react";
 import Layout from "../../Layout";
 import BaseInfoCustomCompanyPage from "./BaseInfoCustomCampanyPage";
 import { useSearchParams } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 const BaseInfoCustomCompany: React.FC = () => {
     const [searchParams] = useSearchParams();
@@ -9,12 +10,17 @@ const BaseInfoCustomCompany: React.FC = () => {
     const companyName = searchParams.get("name") || undefined;
 
     return (
-        <Layout child={
-            <BaseInfoCustomCompanyPage 
-                companyName={companyName} 
-                companyType={companyType} 
-            />
-        } />
+        <>
+            <Helmet>
+                <title>세진정판 - 홈</title>
+            </Helmet>
+            <Layout child={
+                <BaseInfoCustomCompanyPage 
+                    companyName={companyName} 
+                    companyType={companyType} 
+                />
+            } />
+        </>
     );
 }
 

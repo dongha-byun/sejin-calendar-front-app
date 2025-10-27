@@ -1,11 +1,17 @@
+import { Helmet } from "react-helmet-async";
 import Layout from "../../Layout";
 import BaseInfoPaperPage from "./BaseInfoPaperPage";
 
 const BaseInfoPaper: React.FC = () => {
     return (
-        <Layout child={
-            <BaseInfoPaperPage />
-        } />
+        <>
+            <Helmet>
+                <title>세진정판 - 용지</title>
+            </Helmet>
+            <Layout child={
+                <BaseInfoPaperPage />
+            } />
+        </>
     );
 }
 

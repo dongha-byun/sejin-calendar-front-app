@@ -1,11 +1,17 @@
+import { Helmet } from "react-helmet-async";
 import Layout from "../../Layout"
 import BaseInfoModelPage from "./BaseInfoModelPage";
 
 const BaseInfoModel: React.FC = () => {
     return (
-        <Layout child={
-            <BaseInfoModelPage />
-        } />
+        <>
+            <Helmet>
+                <title>세진정판 - Model</title>
+            </Helmet>
+            <Layout child={
+                <BaseInfoModelPage />
+            } />
+        </>
     );
 };
 

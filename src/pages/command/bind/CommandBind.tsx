@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import Layout from "../../Layout";
 import CommandBindPage from "./CommandBindPage";
 
@@ -5,9 +6,14 @@ import CommandBindPage from "./CommandBindPage";
 const CommandBind: React.FC = () => {
 
     return (
-        <Layout child={
-            <CommandBindPage />
-        } />
+        <>
+            <Helmet>
+                <title>세진정판 - 제본지시</title>
+            </Helmet>
+            <Layout child={
+                <CommandBindPage />
+            } />
+        </>
     );
 };
 
