@@ -7,7 +7,7 @@ export default function DiaryPackaging() {
     return (
         <>
             <Helmet>
-                <title>세진정판 - 포장</title>
+                <title>포장</title>
             </Helmet>
             <Layout child={
                 <DiaryPackagingPage />

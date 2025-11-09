@@ -6,7 +6,7 @@ export default function DiaryBind() {
     return (
         <>
             <Helmet>
-                <title>세진정판 - 제본</title>
+                <title>제본</title>
             </Helmet>
             <Layout child={
                 <DiaryBindPage />

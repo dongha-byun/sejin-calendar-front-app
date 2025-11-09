@@ -7,7 +7,7 @@ const PutinPaper: React.FC = () => {
     return (
         <>
             <Helmet>
-                <title>세진정판 - 용지입고</title>
+                <title>용지입고</title>
             </Helmet>
             <Layout child={
                 <PutinPaperPage />

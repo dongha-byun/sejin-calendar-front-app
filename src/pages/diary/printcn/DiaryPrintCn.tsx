@@ -7,7 +7,7 @@ export default function DiaryPrintCn() {
     return (
         <>
             <Helmet>
-                <title>세진정판 - 상호인쇄</title>
+                <title>상호인쇄</title>
             </Helmet>
             <Layout child={
                 <DiaryPrintCnPage />

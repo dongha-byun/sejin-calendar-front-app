@@ -8,7 +8,7 @@ const CommandBind: React.FC = () => {
     return (
         <>
             <Helmet>
-                <title>세진정판 - 제본지시</title>
+                <title>제본지시</title>
             </Helmet>
             <Layout child={
                 <CommandBindPage />

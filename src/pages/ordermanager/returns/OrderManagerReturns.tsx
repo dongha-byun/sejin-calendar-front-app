@@ -7,7 +7,7 @@ export default function OrderManagerReturns() {
     return (
         <>
             <Helmet>
-                <title>세진정판 - 주문반품</title>
+                <title>주문반품</title>
             </Helmet>
             <Layout child={
                 <OrderManagerReturnsPage />

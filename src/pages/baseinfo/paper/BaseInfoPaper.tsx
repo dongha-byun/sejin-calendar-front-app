@@ -6,7 +6,7 @@ const BaseInfoPaper: React.FC = () => {
     return (
         <>
             <Helmet>
-                <title>세진정판 - 용지</title>
+                <title>용지</title>
             </Helmet>
             <Layout child={
                 <BaseInfoPaperPage />

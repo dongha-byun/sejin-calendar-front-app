@@ -8,7 +8,7 @@ export default function MonitorPaper() {
     return (
         <>
             <Helmet>    
-                <title>세진정판 - 용지재고조회(용지별)</title>
+                <title>용지재고조회(용지별)</title>
             </Helmet>
             <Layout child={
                 <MonitorPaperPage />

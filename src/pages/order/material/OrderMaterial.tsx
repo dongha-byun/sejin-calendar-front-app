@@ -7,7 +7,7 @@ const OrderMaterial: React.FC = () => {
     return (
         <>
             <Helmet>
-                <title>세진정판 - 원자재발주</title>
+                <title>원자재발주</title>
             </Helmet>
             <Layout child={
                 <OrderMaterialPage />

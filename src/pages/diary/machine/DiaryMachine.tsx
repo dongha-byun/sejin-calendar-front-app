@@ -7,7 +7,7 @@ const DiaryMachine: React.FC = () => {
     return (
         <>
             <Helmet>
-                <title>세진정판 - 정합</title>
+                <title>정합</title>
             </Helmet>
             <Layout child={
                 <DiaryMachinePage />

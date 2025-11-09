@@ -7,7 +7,7 @@ export default function DiaryPrint() {
     return (
         <>
             <Helmet>
-                <title>세진정판 - 인쇄물입고</title>
+                <title>인쇄물입고</title>
             </Helmet>
             <Layout child={
                 <DiaryPrintPage />

@@ -7,7 +7,7 @@ const CommandPrint: React.FC = () => {
     return (
         <>
             <Helmet>
-                <title>세진정판 - 인쇄지시</title>
+                <title>인쇄지시</title>
             </Helmet>
             <Layout child={
                 <CommandPrintPage />

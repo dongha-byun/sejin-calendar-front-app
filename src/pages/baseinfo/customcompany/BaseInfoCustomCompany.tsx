@@ -12,7 +12,7 @@ const BaseInfoCustomCompany: React.FC = () => {
     return (
         <>
             <Helmet>
-                <title>세진정판 - 홈</title>
+                <title>거래처</title>
             </Helmet>
             <Layout child={
                 <BaseInfoCustomCompanyPage 

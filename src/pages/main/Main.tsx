@@ -5,7 +5,7 @@ const Main: React.FC = () => {
     return (
         <>
             <Helmet>
-                <title>세진정판 - 홈</title>
+                <title>홈</title>
             </Helmet>
             <Layout />
         </>

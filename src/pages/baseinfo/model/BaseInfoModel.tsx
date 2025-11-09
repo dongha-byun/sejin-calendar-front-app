@@ -6,7 +6,7 @@ const BaseInfoModel: React.FC = () => {
     return (
         <>
             <Helmet>
-                <title>세진정판 - Model</title>
+                <title>Model</title>
             </Helmet>
             <Layout child={
                 <BaseInfoModelPage />

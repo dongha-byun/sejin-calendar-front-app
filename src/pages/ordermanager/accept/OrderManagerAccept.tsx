@@ -6,7 +6,7 @@ export default function OrderManagerAccept() {
     return (
         <>
             <Helmet>
-                <title>세진정판 - 주문접수</title>
+                <title>주문접수</title>
             </Helmet>
             <Layout child={
                 <OrderManagerAcceptPage />

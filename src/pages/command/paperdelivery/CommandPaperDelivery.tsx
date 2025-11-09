@@ -7,7 +7,7 @@ const CommandPaperDelivery: React.FC = () => {
     return (
         <>
             <Helmet>
-                <title>세진정판 - 용지배송</title>
+                <title>용지배송</title>
             </Helmet>
             <Layout child={
                 <CommandPaperDeliveryPage />

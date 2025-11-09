@@ -6,7 +6,7 @@ export default function OrderManagerCancel() {
     return (
         <>
             <Helmet>
-                <title>세진정판 - 주문취소</title>
+                <title>주문취소</title>
             </Helmet>
             <Layout child={
                 <OrderManagerCancelPage />

@@ -31,7 +31,7 @@ export default function LoginPage() {
   return (
     <>
     <Helmet>
-      <title>세진정판 - 로그인</title>
+      <title>로그인</title>
     </Helmet>
       <div className="min-h-screen flex items-center justify-center">
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 w-full p-6 max-w-md mx-auto my-6">

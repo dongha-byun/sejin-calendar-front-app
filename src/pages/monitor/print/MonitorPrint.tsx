@@ -8,7 +8,7 @@ export default function MonitorPrint() {
     return (
         <>
             <Helmet>
-                <title>세진정판 - 용지재고조회(인쇄소별)</title>
+                <title>용지재고조회(인쇄소별)</title>
             </Helmet>
             <Layout child={
                 <MonitorPrintPage />

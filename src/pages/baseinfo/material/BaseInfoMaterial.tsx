@@ -8,7 +8,7 @@ const BaseInfoMaterial: React.FC = () => {
     return (
         <>
             <Helmet>
-                <title>세진정판 - 원자재</title>
+                <title>원자재</title>
             </Helmet>
             <Layout child={
                 <BaseInfoMaterialPage /> 

@@ -6,7 +6,7 @@ export default function MonitorModel() {
     return (
         <>
             <Helmet>
-                <title>세진정판 - 호별 생산 내역 조회</title>
+                <title>호별 생산 내역 조회</title>
             </Helmet>
             <Layout child={
                 <MonitorModelPage />

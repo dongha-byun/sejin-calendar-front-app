@@ -39,6 +39,7 @@ export default function CommandPrintFormSection({ onAdd, companies, models, pape
         innerSobu: 0,
         innerDosu: 0,
         iDate: nowDate,
+        rDate: '',
         contents: '',
         etc: ''
     });
@@ -140,7 +141,8 @@ export default function CommandPrintFormSection({ onAdd, companies, models, pape
             innerRequirePaper: "0.00",
             innerSobu: 0,
             innerDosu: 0,
-            iDate: '',
+            iDate: nowDate,
+            rDate: '',
             contents: '',
             etc: ''
         });
