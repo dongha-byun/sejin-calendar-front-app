@@ -1,6 +1,6 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import LoginPage from "../pages/auth/LoginPage";
-import Layout from "../pages/Layout";
+import Main from "../pages/main/Main";
 import BaseInfoCustomCompany from "../pages/baseinfo/customcompany/BaseInfoCustomCompany";
 import BaseInfoMaterial from "../pages/baseinfo/material/BaseInfoMaterial";
 import BaseInfoPaper from "../pages/baseinfo/paper/BaseInfoPaper";
@@ -46,7 +46,7 @@ const router = createBrowserRouter([
     {
         path: "/main",
         element: (
-            <Layout />
+            <Main />
         )
     },
     {
