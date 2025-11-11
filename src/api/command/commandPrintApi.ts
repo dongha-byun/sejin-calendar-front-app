@@ -20,4 +20,8 @@ export const commandPrintApi = {
         const response = await apiService.get("/api/v1/command/print/search", queryParam);
         return response.data.data;
     },
+    getNextStatementNum: async () => {
+        const response = await apiService.get("/api/v1/command/print/statement-num");
+        return response.data.data.nextStatementNum;
+    }
 }

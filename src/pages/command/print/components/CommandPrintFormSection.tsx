@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { CommandPrintDto } from "../../../../types/command/CommandPrint";
 import FormItem from "../../../../component/form/FormItem";
-import InputText from "../../../../component/form/InputText";
+import InputText, { InputTextSize } from "../../../../component/form/InputText";
 import { nowDate } from "../../../../utils/dateUtils";
 import type { CustomCompany } from "../../../../types/baseinfo/CustomCompany";
 import CommonSelect from "../../../../component/form/CommonSelect";
@@ -15,9 +15,10 @@ interface Props {
     companies: CustomCompany[];
     models: Model[];
     papers: Paper[];
+    nextStatementNum: string;
 }
 
-export default function CommandPrintFormSection({ onAdd, companies, models, papers }: Props) {
+export default function CommandPrintFormSection({ onAdd, companies, models, papers, nextStatementNum }: Props) {
     const [form, setForm] = useState<CommandPrintDto>({
         statementNum: '',
         printCompanyName: '',
@@ -53,6 +54,15 @@ export default function CommandPrintFormSection({ onAdd, companies, models, pape
     const [coverStandardList, setCoverStandardList] = useState<string[]>([]);
 
     useEffect(() => {
+        if (nextStatementNum) {
+            setForm(prev => ({
+                ...prev,
+                statementNum: nextStatementNum
+            }));
+        }
+    }, [nextStatementNum]);
+
+    useEffect(() => {
         const weights = makeDistinctArray(papers.map(p => p.weight));
         setInnerWeightList(weights);
         setCoverWeightList(weights);
@@ -60,7 +70,7 @@ export default function CommandPrintFormSection({ onAdd, companies, models, pape
         setInnerStandardList([]);
         setCoverPropertiesList([]);
         setCoverStandardList([]);
-    }, []);
+    }, [papers]);
 
     useEffect(() => {
         const model = models.find(model => model.modelNum === form.modelNum);
@@ -122,7 +132,7 @@ export default function CommandPrintFormSection({ onAdd, companies, models, pape
 
     const onInit = () => {
         setForm({
-            statementNum: '',
+            statementNum: nextStatementNum || '',
             printCompanyName: '',
             modelNum: '',
             modelName: '',
@@ -154,13 +164,13 @@ export default function CommandPrintFormSection({ onAdd, companies, models, pape
     };
 
     return (
-        <div className="grid grid-cols-6 gap-4 p-4 bg-white rounded shadow mb-4 max-w-full">
+        <div className="grid w-fit [grid-template-columns:repeat(3,minmax(0,14rem))_repeat(3,minmax(0,8rem))] gap-4 p-4 bg-white rounded shadow mb-4">
             {/* 1행 */}
             <FormItem label="전표" required children={
                 <InputText 
                     name="statementNum"
                     value={form.statementNum}
-                    onChange={handleChange} />
+                    readOnly />
             } />
             <FormItem label="인쇄소명" required children={
                 <CommonSelect 
@@ -241,23 +251,26 @@ export default function CommandPrintFormSection({ onAdd, companies, models, pape
                     onChange={handleChange} 
                     options={coverStandardList.map(weight => ({ value: weight, label: weight }))} />
             } />
-            <FormItem label="용지량(표)" children={
+            <FormItem label="용지량(표)" additionClass="flex-none" children={
                 <InputText 
                     name="coverRequirePaper"
                     value={form.coverRequirePaper}
+                    size={InputTextSize.Small}
                     onChange={handleChange} 
                     unitText="R"/>
             } />
-            <FormItem label="소부(표)" children={
+            <FormItem label="소부(표)" additionClass="flex-none" children={
                 <InputText 
                     name="coverSobu"
                     value={form.coverSobu}
+                    size={InputTextSize.Small}
                     onChange={handleChange} />
             } />
-            <FormItem label="도수(표)" children={
+            <FormItem label="도수(표)" additionClass="flex-none" children={
                 <InputText 
                     name="coverDosu"
                     value={form.coverDosu}
+                    size={InputTextSize.Small}
                     onChange={handleChange} />
             } />
 
@@ -283,23 +296,26 @@ export default function CommandPrintFormSection({ onAdd, companies, models, pape
                     onChange={handleChange} 
                     options={innerStandardList.map(weight => ({ value: weight, label: weight }))} />
             } />
-            <FormItem label="용지량(내)" children={
+            <FormItem label="용지량(내)" additionClass="flex-none" children={
                 <InputText 
                     name="innerRequirePaper"
                     value={form.innerRequirePaper}
+                    size={InputTextSize.Small}
                     onChange={handleChange} 
                     unitText="R"/>
             } />
-            <FormItem label="소부(내)" children={
+            <FormItem label="소부(내)" additionClass="flex-none" children={
                 <InputText 
                     name="innerSobu"
                     value={form.innerSobu}
+                    size={InputTextSize.Small}
                     onChange={handleChange} />
             } />
-            <FormItem label="도수(내)" children={
+            <FormItem label="도수(내)" additionClass="flex-none" children={
                 <InputText 
                     name="innerDosu"
                     value={form.innerDosu}
+                    size={InputTextSize.Small}
                     onChange={handleChange} />
             } />
 
@@ -338,8 +354,15 @@ export default function CommandPrintFormSection({ onAdd, companies, models, pape
             <div />
             <div />
 
-            <div className="flex gap-2 mt-2">
-                <button onClick={handleSubmit} className="bg-green-500 text-white px-4 py-1 rounded">확인</button>
+            <div className="flex items-center mt-2">
+                <div className="flex-1 flex justify-end gap-2">
+                    <button onClick={handleSubmit} className="bg-green-500 text-white px-4 py-1 rounded">확인</button>
+                </div>
+                <div className="flex-1" />
+                <div className="flex-4 text-center leading-5">
+                    <div>표인쇄지시가능량</div>
+                    <div>내인쇄지시가능량</div>
+                </div>
             </div>
         </div>
     );

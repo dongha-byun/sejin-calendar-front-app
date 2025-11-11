@@ -15,7 +15,7 @@ export enum TextAlign {
 interface Props {
     name: string;
     value: any;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     type?: string;
     size?: InputTextSize;
     placeholder?: string;
