@@ -56,73 +56,73 @@ const router = createBrowserRouter([
         )
     },
     {
-        path: "/base-info/material",
+        path: "/base-info/material", // 기초자료 등록 - 원자재
         element: (
             <BaseInfoMaterial />
         )
     },
     {
-        path: "/base-info/paper",
+        path: "/base-info/paper", // 기초자료 등록 - 용지
         element: (
             <BaseInfoPaper />
         )
     },
     {
-        path: "/base-info/model",
+        path: "/base-info/model", // 기초자료 등록 - 모델
         element: (
             <BaseInfoModel />
         )
     },
     {
-        path: "/order/material",
+        path: "/order/material", // 자재발주 - 원자재발주
         element: (
             <OrderMaterial />
         )
     },
     {
-        path: "/order/paper",
+        path: "/order/paper", // 자재발주 - 용지발주
         element: (
             <OrderPaper />
         )
     },
     {
-        path: "/putin/material",
+        path: "/putin/material", // 자재입고 - 원자재입고
         element: (
             <PutinMaterial />
         )
     },
     {
-        path: "/putin/paper",
+        path: "/putin/paper", // 자재입고 - 용지입고
         element: (
             <PutinPaper />
         )
     },
     {
-        path: "/command/paper-delivery",
+        path: "/command/paper-delivery", // 작업지시 - 용지배송
         element: (
             <CommandPaperDelivery />
         )
     },
     {
-        path: "/command/print",
+        path: "/command/print", // 작업지시 - 인쇄지시
         element: (
             <CommandPrint />
         )
     },
     {
-        path: "/command/bind",
+        path: "/command/bind", // 작업지시 - 제본지시
         element: (
             <CommandBind />
         )
     },
     {
-        path: "/command/custom-print",
+        path: "/command/custom-print", // 작업지시 - 상호쇄입
         element: (
             <CommandCustomPrint />
         )
     },
     {
-        path: "/command/order-out",
+        path: "/command/order-out", // 작업지시 - 출고증발행
         element: (
             <CommandOrderOut />
         )

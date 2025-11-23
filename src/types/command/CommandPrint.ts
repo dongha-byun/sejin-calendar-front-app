@@ -69,3 +69,7 @@ export const toCommandPrintDto = (data: CommandPrint): CommandPrintDto => ({
     coverRequirePaper: data.coverRequirePaper.toString(),
     innerRequirePaper: data.innerRequirePaper.toString()
 });
+
+export interface CommandableQuantityDto {
+    quantity: number;
+}

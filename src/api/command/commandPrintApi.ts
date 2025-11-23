@@ -23,5 +23,17 @@ export const commandPrintApi = {
     getNextStatementNum: async () => {
         const response = await apiService.get("/api/v1/command/print/statement-num");
         return response.data.data.nextStatementNum;
+    },
+    getCommandableQuantity: async (
+        printCompanyName: string, weight: number, properties: string, standard: string, type: 'cover' | 'inner'
+    ) => {
+        const queryParam = {
+            printCompanyName: printCompanyName,
+            weight: weight,
+            properties: properties,
+            standard: standard,
+        }
+        const response = await apiService.get(`/api/v1/commandable/print/quantity/${type}`, queryParam );
+        return response.data.data;
     }
 }

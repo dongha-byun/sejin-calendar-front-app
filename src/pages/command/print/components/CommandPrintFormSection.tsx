@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { CommandPrintDto } from "../../../../types/command/CommandPrint";
+import type { CommandableQuantityDto, CommandPrintDto } from "../../../../types/command/CommandPrint";
 import FormItem from "../../../../component/form/FormItem";
 import InputText, { InputTextSize } from "../../../../component/form/InputText";
 import { nowDate } from "../../../../utils/dateUtils";
@@ -16,9 +16,12 @@ interface Props {
     models: Model[];
     papers: Paper[];
     nextStatementNum: string;
+    coverCommandableQuantity: CommandableQuantityDto;
+    innerCommandableQuantity: CommandableQuantityDto;
+    fetchCommandableQuantity: (printCompanyName: string, weight: number, properties: string, standard: string, type: 'cover' | 'inner') => void;
 }
 
-export default function CommandPrintFormSection({ onAdd, companies, models, papers, nextStatementNum }: Props) {
+export default function CommandPrintFormSection({ onAdd, companies, models, papers, nextStatementNum, coverCommandableQuantity, innerCommandableQuantity, fetchCommandableQuantity }: Props) {
     const [form, setForm] = useState<CommandPrintDto>({
         statementNum: '',
         printCompanyName: '',
@@ -90,6 +93,17 @@ export default function CommandPrintFormSection({ onAdd, companies, models, pape
     }, [form.modelNum]);
 
     // TODO : 소요량 표시 관련 기능 확인 후 구현 추가 필요 (티켓 SJC-107 확인)
+    useEffect(() => {
+        if(form.printCompanyName && form.coverWeight && form.coverProperties && form.coverStandard) {
+            fetchCommandableQuantity(form.printCompanyName, form.coverWeight, form.coverProperties, form.coverStandard, 'cover');
+        }
+    }, [form.printCompanyName, form.coverWeight, form.coverProperties, form.coverStandard]);
+
+    useEffect(() => {
+        if(form.printCompanyName && form.innerWeight && form.innerProperties && form.innerStandard) {
+            fetchCommandableQuantity(form.printCompanyName, form.innerWeight, form.innerProperties, form.innerStandard, 'inner');
+        }
+    }, [form.printCompanyName, form.innerWeight, form.innerProperties, form.innerStandard]);
 
     useEffect(() => {
         const propertiesList = papers.filter(p => p.weight === form.innerWeight).map(p => p.properties);
@@ -159,6 +173,7 @@ export default function CommandPrintFormSection({ onAdd, companies, models, pape
     }
 
     const handleSubmit = () => {
+        
         onAdd(form);
         onInit();
     };
@@ -360,8 +375,8 @@ export default function CommandPrintFormSection({ onAdd, companies, models, pape
                 </div>
                 <div className="flex-1" />
                 <div className="flex-4 text-center leading-5">
-                    <div>표인쇄지시가능량</div>
-                    <div>내인쇄지시가능량</div>
+                    <div>표인쇄지시가능량 : {coverCommandableQuantity.quantity}</div>
+                    <div>내인쇄지시가능량 : {innerCommandableQuantity.quantity}</div>
                 </div>
             </div>
         </div>
