@@ -13,6 +13,10 @@ const Header: React.FC = () => {
         setIsSubmenuOpen((prev) => !prev);
     };
 
+    const handleChildMenuClick = () => {
+        setIsSubmenuOpen(false);
+    };
+
     useEffect(() => {
         menuApi.list().then(setMenus);
     },[]);
@@ -49,6 +53,8 @@ const Header: React.FC = () => {
                                 <li key={child.id} className="hover:bg-gray-600 hover:text-white hover:rounded transition">
                                     <a  href={child.path || "#"}
                                         target="_blank"
+                                        rel="noopener noreferrer"
+                                        onClick={handleChildMenuClick}
                                     >
                                     {child.name}
                                     </a>
