@@ -6,8 +6,8 @@ interface Props {
 
 export default function PaperTable({ data }: Props) {
     return (
-        <div className="overflow-x-auto">
-            <table className="table-auto w-full border text-sm">
+        <div className="overflow-x-auto overflow-y-auto max-w-[30vw] h-[500px] bg-white pb-4 -mb-4">
+            <table className="table w-full min-w-max border text-sm bg-white">
                 <thead className="bg-gray-200">
                     <tr>
                         <th className="border px-2 py-1">번호</th>

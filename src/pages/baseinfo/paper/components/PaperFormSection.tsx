@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import type { Paper } from "../../../../types/baseinfo/Paper";
-import FormRow from "../../../../component/form/FormRow";
 import FormItem from "../../../../component/form/FormItem";
 import InputText from "../../../../component/form/InputText";
 import SelectText from "../../../../component/form/SelectText";
@@ -50,35 +49,36 @@ export default function PaperFormSection({ onAdd, list }: Props) {
     }
 
     return (
-        <div className="min-w-[500px] max-w-[50vw] w-full grid grid-cols-2 gap-4 border p-4 mb-4">
-            <div className="flex flex-col gap-2">
-                <FormRow>
-                    <FormItem label="무게" required children={
-                        <InputText name="weight" value={form.weight} onChange={handleChange} unitText="g" />
-                    } />
-                </FormRow>
-                <FormRow>
-                    <FormItem label="지질" required children={
-                        <SelectText 
-                            name="properties"
-                            value={form.properties}
-                            onChange={handleChange}
-                            options={propertiesList.map(c => ({ value: c, label: c }))} />
-                    } />
-                </FormRow>
-                <FormRow>
-                    <FormItem label="규격" required children={
-                        <SelectText 
-                            name="standard"
-                            value={form.standard}
-                            onChange={handleChange}
-                            options={standardList.map(c => ({ value: c, label: c }))} />
-                    } />
-                </FormRow>
-                <div className="flex gap-2 mt-2">
-                    <button onClick={handleSubmit} className="bg-green-500 text-white px-4 py-1 rounded">확인</button>
-                    <button onClick={onInit} className="bg-red-500 text-white px-4 py-1 rounded">취소</button>
-                </div>
+        <div className="grid grid-cols-2 gap-4 p-4 bg-white rounded shadow mb-4 max-w-[30vw]">
+            {/* 1행 */}
+            <FormItem label="무게" required children={
+                <InputText name="weight" value={form.weight} onChange={handleChange} unitText="g" />
+            } />
+            <div />
+
+            {/* 2행 */}
+            <FormItem label="지질" required children={
+                <SelectText 
+                    name="properties"
+                    value={form.properties}
+                    onChange={handleChange}
+                    options={propertiesList.map(c => ({ value: c, label: c }))} />
+            } />
+            <div />
+
+            {/* 3행 */}
+            <FormItem label="규격" required children={
+                <SelectText 
+                    name="standard"
+                    value={form.standard}
+                    onChange={handleChange}
+                    options={standardList.map(c => ({ value: c, label: c }))} />
+            } />
+            <div />
+
+            <div className="flex gap-2 mt-2">
+                <button onClick={handleSubmit} className="bg-green-500 text-white px-4 py-1 rounded">확인</button>
+                <button onClick={onInit} className="bg-red-500 text-white px-4 py-1 rounded">취소</button>
             </div>
         </div>
     );
