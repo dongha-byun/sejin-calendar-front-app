@@ -6,8 +6,8 @@ interface Props {
 
 export default function CustomCompanyTable({ data }: Props) {
   return (
-    <div className="overflow-x-auto pb-4 -mb-4">
-      <table className="table w-full min-w-max border text-sm">
+    <div className="overflow-x-auto overflow-y-auto w-full h-[500px] bg-white pb-4 -mb-4">
+      <table className="table w-full min-w-max border text-sm bg-white">
         <thead className="bg-gray-200">
           <tr>
             <th className="border px-2 py-1">번호</th>
@@ -28,7 +28,7 @@ export default function CustomCompanyTable({ data }: Props) {
         </thead>
         <tbody>
           {data.map((s, idx) => (
-            <tr key={idx} className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+            <tr key={idx} className="bg-white">
               <td className="border px-2 py-1 text-center">{s.id}</td>
               <td className="border px-2 py-1">{s.companyType}</td>
               <td className="border px-2 py-1">{s.name}</td>
