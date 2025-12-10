@@ -77,6 +77,7 @@ export default function CommandPrintFormSection({ onAdd, companies, models, pape
 
     useEffect(() => {
         const model = models.find(model => model.modelNum === form.modelNum);
+        calculateRequirePaper(form.modelNum, Number(form.totalCount));
 
         setForm((prev) => ({
             ...prev,
@@ -84,11 +85,9 @@ export default function CommandPrintFormSection({ onAdd, companies, models, pape
             coverWeight: model?.coverWeight ? Number(model.coverWeight) : 0,
             coverProperties: model?.coverProperties || "",
             coverStandard: model?.coverStandard || "",
-            coverRequirePaper: model?.coverRequirePaper ? formatNumber(model.coverRequirePaper) : "0.00",
             innerWeight: model?.innerWeight ? Number(model.innerWeight) : 0,
             innerProperties: model?.innerProperties || "",
             innerStandard: model?.innerStandard || "",
-            innerRequirePaper: model?.innerRequirePaper ? formatNumber(model.innerRequirePaper) : "0.00",
         }));
     }, [form.modelNum]);
 
@@ -132,6 +131,7 @@ export default function CommandPrintFormSection({ onAdd, companies, models, pape
 
     useEffect(() => {
         const totalCount = Number(form.orderCount.replace(/,/g, "")) + Number(form.spareCount.replace(/,/g, ""));
+        calculateRequirePaper(form.modelNum, Number(totalCount));
         setForm(prev => ({
             ...prev,
             totalCount: formatNumber(totalCount)
@@ -143,6 +143,22 @@ export default function CommandPrintFormSection({ onAdd, companies, models, pape
         const { name, value } = e.target;
         setForm(prev => ({ ...prev, [name]: value }));
     };
+
+    // 용지량 계산 -> 모델, 총 수량 변경시 호출
+    const calculateRequirePaper = (modelNum: string, totalCount: number) => {
+        const model = models.find(model => model.modelNum === modelNum);
+        const coverRequirePaper = model?.coverRequirePaper || 0;
+        const innerRequirePaper = model?.innerRequirePaper || 0;
+
+        const coverRequirePaperValue = coverRequirePaper * totalCount / 10000;
+        const innerRequirePaperValue = innerRequirePaper * totalCount / 10000;
+
+        setForm(prev => ({
+            ...prev,
+            coverRequirePaper: formatNumber(coverRequirePaperValue),
+            innerRequirePaper: formatNumber(innerRequirePaperValue)
+        }));
+    }
 
     const onInit = () => {
         setForm({
@@ -369,14 +385,22 @@ export default function CommandPrintFormSection({ onAdd, companies, models, pape
             <div />
             <div />
 
-            <div className="flex items-center mt-2">
-                <div className="flex-1 flex justify-end gap-2">
-                    <button onClick={handleSubmit} className="bg-green-500 text-white px-4 py-1 rounded">확인</button>
+            <div className="flex items-center mt-2 col-span-2">
+                <div className="flex justify-end gap-2">
+                    <button onClick={handleSubmit} className="bg-green-500 text-white px-4 py-1 rounded">다음</button>
+                    <button onClick={handleSubmit} className="bg-green-500 text-white px-4 py-1 rounded">계속입력</button>
+                    <button onClick={handleSubmit} className="bg-red-500 text-white px-4 py-1 rounded">취소</button>
                 </div>
-                <div className="flex-1" />
-                <div className="flex-4 text-center leading-5">
+            </div>
+            <div className="flex mt-2 col-span-2">
+                <div className="text-center leading-5">
                     <div>표인쇄지시가능량 : {coverCommandableQuantity.quantity}</div>
                     <div>내인쇄지시가능량 : {innerCommandableQuantity.quantity}</div>
+                </div>
+            </div>
+            <div className="flex items-center mt-2 col-span-2">
+                <div className="flex justify-end gap-2">
+                    <button onClick={handleSubmit} className="bg-gray-500 text-white px-4 py-1 rounded">인쇄미리보기</button>
                 </div>
             </div>
         </div>
