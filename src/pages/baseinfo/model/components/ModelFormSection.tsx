@@ -146,7 +146,7 @@ export default function ModelFormSection({ onAdd, papers }: Props) {
         onAdd(form);
     };
     return (
-        <div className="grid grid-cols-4 gap-4 p-4 bg-gray-200 rounded shadow max-w-6xl mb-4">
+        <div className="grid grid-cols-4 gap-4 p-4 bg-white rounded shadow mb-4 max-w-[50vw]">
             {/* 1행 */}
             <FormItem label="모델" required>
                 <InputText name="modelNum" value={form.modelNum} onChange={handleChange} />
