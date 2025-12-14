@@ -394,8 +394,8 @@ export default function CommandPrintFormSection({ onAdd, companies, models, pape
             </div>
             <div className="flex mt-2 col-span-2">
                 <div className="text-center leading-5">
-                    <div>표인쇄지시가능량 : {coverCommandableQuantity.quantity}</div>
-                    <div>내인쇄지시가능량 : {innerCommandableQuantity.quantity}</div>
+                    <div>표인쇄지시가능량 : <span className={(coverCommandableQuantity.quantity - Number(form.coverRequirePaper)) < 0 ? "text-red-500" : "text-black-700"}>{coverCommandableQuantity.quantity - Number(form.coverRequirePaper)}</span></div>
+                    <div>내인쇄지시가능량 : <span className={(innerCommandableQuantity.quantity - Number(form.innerRequirePaper)) < 0 ? "text-red-500" : "text-black-700"}>{innerCommandableQuantity.quantity - Number(form.innerRequirePaper)}</span></div>
                 </div>
             </div>
             <div className="flex items-center mt-2 col-span-2">
