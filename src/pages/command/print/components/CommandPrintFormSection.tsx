@@ -6,9 +6,14 @@ import { nowDate } from "../../../../utils/dateUtils";
 import type { CustomCompany } from "../../../../types/baseinfo/CustomCompany";
 import CommonSelect from "../../../../component/form/CommonSelect";
 import type { Model } from "../../../../types/baseinfo/Model";
-import { formatNumber } from "../../../../utils/numberUtils";
+import { decimalCalculate, formatNumber, padDecimal } from "../../../../utils/numberUtils";
 import type { Paper } from "../../../../types/baseinfo/Paper";
 import { makeDistinctArray } from "../../../../utils/arrayUtils";
+
+interface PrintableQuantity {
+    inner: number;
+    cover: number;
+}
 
 interface Props {
     onAdd: (commandPrint: CommandPrintDto) => void;
@@ -55,6 +60,10 @@ export default function CommandPrintFormSection({ onAdd, companies, models, pape
     const [coverWeightList, setCoverWeightList] = useState<number[]>([]);
     const [coverPropertiesList, setCoverPropertiesList] = useState<string[]>([]);
     const [coverStandardList, setCoverStandardList] = useState<string[]>([]);
+    const [printableQuantity, setPrintableQuantity] = useState<PrintableQuantity>({
+        cover: 0,
+        inner: 0
+    });
 
     useEffect(() => {
         if (nextStatementNum) {
@@ -157,6 +166,16 @@ export default function CommandPrintFormSection({ onAdd, companies, models, pape
             ...prev,
             coverRequirePaper: formatNumber(coverRequirePaperValue),
             innerRequirePaper: formatNumber(innerRequirePaperValue)
+        }));
+
+        console.log(coverCommandableQuantity);
+        console.log(innerCommandableQuantity);
+        console.log(coverRequirePaperValue);
+        console.log(innerRequirePaperValue);
+        setPrintableQuantity(prev => ({
+            ...prev,
+            cover : decimalCalculate(coverCommandableQuantity.quantity, coverRequirePaperValue),
+            inner : decimalCalculate(innerCommandableQuantity.quantity, innerRequirePaperValue),
         }));
     }
 
@@ -394,8 +413,8 @@ export default function CommandPrintFormSection({ onAdd, companies, models, pape
             </div>
             <div className="flex mt-2 col-span-2">
                 <div className="text-center leading-5">
-                    <div>표인쇄지시가능량 : <span className={(coverCommandableQuantity.quantity - Number(form.coverRequirePaper)) < 0 ? "text-red-500" : "text-black-700"}>{coverCommandableQuantity.quantity - Number(form.coverRequirePaper)}</span></div>
-                    <div>내인쇄지시가능량 : <span className={(innerCommandableQuantity.quantity - Number(form.innerRequirePaper)) < 0 ? "text-red-500" : "text-black-700"}>{innerCommandableQuantity.quantity - Number(form.innerRequirePaper)}</span></div>
+                    <div>표인쇄지시가능량 : <span className={(printableQuantity.cover) < 0 ? "text-red-500" : "text-black-700"}>{formatNumber(printableQuantity.cover)}</span></div>
+                    <div>내인쇄지시가능량 : <span className={(printableQuantity.inner) < 0 ? "text-red-500" : "text-black-700"}>{formatNumber(printableQuantity.inner)}</span></div>
                 </div>
             </div>
             <div className="flex items-center mt-2 col-span-2">

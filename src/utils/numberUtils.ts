@@ -32,3 +32,8 @@ export const padDecimal = (value: string) => {
     let padded = decPart.padEnd(2, "0").slice(0, 2);
     return intPart + "." + padded;
 };
+
+// 실수 - 실수 를 정수 - 정수 계산 후 실수화
+export const decimalCalculate = (a: number, b: number) : number => {
+    return (Number)((((a * 100) - (b * 100)) / 100).toFixed(2));
+}
