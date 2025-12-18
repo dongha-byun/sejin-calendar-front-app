@@ -146,7 +146,11 @@ export default function CommandPrintFormSection({ onAdd, companies, models, pape
             totalCount: formatNumber(totalCount)
         }));
     }, [form.orderCount, form.spareCount]);
-    
+
+    // fetchCommandableQuantity 결과가 반영되면 calculateRequirePaper 실행
+    useEffect(() => {
+        calculateRequirePaper(form.modelNum, Number(form.totalCount.replace(/,/g, "")));
+    }, [coverCommandableQuantity, innerCommandableQuantity]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -168,15 +172,10 @@ export default function CommandPrintFormSection({ onAdd, companies, models, pape
             innerRequirePaper: formatNumber(innerRequirePaperValue)
         }));
 
-        console.log(coverCommandableQuantity);
-        console.log(innerCommandableQuantity);
-        console.log(coverRequirePaperValue);
-        console.log(innerRequirePaperValue);
-        setPrintableQuantity(prev => ({
-            ...prev,
-            cover : decimalCalculate(coverCommandableQuantity.quantity, coverRequirePaperValue),
-            inner : decimalCalculate(innerCommandableQuantity.quantity, innerRequirePaperValue),
-        }));
+        setPrintableQuantity({
+            cover : Number(decimalCalculate(coverCommandableQuantity.quantity, coverRequirePaperValue).toFixed(2)),
+            inner : Number(decimalCalculate(innerCommandableQuantity.quantity, innerRequirePaperValue).toFixed(2)),
+        });
     }
 
     const onInit = () => {
@@ -205,10 +204,15 @@ export default function CommandPrintFormSection({ onAdd, companies, models, pape
             contents: '',
             etc: ''
         });
+
+        setPrintableQuantity({
+            cover: 0,
+            inner: 0,
+        });
+        
     }
 
     const handleSubmit = () => {
-        
         onAdd(form);
         onInit();
     };
@@ -412,7 +416,7 @@ export default function CommandPrintFormSection({ onAdd, companies, models, pape
                 </div>
             </div>
             <div className="flex mt-2 col-span-2">
-                <div className="text-center leading-5">
+                <div className="text-left leading-5">
                     <div>표인쇄지시가능량 : <span className={(printableQuantity.cover) < 0 ? "text-red-500" : "text-black-700"}>{formatNumber(printableQuantity.cover)}</span></div>
                     <div>내인쇄지시가능량 : <span className={(printableQuantity.inner) < 0 ? "text-red-500" : "text-black-700"}>{formatNumber(printableQuantity.inner)}</span></div>
                 </div>

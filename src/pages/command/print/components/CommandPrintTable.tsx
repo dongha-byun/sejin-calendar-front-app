@@ -41,9 +41,9 @@ export default function CommandPrintTable({ data }: Props) {
                         <td className="border px-2 py-1">{s.printCompanyName}</td>
                         <td className="border px-2 py-1">{s.modelNum}</td>
                         <td className="border px-2 py-1">{s.modelName}</td>
-                        <td className="border px-2 py-1">{s.orderCount}</td>
-                        <td className="border px-2 py-1">{s.spareCount}</td>
-                        <td className="border px-2 py-1">{s.totalCount}</td>
+                        <td className="border px-2 py-1">{formatNumber(s.orderCount)}</td>
+                        <td className="border px-2 py-1">{formatNumber(s.spareCount)}</td>
+                        <td className="border px-2 py-1">{formatNumber(s.totalCount)}</td>
                         <td className="border px-2 py-1">{s.coverWeight}</td>
                         <td className="border px-2 py-1">{s.coverProperties}</td>
                         <td className="border px-2 py-1">{s.coverStandard}</td>
