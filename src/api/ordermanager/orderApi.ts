@@ -35,4 +35,12 @@ export const orderApi = {
         };
         await apiService.put("/api/v1/order-manager/cancel", body);
     },
+    findOne: async(orderNum: string) => {
+        const param = {
+            orderNum: orderNum
+        };
+
+        const response = await apiService.get(`/api/v1/order-manager`, param);
+        return response.data.data;
+    },
 }

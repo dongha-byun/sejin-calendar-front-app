@@ -8,7 +8,14 @@ interface OrderSearchReq {
     printMethod: string;
 }
 
-export default function CommandCustomPrintFormSection () {
+interface Props {
+    addOrder: (orderNum: string) => void;
+    onSelectAll: () => void;
+    onDeleteSelected: () => void;
+}
+
+export default function CommandCustomPrintFormSection (props: Props) {
+    const { addOrder, onSelectAll, onDeleteSelected } = props;
 
     const [form, setForm] = useState<OrderSearchReq>({
         orderNum: '',
@@ -18,6 +25,13 @@ export default function CommandCustomPrintFormSection () {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setForm(prev => ({ ...prev, [name]: value }));
+    };
+
+    const onEnterOrderNum = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if(e.key === 'Enter') {
+            addOrder(form.orderNum);
+            setForm(prev => ({ ...prev, orderNum: '' }));
+        }
     };
 
     const handleSubmit = () => {
@@ -47,7 +61,8 @@ export default function CommandCustomPrintFormSection () {
                 <InputText 
                     name="orderNum"
                     value={form.orderNum}
-                    onChange={handleChange} />
+                    onChange={handleChange} 
+                    onKeyDown={onEnterOrderNum} />
             } />
             <FormItem label="쇄입방법" children={
                 <SelectText 
@@ -64,8 +79,8 @@ export default function CommandCustomPrintFormSection () {
             } />
 
             <div className="flex gap-2 mt-2">
-                <button onClick={handleSubmit} className="bg-green-500 text-white px-4 py-1 rounded">모두선택(A)</button>
-                <button onClick={handleSubmit} className="bg-gray-500 text-white px-4 py-1 rounded">선택삭제(A)</button>
+                <button onClick={onSelectAll} className="bg-green-500 text-white px-4 py-1 rounded">모두선택(A)</button>
+                <button onClick={onDeleteSelected} className="bg-gray-500 text-white px-4 py-1 rounded">선택삭제(A)</button>
             </div>
         </div>
     );
