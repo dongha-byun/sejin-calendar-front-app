@@ -1,4 +1,4 @@
-import { toOrderCreateRequest, toOrderDto, type OrderCreateRequestDto } from "../../types/ordermanager/Order";
+import { toOrderCreateRequest, toOrderDto, type Order, type OrderCreateRequestDto } from "../../types/ordermanager/Order";
 import apiService from "../axiosInstance";
 
 export const orderApi = {
@@ -35,7 +35,7 @@ export const orderApi = {
         };
         await apiService.put("/api/v1/order-manager/cancel", body);
     },
-    findOne: async(orderNum: string) => {
+    findOne: async(orderNum: number): Promise<Order> => {
         const param = {
             orderNum: orderNum
         };

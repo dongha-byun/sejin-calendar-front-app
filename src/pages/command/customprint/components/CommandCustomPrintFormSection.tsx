@@ -9,7 +9,7 @@ interface OrderSearchReq {
 }
 
 interface Props {
-    addOrder: (orderNum: string) => void;
+    addOrder: (orderNum: number) => void;
     onSelectAll: () => void;
     onDeleteSelected: () => void;
 }
@@ -29,13 +29,9 @@ export default function CommandCustomPrintFormSection (props: Props) {
 
     const onEnterOrderNum = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if(e.key === 'Enter') {
-            addOrder(form.orderNum);
+            addOrder(Number(form.orderNum));
             setForm(prev => ({ ...prev, orderNum: '' }));
         }
-    };
-
-    const handleSubmit = () => {
-        onSearch();
     };
 
     const onPrint = () => {
@@ -44,10 +40,6 @@ export default function CommandCustomPrintFormSection (props: Props) {
 
     const onInit = () => {
         console.log("초기화 로직 실행");
-    }
-
-    const onSearch = () => {
-        console.log(form);
     }
     
     const printMethods = [

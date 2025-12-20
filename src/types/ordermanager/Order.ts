@@ -6,7 +6,7 @@ export const deliveryMethods: string[] = [
 
 export interface Order {
     id?: number;
-    orderNum: string; // 접수번호
+    orderNum: number; // 접수번호
     customerName: string; // 주문인
     modelNum: string; // 모델
     modelName: string; // 모델명
@@ -35,7 +35,7 @@ export interface Order {
 
 export interface OrderDto {
     id?: number;
-    orderNum: string; // 접수번호
+    orderNum: number; // 접수번호
     customerName: string; // 주문인
     modelNum: string; // 모델
     modelName: string; // 모델명
@@ -80,7 +80,7 @@ export const toOrderDto = (data: Order): OrderDto => ({
 
 // 주문 정보 생성 관련 dto
 export interface OrderCreateRequest {
-    orderNum: string; // 접수번호
+    orderNum: number; // 접수번호
     customerName: string; // 주문인
     modelNum: string; // 모델
     modelName: string; // 모델명
@@ -99,7 +99,7 @@ export interface OrderCreateRequest {
 }
 
 export interface OrderCreateRequestDto {
-    orderNum: string; // 접수번호
+    orderNum: number; // 접수번호
     customerName: string; // 주문인
     modelNum: string; // 모델
     modelName: string; // 모델명

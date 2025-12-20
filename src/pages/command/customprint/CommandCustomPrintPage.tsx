@@ -9,18 +9,21 @@ export default function CommandCustomPrintPage() {
     const [checkIds, setCheckIds] = useState<number[]>([]);
     
     useEffect(() => {
-        const saved = localStorage.getItem("orders");
-        if (saved) setOrders(JSON.parse(saved));
+        setOrders([]);
+        setCheckIds([]);
     }, []);
 
     useEffect(() => {
         localStorage.setItem("orders", JSON.stringify(orders));
     }, [orders]);
 
-    const addOrder = (orderNum: string) => {
-        orderApi.findOne(orderNum).then((order) => {
-            setOrders([...orders, order]);
-        });
+    const addOrder = (orderNum: number) => {
+        const existingOrder = orders.find(order => order.orderNum === orderNum);
+        if(!existingOrder) {
+            orderApi.findOne(orderNum).then((order) => {
+                setOrders([...orders, order]);
+            });    
+        }
     };
 
     // 모두선택: 리스트에 노출된 모든 체크박스를 체크
