@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import type { Order } from "../../../types/ordermanager/Order";
 import CommandCustomPrintFormSection from "./components/CommandCustomPrintFormSection";
 import CommandCustomPrintTable from "./components/CommandCustomPrintTable";
-import { orderApi } from "../../../api/ordermanager/orderApi";
+import { commandPrintCnApi } from "../../../api/command/commandPrintCnApi";
+import type { CommandPrintCnSearchDto } from "../../../types/command/CommandPrintCn";
 
 export default function CommandCustomPrintPage() {
-    const [orders, setOrders] = useState<Order[]>([]);
+    const [errorMessage, setErrorMessage] = useState<string>('');
+    const [orders, setOrders] = useState<CommandPrintCnSearchDto[]>([]);
     const [checkIds, setCheckIds] = useState<number[]>([]);
     
     useEffect(() => {
@@ -13,18 +14,53 @@ export default function CommandCustomPrintPage() {
         setCheckIds([]);
     }, []);
 
-    useEffect(() => {
-        localStorage.setItem("orders", JSON.stringify(orders));
-    }, [orders]);
-
-    const addOrder = (orderNum: number) => {
+    const addOrder = (orderNum: number, printMethod: string) => {
         const existingOrder = orders.find(order => order.orderNum === orderNum);
         if(!existingOrder) {
-            orderApi.findOne(orderNum).then((order) => {
-                setOrders([...orders, order]);
+            commandPrintCnApi.searchOrder(orderNum).then((res) => {
+                if(res.result.success && res.data) {
+                    // TODO : 쇄입방법이 다릅니다. 정말 추가하시겠습니까? alert 처리
+                    if(printMethod && printMethod !== res.data.modelPrintMethod) {
+                        if(!confirm("쇄입방법이 다릅니다. 정말 추가하시겠습니까?")) {
+                            return;
+                        }
+                    }
+                    setOrders([...orders, res.data]);
+                    setErrorMessage('');
+                } else {
+                    setErrorMessage(res.result.message || "주문번호 [" + orderNum + "] 을 찾을 수 없습니다.");
+                }
+            }).catch((error) => {
+                console.error(error);
+                setErrorMessage("주문번호 [" + orderNum + "] " + error.result.message);
             });    
         }
     };
+
+    const openPrintPop = (printMethod: string) => {
+        if(checkIds.length < 1) {
+            alert("체크된 값이 없습니다.");
+            return;
+        }
+        if(!printMethod) {
+            alert("쇄입방법을 선택해주세요.");
+            return;
+        }
+
+        const selectedOrders = orders.filter(order => checkIds.includes(order.id ?? 0));
+        console.log(selectedOrders);
+
+        // 도수 존재 여부 검증
+        const hasDosuOrders = selectedOrders.filter(order => order.dosu !== "");
+        if(hasDosuOrders.length > 0) {
+            const hasDosuOrderNums = hasDosuOrders.map(order => order.orderNum).join(", ");
+            const msg = "주문번호 [" + hasDosuOrderNums + "] 는 도수가 있습니다.";
+            alert(msg);
+            return;
+        }
+
+        console.log(printMethod);
+    }
 
     // 모두선택: 리스트에 노출된 모든 체크박스를 체크
     const handleSelectAll = () => {
@@ -45,6 +81,8 @@ export default function CommandCustomPrintPage() {
                 addOrder={addOrder}
                 onSelectAll={handleSelectAll}
                 onDeleteSelected={handleDeleteSelected}
+                openPrintPop={openPrintPop}
+                errorMessage={errorMessage}
             />
             <CommandCustomPrintTable 
                 data={orders}

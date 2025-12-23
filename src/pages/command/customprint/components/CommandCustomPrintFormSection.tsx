@@ -1,7 +1,7 @@
 import { useState } from "react";
 import FormItem from "../../../../component/form/FormItem";
 import InputText from "../../../../component/form/InputText";
-import SelectText from "../../../../component/form/SelectText";
+import CommonSelect from "../../../../component/form/CommonSelect";
 
 interface OrderSearchReq {
     orderNum: string;
@@ -9,13 +9,15 @@ interface OrderSearchReq {
 }
 
 interface Props {
-    addOrder: (orderNum: number) => void;
+    addOrder: (orderNum: number, printMethod: string) => void;
     onSelectAll: () => void;
     onDeleteSelected: () => void;
+    openPrintPop: (printMethod: string) => void;
+    errorMessage: string;
 }
 
 export default function CommandCustomPrintFormSection (props: Props) {
-    const { addOrder, onSelectAll, onDeleteSelected } = props;
+    const { addOrder, onSelectAll, onDeleteSelected, openPrintPop, errorMessage } = props;
 
     const [form, setForm] = useState<OrderSearchReq>({
         orderNum: '',
@@ -29,13 +31,13 @@ export default function CommandCustomPrintFormSection (props: Props) {
 
     const onEnterOrderNum = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if(e.key === 'Enter') {
-            addOrder(Number(form.orderNum));
+            addOrder(Number(form.orderNum), form.printMethod);
             setForm(prev => ({ ...prev, orderNum: '' }));
         }
     };
 
     const onPrint = () => {
-        console.log("인쇄 로직 실행");
+        openPrintPop(form.printMethod);
     }
 
     const onInit = () => {
@@ -43,7 +45,7 @@ export default function CommandCustomPrintFormSection (props: Props) {
     }
     
     const printMethods = [
-        "에구다", "금박", "마스타"
+        "에구다1", "에구다2", "금박1", "금박2", "마스터", "베이비", "씰크", "다이어리", "기계"
     ];
 
     return (
@@ -57,7 +59,7 @@ export default function CommandCustomPrintFormSection (props: Props) {
                     onKeyDown={onEnterOrderNum} />
             } />
             <FormItem label="쇄입방법" children={
-                <SelectText 
+                <CommonSelect 
                     name="printMethod"
                     value={form.printMethod}
                     onChange={handleChange}
@@ -74,6 +76,11 @@ export default function CommandCustomPrintFormSection (props: Props) {
                 <button onClick={onSelectAll} className="bg-green-500 text-white px-4 py-1 rounded">모두선택(A)</button>
                 <button onClick={onDeleteSelected} className="bg-gray-500 text-white px-4 py-1 rounded">선택삭제(A)</button>
             </div>
+            {errorMessage && (
+                <div className="flex gap-2 mt-2">
+                    <span className="text-blue-500">{errorMessage}</span>
+                </div>
+            )}
         </div>
     );
 }
