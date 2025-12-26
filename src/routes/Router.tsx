@@ -31,6 +31,7 @@ import DiaryPrint from "../pages/diary/print/DiaryPrint";
 import DiaryPrintCn from "../pages/diary/printcn/DiaryPrintCn";
 import DiaryPackaging from "../pages/diary/packaging/DiaryPackaging";
 import DiaryOrderOut from "../pages/diary/orderout/DiaryOrderOut";
+import CommandCustomPrintPrintTemplate from "../pages/command/customprint/print/CommandCustomPrintPrintTemplate";
 
 const router = createBrowserRouter([
     {
@@ -119,6 +120,12 @@ const router = createBrowserRouter([
         path: "/command/custom-print", // 작업지시 - 상호쇄입
         element: (
             <CommandCustomPrint />
+        )
+    },
+    {
+        path: "/command/custom-print/print", // 작업지시 - 상호쇄입
+        element: (
+            <CommandCustomPrintPrintTemplate />
         )
     },
     {

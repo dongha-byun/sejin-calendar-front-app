@@ -14,7 +14,7 @@ interface Props {
     onAdd: (order: OrderCreateRequestDto, onSuccess: () => void) => void;
     models: Model[];
     companies: CustomCompany[];
-    nextOrderNum: string;
+    nextOrderNum: number;
     getNextReleaseNumFunc: (onCallback: (r_num: string) => void) => any;
 }
 
@@ -24,7 +24,7 @@ export default function OrderManagerAcceptFormSection({ onAdd, models, companies
     const printCnRef = useRef<HTMLInputElement>(null);
     const [checkedPrintCn, setCheckedPrintCn] = useState<boolean>(false);
     const [form, setForm] = useState<OrderCreateRequestDto>({
-        orderNum: '', // 접수번호
+        orderNum: 0, // 접수번호
         customerName: '', // 주문인
         modelNum: '', // 모델
         modelName: '', // 모델명

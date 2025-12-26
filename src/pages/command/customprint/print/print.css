@@ -1,0 +1,96 @@
+/* print.css */
+
+/* 화면에서 보기 위한 기본 스타일 */
+.print-container {
+    display: block;
+    padding: 20px;
+    font-family: "Malgun Gothic", Arial, sans-serif;
+    color: #000;
+    background: #fff;
+    min-height: 100vh;
+}
+
+.print-title {
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.print-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-bottom: 20px;
+}
+
+.print-table th,
+.print-table td {
+    border: 1px solid #000;
+    padding: 6px 8px;
+    text-align: left;
+}
+
+.print-table th {
+    background: #f0f0f0;
+    font-weight: bold;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.print-footer {
+    margin-top: 15px;
+    font-size: 11px;
+    text-align: right;
+}
+
+/* 인쇄 시에만 적용되는 스타일 */
+@media print {
+    body {
+        margin: 0;
+        padding: 0;
+        background: #fff;
+    }
+
+    .print-container {
+        display: block;
+        padding: 20mm;
+        font-family: "Malgun Gothic", Arial, sans-serif;
+        color: #000;
+    }
+
+    .print-title {
+        text-align: center;
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+
+    .print-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+    }
+
+    .print-table th,
+    .print-table td {
+        border: 1px solid #000;
+        padding: 6px 8px;
+    }
+
+    .print-table th {
+        background: #f0f0f0;
+    }
+
+    .text-right {
+        text-align: right;
+    }
+
+    .print-footer {
+        margin-top: 15px;
+        font-size: 11px;
+        text-align: right;
+    }
+}
+  

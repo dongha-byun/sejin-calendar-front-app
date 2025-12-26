@@ -1,5 +1,6 @@
 import { toOrderCreateRequest, toOrderDto, type Order, type OrderCreateRequestDto } from "../../types/ordermanager/Order";
 import apiService from "../axiosInstance";
+import type { SomsResponse } from "../somsResponse";
 
 export const orderApi = {
     save: async(data: OrderCreateRequestDto) => {
@@ -35,12 +36,19 @@ export const orderApi = {
         };
         await apiService.put("/api/v1/order-manager/cancel", body);
     },
-    findOne: async(orderNum: number): Promise<Order> => {
+    findOne: async(orderNum: number): Promise<SomsResponse<Order>> => {
         const param = {
             orderNum: orderNum
         };
 
         const response = await apiService.get(`/api/v1/order-manager`, param);
-        return response.data.data;
+        return response.data as SomsResponse<Order>;
     },
+    commandPrintCn: async(printMethod: string, orderIds: number[]) => {
+        const body = {
+            printMethod: printMethod,
+            orderIds: orderIds
+        };
+        await apiService.put("/api/v1/order-manager/command/print-cn", body);
+    }
 }

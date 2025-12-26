@@ -12,7 +12,7 @@ export default function OrderManagerAcceptPage () {
     const [orders, setOrders] = useState<OrderDto[]>([]);
     const [models, setModels] = useState<Model[]>([]);
     const [companies, setCompanies] = useState<CustomCompany[]>([]);
-    const [nextOrderNum, setNextOrderNum] = useState<string>('');
+    const [nextOrderNum, setNextOrderNum] = useState<number>(0);
     
     useEffect(() => {
         fetch();

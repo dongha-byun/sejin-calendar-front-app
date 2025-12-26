@@ -3,6 +3,7 @@ import CommandCustomPrintFormSection from "./components/CommandCustomPrintFormSe
 import CommandCustomPrintTable from "./components/CommandCustomPrintTable";
 import { commandPrintCnApi } from "../../../api/command/commandPrintCnApi";
 import type { CommandPrintCnSearchDto } from "../../../types/command/CommandPrintCn";
+import { orderApi } from "../../../api/ordermanager/orderApi";
 
 export default function CommandCustomPrintPage() {
     const [errorMessage, setErrorMessage] = useState<string>('');
@@ -10,9 +11,13 @@ export default function CommandCustomPrintPage() {
     const [checkIds, setCheckIds] = useState<number[]>([]);
     
     useEffect(() => {
+        init();
+    }, []);
+
+    const init = () => {
         setOrders([]);
         setCheckIds([]);
-    }, []);
+    }
 
     const addOrder = (orderNum: number, printMethod: string) => {
         const existingOrder = orders.find(order => order.orderNum === orderNum);
@@ -48,18 +53,30 @@ export default function CommandCustomPrintPage() {
         }
 
         const selectedOrders = orders.filter(order => checkIds.includes(order.id ?? 0));
-        console.log(selectedOrders);
+        sessionStorage.setItem("selectedOrders", JSON.stringify(selectedOrders));
 
-        // 도수 존재 여부 검증
-        const hasDosuOrders = selectedOrders.filter(order => order.dosu !== "");
-        if(hasDosuOrders.length > 0) {
-            const hasDosuOrderNums = hasDosuOrders.map(order => order.orderNum).join(", ");
-            const msg = "주문번호 [" + hasDosuOrderNums + "] 는 도수가 있습니다.";
-            alert(msg);
-            return;
+        const popup = window.open(
+            "/command/custom-print/print",
+            "print",
+            "width=900,height=1000"
+        );
+
+        // 팝업이 닫혔는지 감지
+        if (popup) {
+            const checkClosed = setInterval(() => {
+                if (popup.closed) {
+                    clearInterval(checkClosed);
+                    if(confirm("정상적으로 출력되었으면, 내용을 기록하시겠습니까?")) {
+                        updatePrintInfo(printMethod, checkIds);
+                        init();
+                    }
+                }
+            }, 100);
         }
+    }
 
-        console.log(printMethod);
+    const updatePrintInfo = (printMethod: string, orderIds: number[]) => {
+        orderApi.commandPrintCn(printMethod, orderIds);
     }
 
     // 모두선택: 리스트에 노출된 모든 체크박스를 체크
