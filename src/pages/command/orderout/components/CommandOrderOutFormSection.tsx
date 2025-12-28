@@ -1,64 +1,71 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FormItem from "../../../../component/form/FormItem";
 import InputText, { InputTextSize } from "../../../../component/form/InputText";
 import SelectText from "../../../../component/form/SelectText";
+import { OrderTypeOptions, PrintCnTypeOptions } from "../../../../types/command/CommandOrderOut";
+import type { CustomCompany } from "../../../../types/baseinfo/CustomCompany";
+import type { option } from "../../../../types/values/OptionType";
 
 interface SearchOrderReq {
     printCn: string;
-    sortBy: string;
+    orderType: string;
     orderNum: string;
     companyName: string;
 }
 
-export default function CommandOrderOutFormSection() {
+interface Props {
+    companies: CustomCompany[];
+    searchOrders: (printCn: string, orderType: string, customerName: string) => void;
+    onSelectAll: () => void;
+    onSelectedClear: () => void;
+    onSelectedHide: () => void;
+    openPrintPreviewPop: () => void;
+    onSearchByOrderNum: (orderNum: string) => void;
+}
 
+export default function CommandOrderOutFormSection({companies, searchOrders, onSelectAll, onSelectedClear, onSelectedHide, openPrintPreviewPop, onSearchByOrderNum}: Props) {
+    const [companyNames, setCompanyNames] = useState<option[]>([]);
     const [form, setForm] = useState<SearchOrderReq>({
-        printCn: '',
-        sortBy: '',
+        printCn: "NO_PRINT",
+        orderType: "ORDER_NUM",
         orderNum: '',
-        companyName: ''
+        companyName: '',
     });
+
+    useEffect(() => {
+        const allOption = { value: '', label: '모두' };
+        const companyNames = companies.map(c => ({ value: c.name, label: c.name }));
+        setCompanyNames([allOption, ...companyNames]);
+    }, [companies]);
+
+    // 초기 로드 및 form 변경 시 실행
+    useEffect(() => {
+        searchOrders(form.printCn, form.orderType, form.companyName);
+    }, [form.printCn, form.orderType, form.companyName]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setForm(prev => ({ ...prev, [name]: value }));
     };
 
-    const allSelect = () => {
-        console.log("모두선택 로직 호출");
-    }
-
-    const selectCancel = () => {
-        console.log("선택취소 로직 호출");
-    }
-
-    const selectHide = () => {
-        console.log("선택숨김 로직 호출");
-    }
-
     const previewPrint = () => {
-        console.log("인쇄미리보기 로직 호출");
+        openPrintPreviewPop();
     }
 
     const onInit = () => {
-        console.log("초기화 로직 호출");
+        setForm({
+            printCn: "NO_PRINT",
+            orderType: "ORDER_NUM",
+            orderNum: '',
+            companyName: '',
+        });
     }
 
-    const onSearchByOrderNum = () => {
-        console.log(form.orderNum, "로 검색합니다.");
+    const handleSearchByOrderNum = () => {
+        if (form.orderNum.trim()) {
+            onSearchByOrderNum(form.orderNum);
+        }
     }
-
-    const printCnType = [
-        "상호", "백제본"
-    ];
-
-    const sortByType = [
-        "접수번호순", "주문인이름순", "상호순"
-    ];
-
-    const companyName = [
-        "거래처A", "거래처B", "거래처C", 
-    ];
 
     return (
         <div className="grid grid-cols-4 gap-4 p-4 bg-white rounded shadow mb-4 max-w-[75vw]">
@@ -68,14 +75,14 @@ export default function CommandOrderOutFormSection() {
                     name="printCn"
                     value={form.printCn}
                     onChange={handleChange}
-                    options={printCnType.map(method => ({ value: method, label: method }))} />
+                    options={PrintCnTypeOptions} />
             } />
             <FormItem label="정렬" children={
                 <SelectText 
-                    name="sortByType"
-                    value={form.sortBy}
+                    name="orderType"
+                    value={form.orderType}
                     onChange={handleChange}
-                    options={sortByType.map(method => ({ value: method, label: method }))} />
+                    options={OrderTypeOptions} />
             } />
             <FormItem label="" children={
                 <>
@@ -84,7 +91,7 @@ export default function CommandOrderOutFormSection() {
                     value={form.orderNum}
                     size={InputTextSize.Medium}
                     onChange={handleChange} />
-                <button onClick={onSearchByOrderNum} className="border border-gray-400 text-black px-4 py-1 rounded">접수번호검색</button>
+                <button onClick={handleSearchByOrderNum} className="border border-gray-400 text-black px-4 py-1 rounded">접수번호검색</button>
                 </>
             } />
             <FormItem label="거래처명" children={
@@ -92,15 +99,14 @@ export default function CommandOrderOutFormSection() {
                     name="companyName"
                     value={form.companyName}
                     onChange={handleChange}
-                    options={companyName.map(method => ({ value: method, label: method }))} />
+                    options={companyNames} />
             } />
 
-            <div className="flex gap-2 mt-2">
-                <button onClick={allSelect} className="bg-green-500 text-white px-4 py-1 rounded">모두선택(A)</button>
-                <button onClick={selectCancel} className="bg-gray-500 text-white px-4 py-1 rounded">선택취소(C)</button>
-                <button onClick={selectHide} className="bg-gray-500 text-white px-4 py-1 rounded">선택숨김(H)</button>
+            <div className="flex gap-2 mt-2 col-span-2">
+                <button onClick={onSelectAll} className="bg-green-500 text-white px-4 py-1 rounded">모두선택(A)</button>
+                <button onClick={onSelectedClear} className="bg-gray-500 text-white px-4 py-1 rounded">선택취소(C)</button>
+                <button onClick={onSelectedHide} className="bg-gray-500 text-white px-4 py-1 rounded">선택숨김(H)</button>
             </div>
-            <div />
             <div />
             <div className="flex gap-2 mt-2">
                 <button onClick={previewPrint} className="bg-green-500 text-white px-4 py-1 rounded">인쇄미리보기(A)</button>

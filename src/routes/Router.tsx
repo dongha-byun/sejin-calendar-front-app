@@ -32,6 +32,7 @@ import DiaryPrintCn from "../pages/diary/printcn/DiaryPrintCn";
 import DiaryPackaging from "../pages/diary/packaging/DiaryPackaging";
 import DiaryOrderOut from "../pages/diary/orderout/DiaryOrderOut";
 import CommandCustomPrintPrintTemplate from "../pages/command/customprint/print/CommandCustomPrintPrintTemplate";
+import CommandOrderOutPrintPreview from "../pages/command/orderout/print/CommandOrderOutPrintPreview";
 
 const router = createBrowserRouter([
     {
@@ -132,6 +133,12 @@ const router = createBrowserRouter([
         path: "/command/order-out", // 작업지시 - 출고증발행
         element: (
             <CommandOrderOut />
+        )
+    },
+    {
+        path: "/command/order-out/print/preview", // 작업지시 - 출고증발행 인쇄미리보기 (팝업)
+        element: (
+            <CommandOrderOutPrintPreview />
         )
     },
     {
