@@ -1,62 +1,56 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FormItem from "../../../../component/form/FormItem";
 import InputText from "../../../../component/form/InputText";
 import type { AdminMember } from "../../../../types/admin/AdminMember";
 
 interface Props {
     onAdd: (adminMember: AdminMember) => void;
+    selectedMember: AdminMember | undefined;
+    deleteMember: (userId: string) => void;
 }
 
-export default function AdminMemberFormSection({ onAdd }: Props) {
+const initForm: AdminMember = {
+    userId: '',
+    password: '',
+    companyName: '',
+    name: '',
+    address: '',
+    tel: '',
+    email: '',
+    etc: ''
+}
 
-    const [form, setForm] = useState<AdminMember>({
-        id: 0,
-        userId: '',
-        password: '',
-        companyName: '',
-        name: '',
-        addr1: '',
-        tel1: '',
-        fax1: '',
-        email: '',
-        webhard: '',
-        etc: ''
-    });
+export default function AdminMemberFormSection({ onAdd, selectedMember, deleteMember }: Props) {
+    const [isNewMode, setIsNewMode] = useState<boolean>(false);    
+    const [form, setForm] = useState<AdminMember>(initForm);
+
+    useEffect(() => {
+        if(selectedMember) {
+            setForm(selectedMember);
+            setIsNewMode(false);
+        }
+    }, [selectedMember]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-    
-        console.log(`Changed ${name} to ${value}`);
         setForm(prev => ({ ...prev, [name]: value }));
     };
 
     const handleSubmit = () => {
-        const newAdminMember: AdminMember = {
-            ...form,
-            id: Date.now()
-        };
-        onAdd(newAdminMember);
-        setForm({
-            id: 0,
-            userId: '',
-            password: '',
-            companyName: '',
-            name: '',
-            addr1: '',
-            tel1: '',
-            fax1: '',
-            email: '',
-            webhard: '',
-            etc: ''
-        });
+        onAdd(form);
+        setForm(initForm);
+        setIsNewMode(true);
     };
 
     const changeNewMode = () => {
-        console.log("신규추가 버튼 호출");
+        setIsNewMode(true);
+        setForm(initForm);
     }
 
     const onDelete = () => {
-        console.log("선택삭제 버튼 호출");
+        deleteMember(form.userId);
+        setForm(initForm);
+        setIsNewMode(false);
     }
 
     return (
@@ -68,42 +62,49 @@ export default function AdminMemberFormSection({ onAdd }: Props) {
                 <InputText 
                     name="userId"
                     value={form.userId}
+                    readOnly={!isNewMode}
                     onChange={handleChange} />
             } />
             <FormItem label="Password" required children={
                 <InputText 
                     name="password"
                     value={form.password}
+                    readOnly={!isNewMode}
                     onChange={handleChange} />
             } />
             <FormItem label="이름" required children={
                 <InputText 
                     name="name"
                     value={form.name}
+                    readOnly={!isNewMode}
                     onChange={handleChange} />
             } />
             <FormItem label="주소" children={
                 <InputText 
                     name="addr1"
-                    value={form.addr1}
+                    value={form.address}
+                    readOnly={!isNewMode}
                     onChange={handleChange} />
             } />
             <FormItem label="전화" children={
                 <InputText 
                     name="tel1"
-                    value={form.tel1}
+                    value={form.tel}
+                    readOnly={!isNewMode}
                     onChange={handleChange} />
             } />
             <FormItem label="e-mail" children={
                 <InputText 
                     name="email"
                     value={form.email}
+                    readOnly={!isNewMode}
                     onChange={handleChange} />
             } />
             <FormItem label="기타" children={
                 <InputText 
                     name="etc"
                     value={form.etc}
+                    readOnly={!isNewMode}
                     onChange={handleChange} />
             } />
             <div className="flex items-center text-sm gap-3">
