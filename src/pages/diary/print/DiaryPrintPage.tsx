@@ -45,15 +45,18 @@ export default function DiaryPrintPage() {
     }
 
     const onCancel = () => {
+        search();
         setForm({
             modelNum: '',
             printCompanyName: ''
         });
+        setCheckedIds([]);
     }
 
     const handleSubmit = () => {
         if(checkedIds.length < 1) {
-            alert("체크된 값이 없습니다.");
+            alert("선택된 건이 없습니다.");
+            return;
         }
 
         diaryPrintApi.create(checkedIds).then(() => search());
@@ -70,7 +73,7 @@ export default function DiaryPrintPage() {
                 models={models} companies={companies} searchFunc={search} 
                 form={form} setForm={setForm}
             />
-            <DiaryPrintTable data={commandPrints} onCheckId={onCheckId} />
+            <DiaryPrintTable data={commandPrints} onCheckId={onCheckId} checkedIds={checkedIds}/>
             <div className="flex my-2 items-center text-sm gap-3">
                 <button onClick={onCancel} className="max-w-[120px] px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">취소</button>
                 <button onClick={handleSubmit} className="max-w-[120px] px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">선택완료</button>

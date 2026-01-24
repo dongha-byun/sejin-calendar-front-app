@@ -14,8 +14,8 @@ export const commandPrintApi = {
     },
     search: async (companyName?: string, modelNum?: string) => {
         const queryParam = {
-            printCompanyName: companyName || undefined,
-            modelNum: modelNum || undefined,
+            printCompanyName: companyName || '',
+            modelNum: modelNum || '',
         }
         const response = await apiService.get("/api/v1/command/print/search", queryParam);
         return response.data.data;

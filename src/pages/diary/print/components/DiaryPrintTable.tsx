@@ -4,9 +4,10 @@ import type { CommandPrint } from "../../../../types/command/CommandPrint";
 interface Props {
     data: CommandPrint[];
     onCheckId: (isChecked: boolean, id?: number) => void;
+    checkedIds: number[];
 }
 
-export default function DiaryPrintTable({data, onCheckId}: Props) {
+export default function DiaryPrintTable({data, onCheckId, checkedIds}: Props) {
 
     const allChecked = () => {
         data.forEach(s => {
@@ -39,7 +40,12 @@ export default function DiaryPrintTable({data, onCheckId}: Props) {
                     {data.map((s, idx) => (
                         <tr key={s.id} className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}>
                             <td className="border px-2 py-1 text-center">
-                                {s.rDate && <ListCheckBox onChange={(e) => onCheckId(e.target.checked, s.id)}/>}
+                                { !s.rDate && (
+                                    <ListCheckBox 
+                                        checked={checkedIds.includes(s.id ?? 0)}
+                                        onChange={(e) => onCheckId(e.target.checked, s.id)} 
+                                    />
+                                )}
                             </td>
                             <td className="border px-2 py-1">{s.printCompanyName}</td>
                             <td className="border px-2 py-1">{s.modelNum}</td>
