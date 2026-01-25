@@ -4,7 +4,7 @@ import DiaryMachineTable from "./components/DiaryMachineTable";
 import DiaryMachineFormSection from "./components/DiaryMachineFormSection";
 import type { Model } from "../../../types/baseinfo/Model";
 import { modelApi } from "../../../api/baseinfo/modelApi";
-import { printCnSearchApi } from "../../../api/ordermanager/PrintCnApi";
+import { printCnSearchApi } from "../../../api/ordermanager/printCnApi";
 import { diaryMachineApi } from "../../../api/diary/diaryMachineApi";
 
 

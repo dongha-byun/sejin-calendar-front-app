@@ -11,7 +11,7 @@ export const diaryMachineApi = {
         return response.data.data;
     },
     getCombinableQuantity: async(modelNum: string) : Promise<CombinableQuantityResponse> => {
-        const response = await apiService.get(`/api/v1/diary/machines/${modelNum}/combinable`);
+        const response = await apiService.post(`/api/v1/diary/machines/${modelNum}/combinable`, {});
         return response.data.data;
     }
 }
