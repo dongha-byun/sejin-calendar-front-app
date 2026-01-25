@@ -7,7 +7,6 @@ import { modelApi } from "../../../api/baseinfo/modelApi";
 import { printCnSearchApi } from "../../../api/ordermanager/printCnApi";
 import { diaryMachineApi } from "../../../api/diary/diaryMachineApi";
 
-
 export default function DiaryMachinePage() {
     const [diaryMachines, setDiaryMachines] = useState<DiaryMachine[]>([]);
     const [models, setModels] = useState<Model[]>([]);
@@ -26,7 +25,7 @@ export default function DiaryMachinePage() {
     const onChangeModel = (modelNum: string) => {
         // 모델 번호에 따른 상호명 리스트 재조회
         printCnSearchApi.searchPrintCnList(modelNum).then((data) => {
-            setPrintCnList(data.map(item => item.printCn));
+            setPrintCnList(["백제본", ...data.map(item => item.printCn)]);
         });
 
         // 모델 번호에 따른 정합 가능량 조회
@@ -46,6 +45,7 @@ export default function DiaryMachinePage() {
         <div className="px-6 py-3">
             <h1 className="text-base font-semibold pb-2">작업일지 - 정합</h1>
             <DiaryMachineFormSection 
+                listData = {diaryMachines}
                 onAdd={addDiaryMachine} models={models} onChangeModel={onChangeModel} 
                 printCnList={printCnList} combinableQuantity={combinableQuantity}
             />

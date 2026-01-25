@@ -41,6 +41,19 @@ const smallSelectStyles = {
     ...provided,
     fontSize: "12px",        // 드롭다운 목록 글자 크기
   }),
+  option: (provided: any, state: any) => ({
+    ...provided,
+    backgroundColor: state.data?.isBlocked 
+      ? "#f3f4f6"  // isBlocked 옵션은 회색 배경
+      : state.isSelected
+      ? provided.backgroundColor  // 선택된 옵션은 기본 스타일 유지
+      : state.isFocused
+      ? provided.backgroundColor  // 포커스된 옵션은 기본 스타일 유지
+      : provided.backgroundColor, // 기본은 기본 스타일 유지
+    color: state.data?.isBlocked 
+      ? "#6b7280"  // isBlocked 옵션은 회색 텍스트
+      : provided.color, // 기본은 기본 색상 유지
+  }),
 };
 
 /**
@@ -71,12 +84,13 @@ export default function CommonSelect({options, size, value, name, onChange, defa
   if(defaultOption) {
     finalOptions = [
       ...options,
-      { value: "---------", label: "---------", isDisabled: true },
-      ...defaultOption.map(o => ({ value: o, label: o, isDisabled: false }))
+      { value: "---------", label: "---------", isBlocked: true },
+      ...defaultOption.map(o => ({ value: o, label: o}))
     ];
   }
   
-  
+  console.log(finalOptions);
+
   return (
     <div className={`${style(size)}`}>
       <Select<option>

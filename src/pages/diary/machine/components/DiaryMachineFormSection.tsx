@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import FormItem from "../../../../component/form/FormItem";
-import SelectText from "../../../../component/form/SelectText";
 import InputText from "../../../../component/form/InputText";
 import type { DiaryMachine } from "../../../../types/diary/DiaryMachine";
 import type { Model } from "../../../../types/baseinfo/Model";
@@ -13,11 +12,12 @@ interface Props {
     onChangeModel: (modelNum: string) => void;
     printCnList: string[];
     combinableQuantity: number;
+    listData: DiaryMachine[];
 }
 
 const machines = ["1호기", "2호기", "3호기", "기타"]; 
 
-export default function DiaryMachineFormSection({ onAdd, models, onChangeModel, printCnList, combinableQuantity }: Props) {
+export default function DiaryMachineFormSection({ onAdd, models, onChangeModel, printCnList, combinableQuantity, listData }: Props) {
     const [form, setForm] = useState<DiaryMachine>({
         machineNum: '',
         modelNum: '',
@@ -43,6 +43,11 @@ export default function DiaryMachineFormSection({ onAdd, models, onChangeModel, 
         const { name, value } = e.target;
         setForm(prev => ({ ...prev, [name]: value }));
     };
+
+    const isPrintCnDisabled = (printCn: string) => {
+        const alreadyMachinedPrintCns = listData.map(machine => machine.printCn);
+        return alreadyMachinedPrintCns.some(item => item === printCn);
+    }
 
     const handleSubmit = () => {
         if (form.amount < 1) {
@@ -111,11 +116,16 @@ export default function DiaryMachineFormSection({ onAdd, models, onChangeModel, 
             } />
             <div className="flex gap-2 col-span-2">
                 <FormItem label="상호" required children={
-                    <SelectText 
+                    <CommonSelect 
                         name="printCn"
                         value={form.printCn}
                         onChange={handleChange}
-                        options={printCnList.map(printCn => ({ value: printCn, label: printCn }))} />
+                        options={printCnList.map(printCn => ({
+                            value: printCn,
+                            label: printCn,
+                            isBlocked: isPrintCnDisabled(printCn)
+                        }))}
+                    />
                 } />
             </div>
 
@@ -133,7 +143,9 @@ export default function DiaryMachineFormSection({ onAdd, models, onChangeModel, 
                 <button onClick={handleSubmit} className="bg-green-500 text-white px-4 py-1 rounded">확인</button>
             </div>
             <div className="items-center flex gap-2">
-                <span>정합가능량 : {combinableQuantity}</span>
+                <span style={combinableQuantity < 0 ? { color: 'red' } : undefined}>
+                    정합가능량 : {combinableQuantity}
+                </span>
             </div>
         </div>
     );
