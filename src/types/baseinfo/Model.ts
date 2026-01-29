@@ -13,6 +13,11 @@ export enum ModelBindMethod {
     ETC = "기타",
 }
 
+export const MODEL_BIND_METHOD_LIST = [
+    "금구", "홀더", "탄자크", "TWIN", "탁상대지", "TWIN아스테지", 
+    "TWIN홀더", "STITCH", "TWIN반달고리","기타"
+];
+
 export interface Model {
     id?: number;
     modelNum: string;       // model

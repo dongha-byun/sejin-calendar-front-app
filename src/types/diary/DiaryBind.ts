@@ -1,5 +1,5 @@
 export interface DiaryBind {
-    id: number;
+    id?: number;
     bindCompanyName: string; // 제본소명
     bindMethod: string; // 제본방식
     modelNum: string; // 모델
