@@ -1,24 +1,42 @@
-import { useState } from "react";
+import { forwardRef, useImperativeHandle, useState } from "react";
 import FormItem from "../../../../component/form/FormItem";
-import SelectText from "../../../../component/form/SelectText";
 import InputText from "../../../../component/form/InputText";
+import { PRINT_METHODS } from "../../../../types/values/GlobalValues";
+import CommonSelect from "../../../../component/form/CommonSelect";
+import { nowDate } from "../../../../utils/dateUtils";
 
 interface SearchReq {
     printMethod: string;
     iDate: string;
-    orderNum: string;
+    orderNum: number;
 }
 
-export default function DiaryPrintCnFormSection () {
-    const [form, setForm] = useState<SearchReq>({
-        printMethod: '',
-        iDate: '',
-        orderNum: ''
-    });
+const defaultForm: SearchReq = {
+    printMethod: '',
+    iDate: nowDate,
+    orderNum: 0
+}
 
-    const printMethods = [
-        '에구다1', '에구다2', '금박1', '금박2', '다이어리'
-    ];
+export type FormSectionRef = {
+    handleInit: () => void;
+    issueDate: string;
+}
+
+interface Props {
+    searchOrder: (printMethod: string, orderNum: number) => void;
+}
+
+const DiaryPrintCnFormSection = forwardRef<FormSectionRef, Props>((props, ref) => {
+    const { searchOrder } = props;
+
+    useImperativeHandle(ref, () => ({
+        handleInit: () => {
+            onInit();
+        },
+        issueDate: form.iDate
+    }));
+
+    const [form, setForm] = useState<SearchReq>(defaultForm);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -27,14 +45,22 @@ export default function DiaryPrintCnFormSection () {
         setForm(prev => ({ ...prev, [name]: value }));
     };
 
+    const handleSearch = () => {
+        searchOrder(form.printMethod, form.orderNum);
+    }
+
+    const onInit = () => {
+        setForm(defaultForm);
+    }
+
     return (
         <div className="grid grid-cols-3 min-w-[500px] max-w-[50vw] gap-4 border p-4 mb-4">
             <FormItem label="분류" children={
-                <SelectText 
+                <CommonSelect 
                     name="printMethod" 
                     value={form.printMethod} 
                     onChange={handleChange} 
-                    options={printMethods.map(method => ({value: method, label: method}))}/>
+                    options={PRINT_METHODS.map(method => ({value: method, label: method}))}/>
             } />
             <FormItem label="" children={
                 <InputText 
@@ -46,8 +72,15 @@ export default function DiaryPrintCnFormSection () {
                 <InputText 
                     name="orderNum" 
                     value={form.orderNum} 
-                    onChange={handleChange} />
+                    onChange={handleChange} 
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                            handleSearch();
+                        }
+                    }} />
             } />
         </div>
     );
-}
+});
+
+export default DiaryPrintCnFormSection;

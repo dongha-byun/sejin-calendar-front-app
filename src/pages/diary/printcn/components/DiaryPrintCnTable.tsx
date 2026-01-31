@@ -1,36 +1,43 @@
-import CheckBoxRow from "../../../../component/form/CheckBoxRow";
+import ListCheckBox from "../../../../component/grid/ListCheckBox";
 import type { Order } from "../../../../types/ordermanager/Order";
 
 interface Props {
     data: Order[];
+    checkedIds: number[];
+    onCheckId: (isChecked: boolean, id?: number) => void;
+    deleteRows: (ids: number[]) => void;
+    onInit: () => void;
+    completePrint: () => void;
 }
 
-export default function DiaryPrintCnTable({data}: Props) {
+export default function DiaryPrintCnTable({data, checkedIds, onCheckId, deleteRows, onInit, completePrint}: Props) {
 
-    const allSelected = () => {
-        console.log('모두선택 버튼 눌림');
+    const allChecked = () => {
+        data.forEach(s => {
+            onCheckId(true, s.id);
+        });
     }
 
-    const deleteSelected = () => {
-        console.log('선택삭제 버튼 눌림');
+    const deleteChecked = () => {
+        deleteRows(checkedIds);
     }
 
     const onCancel = () => {
-        console.log('취소 버튼 눌림');
+        onInit();
     }
 
     const onComplete = () => {
-        console.log('입력완료 버튼 눌림');
+        completePrint();
     }
 
     return (
         <div>
             <div className="flex my-2 items-center text-sm gap-3">
-                <button onClick={allSelected} className="max-w-[120px] px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">모두선택</button>
-                <button onClick={deleteSelected} className="max-w-[120px] px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">선택삭제</button>
+                <button onClick={allChecked} className="max-w-[120px] px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">모두선택</button>
+                <button onClick={deleteChecked} className="max-w-[120px] px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">선택삭제</button>
             </div>
             <div className="overflow-x-auto">
-                <table className="table-auto w-full border text-sm">
+                <table className="table-auto w-[75vw] border text-sm">
                     <thead className="bg-gray-200">
                         <tr>
                             <th className="border px-2 py-1">check</th>
@@ -46,7 +53,12 @@ export default function DiaryPrintCnTable({data}: Props) {
                     {data.map((s, idx) => (
                         <tr key={s.id} className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}>
                             <td className="border px-2 py-1 text-center">
-                                <CheckBoxRow />
+                                <div className="flex items-center justify-center">
+                                    <ListCheckBox
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => onCheckId(e.target.checked, s.id)}
+                                        checked={checkedIds.includes(s.id ?? 0)}
+                                    />
+                                </div>
                             </td>
                             <td className="border px-2 py-1">{s.orderNum}</td>
                             <td className="border px-2 py-1">{s.modelNum}</td>
