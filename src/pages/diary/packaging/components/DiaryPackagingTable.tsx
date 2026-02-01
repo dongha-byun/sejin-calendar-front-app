@@ -1,22 +1,29 @@
-import CheckBoxRow from "../../../../component/form/CheckBoxRow";
-import type { Order } from "../../../../types/ordermanager/Order";
+import ListCheckBox from "../../../../component/grid/ListCheckBox";
+import type { DiaryBoxingOrder } from "../../../../types/diary/DiaryBoxing";
 
 interface Props {
-    data: Order[];
+    data: DiaryBoxingOrder[];
+    checkedIds: number[];
+    onCheckId: (isChecked: boolean, id?: number) => void;
+    deleteRows: (ids: number[]) => void;
+    onInit: () => void;
+    saveBoxing: () => void;
 }
 
-export default function DiaryPackagingTable({data}: Props) {
+export default function DiaryPackagingTable({data, checkedIds, onCheckId, deleteRows, onInit, saveBoxing}: Props) {
 
-    const allSelected = () => {
-        console.log('모두 선택 버튼 호출됨');
+    const allChecked = () => {
+        data.forEach(s => {
+            onCheckId(true, s.orderId);
+        });
     }
 
     const deleteSelected = () => {
-        console.log('선택삭제 버튼 눌림');
+        deleteRows(checkedIds);
     }
 
     const onCancel = () => {
-        console.log('취소 버튼 눌림');
+        onInit();
     }
 
     const onRefresh = () => {
@@ -24,13 +31,13 @@ export default function DiaryPackagingTable({data}: Props) {
     }
 
     const handleSubmit = () => {
-        console.log('입력완료 버튼 눌림');
+        saveBoxing();
     }
 
     return (
         <div>
             <div className="flex my-2 items-center text-sm gap-3">
-                <button onClick={allSelected} className="max-w-[120px] px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">모두선택</button>
+                <button onClick={allChecked} className="max-w-[120px] px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">모두선택</button>
                 <button onClick={deleteSelected} className="max-w-[120px] px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">선택삭제</button>
             </div>
 
@@ -51,9 +58,12 @@ export default function DiaryPackagingTable({data}: Props) {
                     </thead>
                     <tbody>
                     {data.map((s, idx) => (
-                        <tr key={s.id} className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                        <tr key={s.orderId} className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}>
                             <td className="border px-2 py-1 text-center">
-                                <CheckBoxRow />
+                                <ListCheckBox 
+                                    checked={checkedIds.includes(s.orderId)}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => onCheckId(e.target.checked, s.orderId)} 
+                                />
                             </td>
                             <td className="border px-2 py-1">{s.orderNum}</td>
                             <td className="border px-2 py-1">{s.customerName}</td>
@@ -61,8 +71,8 @@ export default function DiaryPackagingTable({data}: Props) {
                             <td className="border px-2 py-1">{s.modelName}</td>
                             <td className="border px-2 py-1">{s.amount}</td>
                             <td className="border px-2 py-1">{s.printCn}</td>
-                            <td className="border px-2 py-1">{s.boxNum}</td>
-                            <td className="border px-2 py-1">{s.boxAmount}</td>
+                            <td className="border px-2 py-1">{s.realBox}</td>
+                            <td className="border px-2 py-1">{s.realBoxCount}</td>
                         </tr>
                     ))}
                     </tbody>
