@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { forwardRef, useImperativeHandle, useRef, useState } from "react";
 import FormItem from "../../../../component/form/FormItem";
 import InputText from "../../../../component/form/InputText";
+import { nowDate } from "../../../../utils/dateUtils";
 
 interface SearchReq {
     orderNum: number;
@@ -8,12 +9,38 @@ interface SearchReq {
     iDate: string;
 }
 
-export default function DiaryOrderOutFormSection() {
-    const [form, setForm] = useState<SearchReq>({
-        orderNum: 0,
-        amount: 0,
-        iDate: ''
-    });
+const defaultForm: SearchReq = {
+    orderNum: 0,
+    amount: 0,
+    iDate: nowDate
+}
+
+export interface DiaryOrderOutFormSectionRef {
+    resetForm: () => void;
+    focusAndSelectOrderNum: () => void;
+    focusAmountInput: () => void;
+    clearAmount: () => void;
+}   
+
+interface Props {
+    searchOrder: (orderNum: number) => void;
+    applyReleaseAmount: (orderNum: number, amount: number) => void;
+}
+
+const DiaryOrderOutFormSection = forwardRef<DiaryOrderOutFormSectionRef, Props>(function DiaryOrderOutFormSection({ searchOrder, applyReleaseAmount }, ref) {
+    const [form, setForm] = useState<SearchReq>(defaultForm);
+    const orderNumInputRef = useRef<HTMLInputElement>(null);
+    const amountInputRef = useRef<HTMLInputElement>(null);
+
+    useImperativeHandle(ref, () => ({
+        resetForm: () => setForm(defaultForm),
+        focusAndSelectOrderNum: () => {
+            orderNumInputRef.current?.focus();
+            orderNumInputRef.current?.select();
+        },
+        focusAmountInput: () => amountInputRef.current?.focus(),
+        clearAmount: () => setForm(prev => ({ ...prev, amount: 0 })),
+    }), []);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -27,15 +54,30 @@ export default function DiaryOrderOutFormSection() {
             {/* 1행 */}
             <FormItem label="접수번호" children={
                 <InputText 
+                    ref={orderNumInputRef}
                     name="orderNum"
                     value={form.orderNum}
-                    onChange={handleChange}  />
+                    onChange={handleChange} 
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                            searchOrder(form.orderNum);
+                        }
+                    }} />
             } />
             <FormItem label="부수" children={
                 <InputText 
+                    ref={amountInputRef}
                     name="amount"
                     value={form.amount}
-                    onChange={handleChange} />
+                    onChange={handleChange}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                            const orderNum = Number(form.orderNum);
+                            const amount = Number(form.amount);
+                            if (!orderNum || !amount) return;
+                            applyReleaseAmount(orderNum, amount);
+                        }
+                    }} />
             } />
             <FormItem label="날짜" children={
                 <InputText 
@@ -45,4 +87,6 @@ export default function DiaryOrderOutFormSection() {
             } />
         </div>
     );
-}
+});
+
+export default DiaryOrderOutFormSection;

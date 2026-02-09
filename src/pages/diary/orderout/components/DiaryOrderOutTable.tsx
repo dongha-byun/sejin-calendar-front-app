@@ -1,27 +1,34 @@
-import CheckBoxRow from "../../../../component/form/CheckBoxRow";
-import type { Order } from "../../../../types/ordermanager/Order";
-
+import ListCheckBox from "../../../../component/grid/ListCheckBox";
+import type { DiaryOrderOutOrder } from "../../../../types/diary/DiaryOrderOut";
 
 interface Props {
-    data: Order[];
+    data: DiaryOrderOutOrder[];
+    checkedIds: number[];
+    onCheckId: (isChecked: boolean, id?: number) => void;
+    deleteSelected: () => void;
+    initForm: () => void;
 }
 
-export default function DiaryOrderOutTable({data}: Props) {
-    
+const notExistsReleaseNumStyle = "bg-pink-500";
+const canReleaseStyle = "bg-yellow-300";
+
+export default function DiaryOrderOutTable({data, checkedIds, onCheckId, deleteSelected, initForm}: Props) {
+
     const allSelected = () => {
-        console.log('모두 선택 버튼 호출됨');
+        data.forEach(s => {
+                console.log(s, s.releaseNum);
+                if(s.releaseNum) {
+                    onCheckId(true, s.orderId);
+                }
+            });
     }
 
-    const deleteSelected = () => {
-        console.log('선택삭제 버튼 눌림');
+    const allDeleted = () => {
+        deleteSelected();
     }
 
     const onCancel = () => {
-        console.log('취소 버튼 눌림');
-    }
-
-    const onRefresh = () => {
-        console.log('갱신 버튼 눌림');
+        initForm();
     }
 
     const handleSubmit = () => {
@@ -31,16 +38,27 @@ export default function DiaryOrderOutTable({data}: Props) {
     return (
         <div>
             <div className="flex my-2 items-center text-sm gap-3">
-                <button onClick={allSelected} className="max-w-[120px] px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">모두선택</button>
-                <button onClick={deleteSelected} className="max-w-[120px] px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">선택삭제</button>
-                <div>
-                    <span className="bg-pink-500">출고증발행안됨</span>
-                    <span className="bg-yellow-500">제품출고가능</span>
+
+                <div className="flex gap-3 items-center">
+                    <button onClick={allSelected} className="max-w-[120px] px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">모두선택</button>
+                    <button onClick={allDeleted} className="max-w-[120px] px-3 py-1 bg-gray-300 rounded hover:bg-gray-400">선택삭제</button>
+                </div>
+                <div className="w-12" />
+                <div className="flex gap-3 items-center">
+                    
+                    <div className="flex items-center">
+                        <span className={`${notExistsReleaseNumStyle} px-3 py-1 rounded w-4 h-4`}></span>
+                        <span className="ml-2">출고증발행안됨</span>
+                    </div>
+                    <div className="flex items-center">
+                        <span className={`${canReleaseStyle} px-3 py-1 rounded w-4 h-4`}></span>
+                        <span className="ml-2">제품출고가능</span>
+                    </div>
                 </div>
             </div>
 
             <div className="overflow-x-auto">
-                <table className="table-auto w-full border text-sm">
+                <table className="table-auto w-[75vw] border text-sm">
                     <thead className="bg-gray-200">
                         <tr>
                             <th className="border px-2 py-1">check</th>
@@ -54,18 +72,23 @@ export default function DiaryOrderOutTable({data}: Props) {
                         </tr>
                     </thead>
                     <tbody>
-                    {data.map((s, idx) => (
-                        <tr key={s.id} className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                    {data.map((s) => (
+                        <tr key={s.orderId} className={s.releaseNum ? canReleaseStyle : notExistsReleaseNumStyle}>
                             <td className="border px-2 py-1 text-center">
-                                <CheckBoxRow />
+                                {s.releaseNum && (
+                                    <ListCheckBox
+                                        checked={checkedIds.includes(s.orderId)}
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => onCheckId(e.target.checked, s.orderId)} 
+                                    />
+                                )}
                             </td>
                             <td className="border px-2 py-1">{s.orderNum}</td>
                             <td className="border px-2 py-1">{s.customerName}</td>
                             <td className="border px-2 py-1">{s.modelNum}</td>
                             <td className="border px-2 py-1">{s.amount}</td>
-                            <td className="border px-2 py-1">출고량</td>
+                            <td className="border px-2 py-1">{s.totalReleasedAmount}</td>
                             <td className="border px-2 py-1">{s.printCn}</td>
-                            <td className="border px-2 py-1">{s.rNum}</td>
+                            <td className="border px-2 py-1">{s.releaseNum}</td>
                         </tr>
                     ))}
                     </tbody>

@@ -1,25 +1,76 @@
-import { useEffect, useState } from "react";
-import type { Order } from "../../../types/ordermanager/Order";
-import DiaryOrderOutFormSection from "./components/DiaryOrderOutFormSection";
+import { useRef, useState } from "react";
+import DiaryOrderOutFormSection, { type DiaryOrderOutFormSectionRef } from "./components/DiaryOrderOutFormSection";
 import DiaryOrderOutTable from "./components/DiaryOrderOutTable";
+import { diaryOrderOutApi } from "../../../api/diary/diaryOrderOutApi";
+import type { DiaryOrderOutOrder } from "../../../types/diary/DiaryOrderOut";
 
 export default function DiaryOrderOutPage() {
-    const [orders, setOrders] = useState<Order[]>([]);
-    
-    useEffect(() => {
-        const saved = localStorage.getItem("orders");
-        if (saved) setOrders(JSON.parse(saved));
-    }, []);
+    const [data, setData] = useState<DiaryOrderOutOrder[]>([]);
+    const [checkedIds, setCheckedIds] = useState<number[]>([]);
+    const formSectionRef = useRef<DiaryOrderOutFormSectionRef>(null);
 
-    useEffect(() => {
-        localStorage.setItem("orders", JSON.stringify(orders));
-    }, [orders]);
+    const searchOrder = (orderNum: number) => {
+        diaryOrderOutApi.searchOrder(orderNum).then(res => {
+            if(res.result.success) {
+                console.log(res);
+                if(data.find(d => d.orderId === res.data?.orderId)) {
+                    return;
+                }
+                setData([...data, res.data!]);
+                formSectionRef.current?.focusAmountInput();
+            } else {
+                alert(res.result.message);
+            }
+        });
+    }
+
+    const onCheckId = (isChecked: boolean, id?: number) => {
+        if(!id) return;
+
+        if(isChecked) {
+            setCheckedIds(prev => [...prev, id]);
+        } else {
+            setCheckedIds(prev => prev.filter((checkId) => checkId !== id));
+        }
+    }
+
+    const deleteSelected = () => {
+        setData(data.filter(d => !checkedIds.includes(d.orderId)));
+        setCheckedIds([]);
+    }
+
+    const initForm = () => {
+        setData([]);
+        setCheckedIds([]);
+        formSectionRef.current?.resetForm();
+    }
+
+    const applyReleaseAmount = (orderNum: number, amount: number) => {
+        const row = data.find(d => d.orderNum === orderNum);
+        if (!row) {
+            alert("해당 접수번호의 주문이 목록에 없습니다.");
+            return;
+        }
+        if (amount !== row.amount) {
+            alert("주문량과 동일한 수량을 입력하세요.");
+            return;
+        }
+        setData(data.map(d =>
+            d.orderNum === orderNum ? { ...d, totalReleasedAmount: amount } : d
+        ));
+        formSectionRef.current?.clearAmount();
+        formSectionRef.current?.focusAndSelectOrderNum();
+    }
 
     return (
         <div className="px-6 py-3">
             <h1 className="text-base font-semibold pb-2">작업일지 - 제품출고</h1>
-            <DiaryOrderOutFormSection />
-            <DiaryOrderOutTable data={orders} />
+            <DiaryOrderOutFormSection ref={formSectionRef} searchOrder={searchOrder} applyReleaseAmount={applyReleaseAmount} />
+            <DiaryOrderOutTable 
+                data={data} checkedIds={checkedIds} onCheckId={onCheckId} 
+                deleteSelected={deleteSelected} 
+                initForm={initForm}
+            />
         </div>
     );
 }
