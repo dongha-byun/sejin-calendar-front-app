@@ -7,7 +7,7 @@ import type { Model } from "../../../../types/baseinfo/Model";
 import { makeDistinctArray } from "../../../../utils/arrayUtils";
 import CommonSelect from "../../../../component/form/CommonSelect";
 import { formatNumber, padDecimal } from "../../../../utils/numberUtils";
-import type { CustomCompany } from "../../../../types/baseinfo/CustomCompany";
+import { CompanyType, type CustomCompany } from "../../../../types/baseinfo/CustomCompany";
 import SelectText from "../../../../component/form/SelectText";
 
 interface Props {
@@ -140,7 +140,11 @@ export default function OrderManagerAcceptFormSection({ onAdd, models, companies
     
     const addCustomer = () => {
         // 거래처 총판 추가
-        alert("거래처총판추가 호출됨");
+        let url = '/base-info/custom-company?type=' + CompanyType.Agency;
+        if(form.customerName) {
+            url += '&name=' + form.customerName;
+        }
+        window.open(url, '_blank');
     }
 
     const checkPrintCn = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -178,6 +182,8 @@ export default function OrderManagerAcceptFormSection({ onAdd, models, companies
             }));
             return ;
         }
+
+        addCustomer();
     }
 
     const checkedAutoReleaseNum = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { type CustomCompany, CompanyType, CompanyTypeList } from "../../../../types/baseinfo/CustomCompany";
 import SelectText from "../../../../component/form/SelectText";
 import FormItem from "../../../../component/form/FormItem";
@@ -7,9 +7,11 @@ import InputText, { InputTextSize } from "../../../../component/form/InputText";
 interface Props {
   onAdd: (customCompany: CustomCompany) => void;
   onChangeType: (type: CompanyType) => void;
+  selectedName: string;
+  selectedType: CompanyType;
 }
 
-export default function CustomCompanyFormSection({ onAdd, onChangeType }: Props) {
+export default function CustomCompanyFormSection({ onAdd, onChangeType, selectedName, selectedType }: Props) {
   const [form, setForm] = useState<CustomCompany>({
     companyType: CompanyType.Material,
     name: "",
@@ -24,6 +26,14 @@ export default function CustomCompanyFormSection({ onAdd, onChangeType }: Props)
     discountRate: 0,
     etc: ""
   });
+
+  useEffect(() => {
+    setForm(prev => ({ 
+      ...prev, 
+      companyType: selectedType, 
+      name: selectedName 
+    }));
+  }, [selectedType, selectedName]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
