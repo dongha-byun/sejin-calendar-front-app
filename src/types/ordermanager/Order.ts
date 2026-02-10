@@ -46,16 +46,16 @@ export interface OrderDto {
     pricePer: string; // 단가
     price: string; // 금액
     deliveryMethod: string; // 납품방법
-    pDate: string; // ???
-    pMethod: string; // ???
-    pCompleteDate: string; // ???
+    pDate: string; // 쇄입지시일
+    pMethod: string; // 쇄입방법
+    pCompleteDate: string; // 쇄입완료일자
     boxDate: string; // 포장 날짜
     boxNum: string; // box 번호
     boxAmount: string; // box 수량
     rNum: string; // 출고증번호
     rDate: string; // 출고일자
     rCompleteDate: string; // 출고완료일자
-    state: string; // 요금종류 (완/반/취)
+    state: string; // 상태 (완/반/취)
     shipNum: string; // 선방번호
     etc1: string; // 비고1
     etc2: string; // 비고2
