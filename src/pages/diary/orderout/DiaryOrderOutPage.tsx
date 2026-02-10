@@ -3,6 +3,7 @@ import DiaryOrderOutFormSection, { type DiaryOrderOutFormSectionRef } from "./co
 import DiaryOrderOutTable from "./components/DiaryOrderOutTable";
 import { diaryOrderOutApi } from "../../../api/diary/diaryOrderOutApi";
 import type { DiaryOrderOutOrder } from "../../../types/diary/DiaryOrderOut";
+import { nowDate } from "../../../utils/dateUtils";
 
 export default function DiaryOrderOutPage() {
     const [data, setData] = useState<DiaryOrderOutOrder[]>([]);
@@ -11,8 +12,9 @@ export default function DiaryOrderOutPage() {
 
     const searchOrder = (orderNum: number) => {
         diaryOrderOutApi.searchOrder(orderNum).then(res => {
+            console.log(res);
+            console.log(res.result);
             if(res.result.success) {
-                console.log(res);
                 if(data.find(d => d.orderId === res.data?.orderId)) {
                     return;
                 }
@@ -21,7 +23,20 @@ export default function DiaryOrderOutPage() {
             } else {
                 alert(res.result.message);
             }
+        })
+        .catch(err => {
+            console.log(err);
+            alert(err.result.message);
         });
+    }
+
+    const saveOrderRelease = () => {
+        const releaseRequests = data.filter(d => checkedIds.includes(d.orderId)).map(d => ({
+            orderNum: d.orderNum,
+            releaseDate: formSectionRef.current?.getReleaseDate() ?? nowDate,
+            releaseAmount: d.totalReleasedAmount
+        }));
+        diaryOrderOutApi.saveOrderRelease(releaseRequests).then(initForm);
     }
 
     const onCheckId = (isChecked: boolean, id?: number) => {
@@ -69,7 +84,7 @@ export default function DiaryOrderOutPage() {
             <DiaryOrderOutTable 
                 data={data} checkedIds={checkedIds} onCheckId={onCheckId} 
                 deleteSelected={deleteSelected} 
-                initForm={initForm}
+                initForm={initForm} saveOrderRelease={saveOrderRelease}
             />
         </div>
     );

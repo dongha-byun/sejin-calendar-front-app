@@ -20,6 +20,7 @@ export interface DiaryOrderOutFormSectionRef {
     focusAndSelectOrderNum: () => void;
     focusAmountInput: () => void;
     clearAmount: () => void;
+    getReleaseDate: () => string;
 }   
 
 interface Props {
@@ -40,6 +41,7 @@ const DiaryOrderOutFormSection = forwardRef<DiaryOrderOutFormSectionRef, Props>(
         },
         focusAmountInput: () => amountInputRef.current?.focus(),
         clearAmount: () => setForm(prev => ({ ...prev, amount: 0 })),
+        getReleaseDate: () => form.iDate,
     }), []);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {

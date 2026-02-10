@@ -7,12 +7,13 @@ interface Props {
     onCheckId: (isChecked: boolean, id?: number) => void;
     deleteSelected: () => void;
     initForm: () => void;
+    saveOrderRelease: () => void;
 }
 
 const notExistsReleaseNumStyle = "bg-pink-500";
 const canReleaseStyle = "bg-yellow-300";
 
-export default function DiaryOrderOutTable({data, checkedIds, onCheckId, deleteSelected, initForm}: Props) {
+export default function DiaryOrderOutTable({data, checkedIds, onCheckId, deleteSelected, initForm, saveOrderRelease}: Props) {
 
     const allSelected = () => {
         data.forEach(s => {
@@ -32,7 +33,7 @@ export default function DiaryOrderOutTable({data, checkedIds, onCheckId, deleteS
     }
 
     const handleSubmit = () => {
-        console.log('입력완료 버튼 눌림');
+        saveOrderRelease();
     }
 
     return (

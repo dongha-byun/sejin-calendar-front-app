@@ -9,3 +9,9 @@ export interface DiaryOrderOutOrder {
     printCn: string;
     releaseNum: string;
 }
+
+export interface DiaryOrderOutReleaseRequest {
+    orderNum: number;
+    releaseDate: string;
+    releaseAmount: number;
+}  
