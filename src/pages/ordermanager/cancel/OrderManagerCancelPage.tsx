@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import OrderManagerCancelFormSection from "./components/OrderManagerCancelFormSection";
+import { useCallback, useEffect, useRef, useState } from "react";
+import OrderManagerCancelFormSection, { type OrderManagerCancelFormSectionRef } from "./components/OrderManagerCancelFormSection";
 import OrderManagerCancelTable from "./components/OrderManagerCancelTable";
 import type { OrderCancelSearch } from "../../../types/ordermanager/OrderCancelSearch";
 import { orderApi } from "../../../api/ordermanager/orderApi";
@@ -8,54 +8,30 @@ import type { Model } from "../../../types/baseinfo/Model";
 import { customCompanyApi } from "../../../api/baseinfo/customCompanyApi";
 import { modelApi } from "../../../api/baseinfo/modelApi";
 
-interface SearchReq {
-    customerName?: string;
-    modelNum?: string;
-    modelName: string;
-    orderNum?: string;    
-}
-
 export default function OrderManagerCancelPage() {
 
     const [orders, setOrders] = useState<OrderCancelSearch[]>([]);
     const [companies, setCompanies] = useState<CustomCompany[]>([]);
     const [models, setModels] = useState<Model[]>([]);
-    const [selectedCompany, setSelectedCompany] = useState<CustomCompany>();
-    const [selectedModel, setSelectedModel] = useState<Model>();
     const [checkedIds, setCheckedIds] = useState<number[]>([]);
-    const [form, setForm] = useState<SearchReq>({
-        modelName: ''
-    });
     const [searchOrder, setSearchOrder] = useState<OrderCancelSearch>();
+    const formSectionRef = useRef<OrderManagerCancelFormSectionRef>(null);
         
     useEffect(() => {
-        fetch();
         customCompanyApi.list(CompanyType.Agency).then(setCompanies);
         modelApi.list().then(setModels);
     }, []);
 
-    const fetch = () => {
-        orderApi.searchOrderCancelList(
-            selectedCompany?.name,
-            selectedModel?.modelNum
-        ).then((result) => {
+    const searchOrders = useCallback((customerName?: string, modelNum?: string) => {
+        orderApi.searchOrderCancelList(customerName, modelNum).then((result) => {
             setOrders(result);
             setCheckedIds([]);
             setSearchOrder(undefined);
         });
-    }
-
-    useEffect(() => {
-        fetch();
-    },[selectedModel, selectedCompany]);
+    }, []);
 
     const onInit = () => {
-        setForm({
-            customerName: undefined,
-            modelNum: undefined,
-            modelName: '',
-            orderNum: undefined
-        });
+        formSectionRef.current?.handleInit();
         setSearchOrder(undefined);
     };
 
@@ -73,7 +49,9 @@ export default function OrderManagerCancelPage() {
         }
 
         if(window.confirm("선택한 주문을 취소 시키겠습니까?")) {
-            orderApi.cancel(checkedIds).then(fetch);
+            orderApi.cancel(checkedIds).then(() => {
+                formSectionRef.current?.refreshSearch();
+            });
         }
     }
 
@@ -90,9 +68,10 @@ export default function OrderManagerCancelPage() {
         <div className="px-6 py-3">
             <h1 className="text-base font-semibold pb-2">주문취소</h1>
             <OrderManagerCancelFormSection 
-                companies={companies} setSelectedCompany={setSelectedCompany}
-                models={models} setSelectedModel={setSelectedModel}
-                form={form} setForm={setForm}
+                ref={formSectionRef}
+                companies={companies}
+                models={models}
+                searchOrders={searchOrders}
                 focusOrder={focusOrder}
             />
             <OrderManagerCancelTable 

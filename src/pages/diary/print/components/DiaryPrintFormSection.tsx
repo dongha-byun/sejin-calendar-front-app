@@ -1,29 +1,47 @@
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import FormItem from "../../../../component/form/FormItem";
 import type { Model } from "../../../../types/baseinfo/Model";
 import type { CustomCompany } from "../../../../types/baseinfo/CustomCompany";
-import type { SearchReqForDiaryPrintPage } from "../DiaryPrintPage";
 import CommonSelect from "../../../../component/form/CommonSelect";
 import type { option } from "../../../../types/values/OptionType";
+
+interface SearchReq {
+    modelNum: string;
+    printCompanyName: string;
+}
+
+export type DiaryPrintFormSectionRef = {
+    handleInit: () => void;
+    refreshSearch: () => void;
+};
 
 interface Props {
     models: Model[];
     companies: CustomCompany[];
-    searchFunc: (companyName: string, modelNum: string) => void;
-    form: SearchReqForDiaryPrintPage;
-    setForm: React.Dispatch<React.SetStateAction<SearchReqForDiaryPrintPage>>;
+    searchFunc: (companyName?: string, modelNum?: string) => void;
 }
 
-export default function DiaryPrintFormSection({models, companies, searchFunc, form, setForm}: Props) {
+const defaultForm: SearchReq = {
+    modelNum: '',
+    printCompanyName: '',
+};
+
+const DiaryPrintFormSection = forwardRef<DiaryPrintFormSectionRef, Props>(
+    function DiaryPrintFormSection({ models, companies, searchFunc }, ref) {
+    const [form, setForm] = useState<SearchReq>(defaultForm);
     const [modelNums, setModelNums] = useState<string[]>([]);
     const [companyNames, setCompanyNames] = useState<option[]>([]);
+
+    useImperativeHandle(ref, () => ({
+        handleInit: () => setForm(defaultForm),
+        refreshSearch: () => searchFunc(form.printCompanyName, form.modelNum),
+    }), [form.printCompanyName, form.modelNum, searchFunc]);
 
     useEffect(() => {
         setModelNums(models.map(m => m.modelNum));
     }, [models]);
 
     useEffect(() => {
-        
         setCompanyNames([
             { value: "", label: "모두" },
             ...companies.map(c => ({ value: c.name, label: c.name }))
@@ -32,12 +50,10 @@ export default function DiaryPrintFormSection({models, companies, searchFunc, fo
 
     useEffect(() => {
         searchFunc(form.printCompanyName, form.modelNum);
-    }, [form.modelNum, form.printCompanyName]);
+    }, [form.modelNum, form.printCompanyName, searchFunc]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-    
-        console.log(`Changed ${name} to ${value}`);
         setForm(prev => ({ ...prev, [name]: value }));
     };
 
@@ -59,8 +75,8 @@ export default function DiaryPrintFormSection({models, companies, searchFunc, fo
                     options={companyNames} 
                     />
             } />
-            
-            
         </div>
     );
-}
+});
+
+export default DiaryPrintFormSection;

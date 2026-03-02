@@ -1,7 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FormItem from "../../../../component/form/FormItem";
 import InputText, { InputTextSize } from "../../../../component/form/InputText";
-import SelectText from "../../../../component/form/SelectText";
+import CommonSelect from "../../../../component/form/CommonSelect";
+import type { Model } from "../../../../types/baseinfo/Model";
+import type { CustomCompany } from "../../../../types/baseinfo/CustomCompany";
+import type { option } from "../../../../types/values/OptionType";
+import { makeDistinctArray } from "../../../../utils/arrayUtils";
 
 interface SearchReq {
     customerName: string;
@@ -9,16 +13,35 @@ interface SearchReq {
     orderNum: string;
 }
 
-export default function OrderManagerReturnsFormSection () {
+interface Props {
+    models: Model[];
+    companies: CustomCompany[];
+    searchOrders: (customerName?: string) => void;
+}
+
+export default function OrderManagerReturnsFormSection ({ models, companies, searchOrders }: Props) {
     const [form, setForm] = useState<SearchReq>({
-        customerName: '',
-        modelNum: '',
-        orderNum: ''
+        customerName: "모두",
+        modelNum: "",
+        orderNum: ""
     });
+    const [companyOptions, setCompanyOptions] = useState<option[]>([]);
+    const modelNums = makeDistinctArray(models.map(model => model.modelNum));
+    const selectedModelName = models.find(m => m.modelNum === form.modelNum)?.modelName ?? "";
+
+    useEffect(() => {
+        const allOption = { value: "모두", label: "모두" };
+        const companyNames = companies.map(c => ({ value: c.name, label: c.name }));
+        setCompanyOptions([allOption, ...companyNames]);
+    }, [companies]);
+
+    useEffect(() => {
+        searchOrders(form.customerName);
+    }, [form.customerName, searchOrders]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-        setForm(prev => ({ ...prev, [name]: value }));
+        setForm(prev => ({ ...prev, [name]: value ?? "" }));
     };
 
     const onInit = () => {
@@ -33,33 +56,27 @@ export default function OrderManagerReturnsFormSection () {
         console.log('종료 버튼 로직 호출');
     }
 
-    const customerNames = [
-        "주문인1", "주문인2", "주문인3"
-    ];
-
-    const modelNums = [
-        "모델1","모델2","모델3","모델4",
-    ];
-
     return (
         <div className="grid grid-cols-5 gap-4 p-4 bg-white rounded shadow mb-4 max-w-[75vw]">
             {/* 1행 */}
             <FormItem label="주문인" children={
-                <SelectText 
+                <CommonSelect 
                     name="customerName"
                     value={form.customerName}
                     onChange={handleChange}
-                    options={customerNames.map(method => ({ value: method, label: method }))} />
+                    options={companyOptions} />
             } />
             <FormItem label="호수" children={
-                <SelectText 
+                <CommonSelect 
                     name="modelNum"
                     value={form.modelNum}
                     onChange={handleChange}
-                    options={modelNums.map(method => ({ value: method, label: method }))} />
+                    options={modelNums.map(num => ({ value: num, label: num }))} 
+                    isFilterStartWith
+                />
             } />
-            <FormItem label="모델명 : " children={
-                <span className="flex gap-2 items-center">모델명</span>
+            <FormItem label="모델명" children={
+                <span className="flex gap-2 items-center">{selectedModelName}</span>
             } />
             <div className="flex gap-2 col-span-2">
                 <FormItem label="접수번호" children={

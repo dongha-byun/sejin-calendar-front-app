@@ -50,5 +50,10 @@ export const orderApi = {
             orderIds: orderIds
         };
         await apiService.put("/api/v1/order-manager/command/print-cn", body);
+    },
+    listReturns: async(customerName?: string) => {
+        const params = customerName && customerName !== "모두" ? { customerName } : {};
+        const response = await apiService.get("/api/v1/order-manager/returns", params);
+        return response.data.data;
     }
 }

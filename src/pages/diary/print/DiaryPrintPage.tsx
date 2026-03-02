@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import DiaryPrintFormSection from "./components/DiaryPrintFormSection";
+import { useCallback, useEffect, useRef, useState } from "react";
+import DiaryPrintFormSection, { type DiaryPrintFormSectionRef } from "./components/DiaryPrintFormSection";
 import DiaryPrintTable from "./components/DiaryPrintTable";
 import type { Model } from "../../../types/baseinfo/Model";
 import { CompanyType, type CustomCompany } from "../../../types/baseinfo/CustomCompany";
@@ -9,30 +9,21 @@ import { commandPrintApi } from "../../../api/command/commandPrintApi";
 import type { CommandPrint } from "../../../types/command/CommandPrint";
 import { diaryPrintApi } from "../../../api/diary/diaryPrintApi";
 
-export interface SearchReqForDiaryPrintPage {
-    modelNum: string;
-    printCompanyName: string;
-}
-
 export default function DiaryPrintPage() {
-    const [form, setForm] = useState<SearchReqForDiaryPrintPage>({
-        modelNum: '',
-        printCompanyName: '',
-    });
     const [commandPrints, setCommandPrints] = useState<CommandPrint[]>([]);
     const [models, setModels] = useState<Model[]>([]);
     const [companies, setCompanies] = useState<CustomCompany[]>([]);
     const [checkedIds, setCheckedIds] = useState<number[]>([]);
+    const formSectionRef = useRef<DiaryPrintFormSectionRef>(null);
 
     useEffect(() => {
-        search();
         modelApi.list().then(setModels);
         customCompanyApi.list(CompanyType.Printing).then(setCompanies);
     }, []);
 
-    const search = (companyName?: string, modelNum?: string) => {
+    const searchFunc = useCallback((companyName?: string, modelNum?: string) => {
         commandPrintApi.search(companyName, modelNum).then(setCommandPrints);
-    }
+    }, []);
 
     const onCheckId = (isChecked: boolean, id?: number) => {
         if(id) {
@@ -45,11 +36,7 @@ export default function DiaryPrintPage() {
     }
 
     const onCancel = () => {
-        search();
-        setForm({
-            modelNum: '',
-            printCompanyName: ''
-        });
+        formSectionRef.current?.handleInit();
         setCheckedIds([]);
     }
 
@@ -59,7 +46,7 @@ export default function DiaryPrintPage() {
             return;
         }
 
-        diaryPrintApi.create(checkedIds).then(() => search());
+        diaryPrintApi.create(checkedIds).then(() => formSectionRef.current?.refreshSearch());
     }
 
     const onExit = () => {
@@ -70,8 +57,10 @@ export default function DiaryPrintPage() {
         <div className="px-6 py-3">
             <h1 className="text-base font-semibold pb-2">작업일지 - 인쇄물입고</h1>
             <DiaryPrintFormSection 
-                models={models} companies={companies} searchFunc={search} 
-                form={form} setForm={setForm}
+                ref={formSectionRef}
+                models={models} 
+                companies={companies} 
+                searchFunc={searchFunc}
             />
             <DiaryPrintTable data={commandPrints} onCheckId={onCheckId} checkedIds={checkedIds}/>
             <div className="flex my-2 items-center text-sm gap-3">
