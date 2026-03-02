@@ -22,7 +22,7 @@ export default function OrderManagerReturnsTable ({ data }: Props) {
                 </thead>
                 <tbody>
                 {data.map((s, idx) => (
-                    <tr key={s.id} className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                    <tr key={s.id ?? idx} className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}>
                         <td className="border px-2 py-1">
                             <input type="checkbox"
                                 className="form-checkbox transition duration-150 ease-in-out items-center"/>
@@ -32,7 +32,7 @@ export default function OrderManagerReturnsTable ({ data }: Props) {
                         <td className="border px-2 py-1">{s.modelNum}</td>
                         <td className="border px-2 py-1">{s.amount}</td>
                         <td className="border px-2 py-1">{s.printCn}</td>
-                        <td className="border px-2 py-1">state</td>
+                        <td className="border px-2 py-1">{s.state}</td>
                     </tr>
                 ))}
                 </tbody>
