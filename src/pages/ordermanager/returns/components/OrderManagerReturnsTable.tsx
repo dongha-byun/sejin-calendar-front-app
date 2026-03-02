@@ -1,13 +1,28 @@
+import { useEffect } from "react";
+import ListCheckBox from "../../../../component/grid/ListCheckBox";
 import type { Order } from "../../../../types/ordermanager/Order";
 
 interface Props {
     data: Order[];
+    searchOrder?: Order;
+    checkedIds: number[];
+    checkOrder: (id: number, isChecked: boolean) => void;
 }
 
-export default function OrderManagerReturnsTable ({ data }: Props) {
+export default function OrderManagerReturnsTable ({ data, searchOrder, checkedIds, checkOrder }: Props) {
+
+    useEffect(() => {
+        if (searchOrder) {
+            const row = document.getElementById(`row-${searchOrder.orderNum}`);
+            if (row) {
+                row.scrollIntoView({ behavior: "smooth", block: "center" });
+                (row as HTMLElement).focus();
+            }
+        }
+    }, [searchOrder, data]);
 
     return (
-        <div className="overflow-x-auto">
+        <div className="overflow-y-auto overflow-x-auto max-h-[400px]">
             <table className="table-auto w-full border text-sm">
                 <thead className="bg-gray-200">
                     <tr>
@@ -22,10 +37,21 @@ export default function OrderManagerReturnsTable ({ data }: Props) {
                 </thead>
                 <tbody>
                 {data.map((s, idx) => (
-                    <tr key={s.id ?? idx} className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                        <td className="border px-2 py-1">
-                            <input type="checkbox"
-                                className="form-checkbox transition duration-150 ease-in-out items-center"/>
+                    <tr 
+                        key={s.id ?? idx} 
+                        id={`row-${s.orderNum}`}
+                        tabIndex={-1}
+                        className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}
+                    >
+                        <td className="border px-2 py-1 text-center">
+                            {s.id != null ? (
+                                <ListCheckBox 
+                                    checked={checkedIds.includes(s.id)} 
+                                    onChange={(e) => checkOrder(s.id!, e.target.checked)} 
+                                />
+                            ) : (
+                                <span>-</span>
+                            )}
                         </td>
                         <td className="border px-2 py-1">{s.orderNum}</td>
                         <td className="border px-2 py-1">{s.customerName}</td>

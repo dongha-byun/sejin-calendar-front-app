@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import FormItem from "../../../../component/form/FormItem";
 import InputText, { InputTextSize } from "../../../../component/form/InputText";
 import CommonSelect from "../../../../component/form/CommonSelect";
@@ -13,27 +13,44 @@ interface SearchReq {
     orderNum: string;
 }
 
+const defaultForm: SearchReq = {
+    customerName: "모두",
+    modelNum: "모두",
+    orderNum: ""
+};
+
+export type OrderManagerReturnsFormSectionRef = {
+    refreshSearch: () => void;
+};
+
 interface Props {
     models: Model[];
     companies: CustomCompany[];
     searchOrders: (customerName?: string) => void;
+    focusOrder: (orderNum: string) => void;
+    onInit: () => void;
+    onSubmit: () => void;
 }
 
-export default function OrderManagerReturnsFormSection ({ models, companies, searchOrders }: Props) {
-    const [form, setForm] = useState<SearchReq>({
-        customerName: "모두",
-        modelNum: "",
-        orderNum: ""
-    });
+const OrderManagerReturnsFormSection = forwardRef<OrderManagerReturnsFormSectionRef, Props>(
+    function OrderManagerReturnsFormSection({ models, companies, searchOrders, focusOrder, onInit, onSubmit }, ref) {
+    const [form, setForm] = useState<SearchReq>(defaultForm);
     const [companyOptions, setCompanyOptions] = useState<option[]>([]);
+    const [modelOptions, setModelOptions] = useState<option[]>([]);
     const modelNums = makeDistinctArray(models.map(model => model.modelNum));
-    const selectedModelName = models.find(m => m.modelNum === form.modelNum)?.modelName ?? "";
+    const selectedModelName = form.modelNum === "모두" ? "" : models.find(m => m.modelNum === form.modelNum)?.modelName ?? "";
 
     useEffect(() => {
         const allOption = { value: "모두", label: "모두" };
         const companyNames = companies.map(c => ({ value: c.name, label: c.name }));
         setCompanyOptions([allOption, ...companyNames]);
     }, [companies]);
+
+    useEffect(() => {
+        const allOption = { value: "모두", label: "모두" };
+        const modelOpts = modelNums.map(num => ({ value: num, label: num }));
+        setModelOptions([allOption, ...modelOpts]);
+    }, [modelNums]);
 
     useEffect(() => {
         searchOrders(form.customerName);
@@ -44,17 +61,14 @@ export default function OrderManagerReturnsFormSection ({ models, companies, sea
         setForm(prev => ({ ...prev, [name]: value ?? "" }));
     };
 
-    const onInit = () => {
-        console.log('취소 버튼 로직 호출');
+    const handleInit = () => {
+        setForm(defaultForm);
+        onInit();
     };
 
-    const handleSubmit = () => {
-        console.log('선택완료 버튼 로직 호출');
-    }
-
-    const onExit = () => {
-        console.log('종료 버튼 로직 호출');
-    }
+    useImperativeHandle(ref, () => ({
+        refreshSearch: () => searchOrders(form.customerName),
+    }), [form.customerName, searchOrders]);
 
     return (
         <div className="grid grid-cols-5 gap-4 p-4 bg-white rounded shadow mb-4 max-w-[75vw]">
@@ -71,7 +85,7 @@ export default function OrderManagerReturnsFormSection ({ models, companies, sea
                     name="modelNum"
                     value={form.modelNum}
                     onChange={handleChange}
-                    options={modelNums.map(num => ({ value: num, label: num }))} 
+                    options={modelOptions} 
                     isFilterStartWith
                 />
             } />
@@ -85,17 +99,29 @@ export default function OrderManagerReturnsFormSection ({ models, companies, sea
                         name="orderNum"
                         size={InputTextSize.Medium}
                         value={form.orderNum}
-                        onChange={handleChange} />
-                    <button className="border border-gray-400 text-black px-4 py-1">접수번호검색</button>
+                        onChange={handleChange}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                focusOrder(form.orderNum);
+                            }
+                        }} />
+                    <button 
+                        type="button"
+                        className="border border-gray-400 text-black px-4 py-1"
+                        onClick={() => focusOrder(form.orderNum)}
+                    >
+                        접수번호검색
+                    </button>
                     </>
                 } />
             </div>
 
             <div className="flex gap-2 mt-2">
-                <button onClick={onInit} className="bg-red-500 text-white px-4 py-1 rounded">취소</button>
-                <button onClick={handleSubmit} className="bg-green-500 text-white px-4 py-1 rounded">확인</button>
-                <button onClick={onExit} className="bg-red-500 text-white px-4 py-1 rounded">종료</button>
+                <button type="button" onClick={handleInit} className="bg-red-500 text-white px-4 py-1 rounded">취소</button>
+                <button type="button" onClick={onSubmit} className="bg-green-500 text-white px-4 py-1 rounded">확인</button>
             </div>
         </div>
     );
-}
+});
+
+export default OrderManagerReturnsFormSection;

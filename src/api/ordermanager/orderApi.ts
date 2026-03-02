@@ -55,5 +55,8 @@ export const orderApi = {
         const params = customerName && customerName !== "모두" ? { customerName } : {};
         const response = await apiService.get("/api/v1/order-manager/returns", params);
         return response.data.data;
+    },
+    submitReturns: async(orderIds: number[]) => {
+        await apiService.post("/api/v1/order-manager/returns", { orderIds });
     }
 }
