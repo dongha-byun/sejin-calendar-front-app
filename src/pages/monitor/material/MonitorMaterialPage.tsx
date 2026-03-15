@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import MonitorMaterialFormSection from "./components/MonitorMaterialFormSection";
+import { useEffect, useRef, useState } from "react";
+import MonitorMaterialFormSection, { type MonitorMaterialFormSectionRef } from "./components/MonitorMaterialFormSection";
 import MonitorMaterialQuantityTable from "./components/MonitorMaterialQuantityTable";
 import MonitorMaterialPresentTable from "./components/MonitorMaterialPresentTable";
 import MonitorMaterialBottom from "./components/MonitorMaterialBottom";
@@ -17,6 +17,7 @@ export default function MonitorMaterialPage() {
     const [companies, setCompanies] = useState<CustomCompany[]>([]);
     const [materials, setMaterials] = useState<Material[]>([]);
     const [isDetailView, setIsDetailView] = useState(false);
+    const formSectionRef = useRef<MonitorMaterialFormSectionRef | null>(null);
 
     useEffect(() => {
         customCompanyApi.list(CompanyType.Material).then(setCompanies);
@@ -32,10 +33,31 @@ export default function MonitorMaterialPage() {
         });
     };
 
+    const previewPrintContent = () => {
+        alert("[인쇄 미리보기] 준비중 입니다.");
+    }
+
+    const doPrint = () => {
+        alert("[인쇄] 준비중 입니다.");
+    }
+
+    const onInit = () => {
+        formSectionRef.current?.onInitForm();
+    }
+
+    const openMaterialOrderOut = () => {
+        const bindMethod = formSectionRef.current?.getSelectedBindMethod();
+        if(bindMethod) {
+            let url = '/order/material?bindMethod=' + bindMethod;
+            window.open(url, '_blank');
+        }
+    }
+
     return (
         <div className="px-6 py-3">
             <h1 className="text-base font-semibold pb-2">원자재재고조회</h1>
             <MonitorMaterialFormSection
+                ref={formSectionRef}
                 companies={companies}
                 materials={materials}
                 onSearch={search}
@@ -55,7 +77,12 @@ export default function MonitorMaterialPage() {
             <MonitorMaterialBottom 
                 totalPutinAmount={searchResponse?.totalPutinAmount || 0} 
                 totalUsageAmount={searchResponse?.totalUsageAmount || 0} 
-                currentUsableAmount={searchResponse?.currentUsableAmount || 0} />
+                currentUsableAmount={searchResponse?.currentUsableAmount || 0} 
+                onPreviewPrintContent={previewPrintContent}
+                onDoPrint={doPrint}
+                onInitForm={onInit}
+                openMaterialOrderOut={openMaterialOrderOut}
+                />
         </div>
     );
 }

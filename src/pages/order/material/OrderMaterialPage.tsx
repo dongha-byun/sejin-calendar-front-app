@@ -8,10 +8,14 @@ import { CompanyType, type CustomCompany } from "../../../types/baseinfo/CustomC
 import { customCompanyApi } from "../../../api/baseinfo/customCompanyApi";
 import { materialApi } from "../../../api/baseinfo/materialApi";
 
-export default function OrderMaterialPage() {
+interface Props {
+    bindMethod: BindMethod;
+}
+
+export default function OrderMaterialPage({ bindMethod }: Props) {
     const [orderMaterials, setOrderMaterials] = useState<OrderMaterial[]>([]);
     const [customCompanies, setCustomCompanies] = useState<CustomCompany[]>([]);
-    const [selectedBindMethod, setSelectedBindMethod] = useState<BindMethod>(BindMethod.IRON);
+    const [selectedBindMethod, setSelectedBindMethod] = useState<BindMethod>(bindMethod);
     const [materials, setMaterials] = useState<Material[]>([]);
 
     useEffect(() => {

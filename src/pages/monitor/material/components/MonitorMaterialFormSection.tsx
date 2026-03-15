@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import FormItem from "../../../../component/form/FormItem";
 import { BindMethod, type Material } from "../../../../types/baseinfo/Material";
 import CommonSelect from "../../../../component/form/CommonSelect";
@@ -14,6 +14,11 @@ export interface MonitorMaterialSearchRequest {
     color: string;
 }
 
+export interface MonitorMaterialFormSectionRef {
+    onInitForm: () => void;
+    getSelectedBindMethod: () => string;
+}
+
 interface Props {
     companies: CustomCompany[];
     materials: Material[];
@@ -22,15 +27,23 @@ interface Props {
     onDetailViewChange: (isDetailView: boolean) => void;
 }
 
-export default function MonitorMaterialFormSection({ companies, materials, onSearch, isDetailView, onDetailViewChange }: Props) {
-    const [form, setForm] = useState<MonitorMaterialSearchRequest>({
-        bindMethod: BindMethod.IRON,
-        companyName: '',
-        standard1: '',
-        standard2: '',
-        contents: '',
-        color: ''
-    });
+const initForm: MonitorMaterialSearchRequest = {
+    bindMethod: BindMethod.IRON,
+    companyName: '',
+    standard1: '',
+    standard2: '',
+    contents: '',
+    color: ''
+}
+
+const MonitorMaterialFormSection = forwardRef<MonitorMaterialFormSectionRef, Props>(
+    function MonitorMaterialFormSection({ companies, materials, onSearch, isDetailView, onDetailViewChange }, ref) {
+    const [form, setForm] = useState<MonitorMaterialSearchRequest>(initForm);
+
+    useImperativeHandle(ref, () => ({
+        onInitForm: () => setForm(initForm),
+        getSelectedBindMethod: () => form.bindMethod,
+    }), [form]);
 
     useEffect(() => {
         onSearch(form);
@@ -113,4 +126,6 @@ export default function MonitorMaterialFormSection({ companies, materials, onSea
             
         </div>
     );
-};
+});
+
+export default MonitorMaterialFormSection;
