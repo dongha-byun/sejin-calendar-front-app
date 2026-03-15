@@ -5,8 +5,12 @@ export const materialApi = {
     save: async (data: Material) => {
         await apiService.post("/api/v1/materials", data);
     },
-    list: async (bindMethod: string) => {
-        const response = await apiService.get("/api/v1/materials?bindMethod=" + bindMethod);
+    list: async (bindMethod?: string) => {
+        let url = "/api/v1/materials";
+        if(bindMethod) {
+            url += `?bindMethod=${bindMethod}`;
+        }
+        const response = await apiService.get(url);
         return response.data.data;
     }
 }

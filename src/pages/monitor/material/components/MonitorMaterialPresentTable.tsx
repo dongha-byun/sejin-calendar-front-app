@@ -1,10 +1,12 @@
-import type { MonitorMaterialPresentDto } from "../../../../types/monitor/MonitorMaterialPresentDto";
+import type { MonitorMaterialUsageDetailResponse, MonitorMaterialUsageSummaryResponse } from "../../../../types/monitor/MonitorMaterialSearchResponse";
 
 interface Props {
-    data: MonitorMaterialPresentDto[];
+    detailList: MonitorMaterialUsageDetailResponse[];
+    summaryList: MonitorMaterialUsageSummaryResponse[];
+    isDetailView: boolean;
 }
 
-export default function MonitorMaterialPresentTable({ data }: Props) {
+export default function MonitorMaterialPresentTable({ detailList, summaryList, isDetailView }: Props) {
 
     return (
         <div className="overflow-x-auto max-h-[400px] overflow-y-auto">
@@ -20,16 +22,29 @@ export default function MonitorMaterialPresentTable({ data }: Props) {
                     </tr>
                 </thead>
                 <tbody>
-                {data.map((s, idx) => (
-                    <tr key={idx} className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                        <td className="border px-2 py-1">{s.iDate}</td>
-                        <td className="border px-2 py-1">{s.amount}</td>
-                        <td className="border px-2 py-1">{s.modelNum}</td>
-                        <td className="border px-2 py-1">{s.modelName}</td>
-                        <td className="border px-2 py-1">{s.printCn}</td>
-                        <td className="border px-2 py-1">{s.standard}</td>
-                    </tr>
-                ))}
+                    {isDetailView ? (
+                        detailList.map((d, idx) => (
+                            <tr key={idx} className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                                <td className="border px-2 py-1">{d.iDate}</td>
+                                <td className="border px-2 py-1">{d.amount}</td>
+                                <td className="border px-2 py-1">{d.modelNum}</td>
+                                <td className="border px-2 py-1">{d.modelName}</td>
+                                <td className="border px-2 py-1">{d.width}</td>
+                                <td className="border px-2 py-1">{d.companyName}</td>
+                            </tr>
+                        ))
+                    ) : (
+                        summaryList.map((s, idx) => (
+                            <tr key={idx} className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                                <td className="border px-2 py-1"></td>
+                                <td className="border px-2 py-1">{s.amount}</td>
+                                <td className="border px-2 py-1"></td>
+                                <td className="border px-2 py-1"></td>
+                                <td className="border px-2 py-1"></td>
+                                <td className="border px-2 py-1">{s.width}</td>
+                            </tr>
+                        ))
+                    )}
                 </tbody>
             </table>
         </div> 
