@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import FormItem from "../../../../component/form/FormItem";
 import type { Model } from "../../../../types/baseinfo/Model";
 import { makeDistinctArray } from "../../../../utils/arrayUtils";
@@ -10,17 +10,26 @@ interface SearchReq {
     modelName: string;
 }
 
+export interface MonitorModelFormSectionRef {
+    onInit: () => void;
+}
+
 interface Props {
     models: Model[];
     onSearch: (modelNum: string) => void;
 }
 
-export default function MonitorModelFormSection({ models, onSearch }: Props) {
+const MonitorModelFormSection = forwardRef<MonitorModelFormSectionRef, Props>(
+    function MonitorModelFormSection({ models, onSearch }, ref) {
     const [modelOptions, setModelOptions] = useState<option[]>([]);
     const [form, setForm] = useState<SearchReq>({
         modelNum: '',
         modelName: '',
     });
+
+    useImperativeHandle(ref, () => ({
+        onInit: () => setForm({ modelNum: '', modelName: '' }),
+    }), []);
 
     useEffect(() => {
         const uniqueModelNums = makeDistinctArray(models.map(m => m.modelNum));
@@ -58,4 +67,6 @@ export default function MonitorModelFormSection({ models, onSearch }: Props) {
             } />
         </div>
     );
-}
+});
+
+export default MonitorModelFormSection;

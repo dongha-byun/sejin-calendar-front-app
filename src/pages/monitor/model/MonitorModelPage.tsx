@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import MonitorModelFormSection from "./components/MonitorModelFormSection";
+import { useEffect, useRef, useState } from "react";
+import MonitorModelFormSection, { type MonitorModelFormSectionRef } from "./components/MonitorModelFormSection";
 import MonitorModelButton from "./components/MonitorModelButton";
 import MonitorModelPrintHistory from "./components/MonitorModelPrintHistory";
 import MonitorModelMachineHistory from "./components/MonitorModelMachineHistory";
@@ -13,6 +13,7 @@ import PageHeader from "../../../component/layout/PageHeader";
 export default function MonitorModelPage() {
     const [models, setModels] = useState<Model[]>([]);
     const [searchResponse, setSearchResponse] = useState<MonitorModelSearchResponse>();
+    const formSectionRef = useRef<MonitorModelFormSectionRef | null>(null);
 
     useEffect(() => {
         modelApi.list().then(setModels);
@@ -27,6 +28,10 @@ export default function MonitorModelPage() {
         });
     }
 
+    const onInit = () => {
+        formSectionRef.current?.onInit();
+    }
+
     const previewPrintContent = () => {
         alert("[인쇄 미리보기] 준비중 입니다.");
     }
@@ -38,13 +43,13 @@ export default function MonitorModelPage() {
     return (
         <div className="px-6 py-3">
             <PageHeader>호별 생산 내역 조회</PageHeader>
-            <MonitorModelFormSection models={models} onSearch={search} />
+            <MonitorModelFormSection ref={formSectionRef} models={models} onSearch={search} />
             <div className="grid grid-cols-3 gap-4 p-3 border border-white-500">
                 <MonitorModelPrintHistory data={searchResponse?.printInfo || EMPTY_HISTORY} />
                 <MonitorModelMachineHistory data={searchResponse?.machineInfo || EMPTY_HISTORY} />
                 <MonitorModelBindHistory data={searchResponse?.bindInfo || EMPTY_HISTORY}/>
             </div>
-            <MonitorModelButton onPreviewPrintContent={previewPrintContent} onDoPrint={doPrint} />
+            <MonitorModelButton onPreviewPrintContent={previewPrintContent} onDoPrint={doPrint} onInit={onInit} />
         </div>
     );
 }
