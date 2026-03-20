@@ -1,7 +1,8 @@
-import type { CommandPrint } from "../../../../types/command/CommandPrint";
+import type { History, MonitorModelPrintHistoryResponse } from "../../../../types/monitor/MonitorModelSearchResponse";
+import { formatNumber } from "../../../../utils/numberUtils";
 
 interface Props {
-    data : CommandPrint[];
+    data : History<MonitorModelPrintHistoryResponse>;
 }
 
 export default function MonitorModelPrintHistory({data}: Props) {
@@ -21,11 +22,11 @@ export default function MonitorModelPrintHistory({data}: Props) {
                         </tr>
                     </thead>
                     <tbody>
-                    {data.map((s, idx) => (
-                        <tr key={s.id} className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                            <td className="border px-2 py-1">{s.iDate}</td>
+                    {data.list.map((s, idx) => (
+                        <tr key={idx} className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                            <td className="border px-2 py-1">{s.printDate}</td>
                             <td className="border px-2 py-1">{s.printCompanyName}</td>
-                            <td className="border px-2 py-1">{s.orderCount}</td>
+                            <td className="border px-2 py-1 text-right">{formatNumber(s.totalCount)}</td>
                         </tr>
                     ))}
                     </tbody>
@@ -33,7 +34,7 @@ export default function MonitorModelPrintHistory({data}: Props) {
                 
             </div> 
             <div className="text-center">
-                합계 : <span className="text-blue-700">2000</span>
+                합계 : <span className="text-blue-700">{formatNumber(data.totalAmount)}</span>
             </div>
         </div>
     );

@@ -1,7 +1,8 @@
-import type { DiaryMachine } from "../../../../types/diary/DiaryMachine";
+import type { History, MonitorModelMachineHistoryResponse } from "../../../../types/monitor/MonitorModelSearchResponse";
+import { formatNumber } from "../../../../utils/numberUtils";
 
 interface Props {
-    data : DiaryMachine[];
+    data : History<MonitorModelMachineHistoryResponse>;
 }
 
 export default function MonitorModelMachineHistory({data}: Props) {
@@ -23,10 +24,10 @@ export default function MonitorModelMachineHistory({data}: Props) {
                         </tr>
                     </thead>
                     <tbody>
-                    {data.map((s, idx) => (
-                        <tr key={s.id} className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                    {data.list.map((s, idx) => (
+                        <tr key={idx} className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}>
                             <td className="border px-2 py-1">{s.iDate}</td>
-                            <td className="border px-2 py-1">{s.amount}</td>
+                            <td className="border px-2 py-1 text-right">{formatNumber(s.amount)}</td>
                             <td className="border px-2 py-1">{s.printCn}</td>
                             <td className="border px-2 py-1">{s.machineNum}</td>
                             <td className="border px-2 py-1">{s.etc}</td>
@@ -36,7 +37,7 @@ export default function MonitorModelMachineHistory({data}: Props) {
                 </table>
             </div> 
             <div className="text-center">
-                합계 : <span className="text-blue-700">934000</span>
+                합계 : <span className="text-blue-700">{formatNumber(data.totalAmount)}</span>
             </div>
         </div>
     );
