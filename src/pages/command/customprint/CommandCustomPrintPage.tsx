@@ -4,6 +4,7 @@ import CommandCustomPrintTable from "./components/CommandCustomPrintTable";
 import { commandPrintCnApi } from "../../../api/command/commandPrintCnApi";
 import type { CommandPrintCnSearchDto } from "../../../types/command/CommandPrintCn";
 import { orderApi } from "../../../api/ordermanager/orderApi";
+import PageHeader from "../../../component/layout/PageHeader";
 
 export default function CommandCustomPrintPage() {
     const [errorMessage, setErrorMessage] = useState<string>('');
@@ -93,7 +94,7 @@ export default function CommandCustomPrintPage() {
 
     return (
         <div className="px-6 py-3">
-            <h1 className="text-base font-semibold pb-2">작업지시 - 상호쇄입지시</h1>
+            <PageHeader>작업지시 - 상호쇄입지시</PageHeader>
             <CommandCustomPrintFormSection 
                 addOrder={addOrder}
                 onSelectAll={handleSelectAll}

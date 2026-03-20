@@ -3,6 +3,7 @@ import MonitorOrderFormSection from "./components/MonitorOrderFormSection";
 import type { Order } from "../../../types/ordermanager/Order";
 import MonitorOrderTable from "./components/MonitorOrderTable";
 import MonitorOrderBottom from "./components/MonitorOrderBottom";
+import PageHeader from "../../../component/layout/PageHeader";
 
 
 export default function MonitorOrderPage() {
@@ -20,7 +21,7 @@ export default function MonitorOrderPage() {
 
     return (
         <div className="px-6 py-3">
-            <h1 className="text-base font-semibold pb-2">접수내역 조회</h1>
+            <PageHeader>접수내역 조회</PageHeader>
             <MonitorOrderFormSection />
             <MonitorOrderTable data={orders} />
             <MonitorOrderBottom />

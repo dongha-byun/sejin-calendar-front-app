@@ -8,6 +8,7 @@ import type { SomsResponse } from "../../../api/somsResponse";
 import type { DiaryBoxingOrder } from "../../../types/diary/DiaryBoxing";
 import type { FormSectionRef } from "./components/DiaryPackagingFormSection";
 import { nowDate } from "../../../utils/dateUtils";
+import PageHeader from "../../../component/layout/PageHeader";
 
 export interface RealBoxInfo {
     box: string;
@@ -91,7 +92,7 @@ export default function DiaryPackagingPage() {
 
     return (
         <div className="px-6 py-3">
-            <h1 className="text-base font-semibold pb-2">작업일지 - 포장</h1>
+            <PageHeader>작업일지 - 포장</PageHeader>
             <DiaryPackagingFormSection boxes={boxes} 
                 searchOrder={searchOrder} currentOrder={currentOrder} 
                 applyBoxInfo={applyBoxInfo} ref={formSectionRef} />

@@ -7,6 +7,7 @@ import MonitorPrintFirstTable from "./components/MonitorPrintFirstTable";
 import MonitorPrintSecondTable from "./components/MonitorPrintSecondTable";
 import MonitorPrintThirdTable from "./components/MonitorPrintThirdTable";
 import MonitorPrintButton from "./components/MonitorPrintButton";
+import PageHeader from "../../../component/layout/PageHeader";
 
 
 export default function MonitorPrintPage() {
@@ -34,7 +35,7 @@ export default function MonitorPrintPage() {
 
     return (
             <div className="px-6 py-3">
-                <h1 className="text-base font-semibold pb-2">인쇄소별재고조회</h1>
+                <PageHeader>인쇄소별재고조회</PageHeader>
                 <MonitorPrintFormSection />
                 <div className="grid grid-cols-3 gap-4 p-3 border border-white-500">
                     <MonitorPrintFirstTable data={putinPapers} />

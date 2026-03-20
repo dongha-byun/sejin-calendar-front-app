@@ -8,6 +8,7 @@ import type { Model } from "../../../types/baseinfo/Model";
 import { modelApi } from "../../../api/baseinfo/modelApi";
 import { diaryBindApi } from "../../../api/diary/diaryBindApi";
 import { printCnSearchApi } from "../../../api/ordermanager/printCnApi";
+import PageHeader from "../../../component/layout/PageHeader";
 
 export default function DiaryBindPage() {
     const [diaryBinds, setDiaryBinds] = useState<DiaryBind[]>([]);
@@ -52,7 +53,7 @@ export default function DiaryBindPage() {
 
     return (
         <div className="px-6 py-3">
-            <h1 className="text-base font-semibold pb-2">작업지시 - 제본</h1>
+            <PageHeader>작업지시 - 제본</PageHeader>
             <DiaryBindFormSection 
                 onAdd={addDiaryBind}
                 bindCompanies={bindCompanies} models={models} 

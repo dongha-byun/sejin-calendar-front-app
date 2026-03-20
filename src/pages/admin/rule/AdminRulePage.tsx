@@ -7,6 +7,7 @@ import AdminRuleAllMenuTree from "./components/AdminRuleAllMenuTree";
 import type { MenuItem } from "../../../types/menu/MenuItem";
 import { menuApi } from "../../../api/menu/menu";
 import { LeftArrowIcon, RightArrowIcon } from "../../../component/icons/ArrowIcons";
+import PageHeader from "../../../component/layout/PageHeader";
 
 export default function AdminRulePage() {
 
@@ -33,7 +34,7 @@ export default function AdminRulePage() {
 
     return (
         <div className="px-6 py-3">
-            <h1 className="text-base font-semibold pb-2">Rule 관리</h1>
+            <PageHeader>Rule 관리</PageHeader>
             <div className="grid gap-4 p-3 border border-white-500" style={{gridTemplateColumns: '1fr 1fr 3rem 1fr'}}>
                 <AdminRuleList data={auths} />
                 <AdminRuleAccessableMenuTree menus={accessableMenus} />

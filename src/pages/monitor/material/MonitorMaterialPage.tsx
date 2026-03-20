@@ -11,6 +11,7 @@ import { materialApi } from "../../../api/baseinfo/materialApi";
 import type { MonitorMaterialSearchResponse } from "../../../types/monitor/MonitorMaterialSearchResponse";
 import type { MonitorMaterialSearchRequest } from "./components/MonitorMaterialFormSection";
 import { monitorMaterialApi } from "../../../api/monitor/monitorMaterialApi";
+import PageHeader from "../../../component/layout/PageHeader";
 
 export default function MonitorMaterialPage() {
     const [searchResponse, setSearchResponse] = useState<MonitorMaterialSearchResponse>();
@@ -55,7 +56,7 @@ export default function MonitorMaterialPage() {
 
     return (
         <div className="px-6 py-3">
-            <h1 className="text-base font-semibold pb-2">원자재재고조회</h1>
+            <PageHeader>원자재재고조회</PageHeader>
             <MonitorMaterialFormSection
                 ref={formSectionRef}
                 companies={companies}

@@ -8,6 +8,7 @@ import { modelApi } from "../../../api/baseinfo/modelApi";
 import { customCompanyApi } from "../../../api/baseinfo/customCompanyApi";
 import { orderApi } from "../../../api/ordermanager/orderApi";
 import { CompanyType } from "../../../types/baseinfo/CustomCompany";
+import PageHeader from "../../../component/layout/PageHeader";
 
 export default function OrderManagerCancelPage() {
 
@@ -60,7 +61,7 @@ export default function OrderManagerCancelPage() {
 
     return (
         <div className="px-6 py-3">
-            <h1 className="text-base font-semibold pb-2">주문반품</h1>
+            <PageHeader>주문반품</PageHeader>
             <OrderManagerReturnsFormSection 
                 ref={formSectionRef}
                 models={models} 

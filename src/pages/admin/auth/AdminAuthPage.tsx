@@ -6,6 +6,7 @@ import AdminAuthSecondTable from "./components/AdminAuthSecondTable";
 import type { AdminAuth } from "../../../types/admin/AdminAuth";
 import AdminMenuTree from "./components/AdminMenuTree";
 import { menuApi } from "../../../api/menu/menu";
+import PageHeader from "../../../component/layout/PageHeader";
 
 export default function AdminAuthPage() {
     const [members, setMembers] = useState<AdminMember[]>([]);
@@ -26,7 +27,7 @@ export default function AdminAuthPage() {
 
     return (
         <div className="px-6 py-3">
-            <h1 className="text-base font-semibold pb-2">관리자 - 권한관리</h1>
+            <PageHeader>관리자 - 권한관리</PageHeader>
             <div className="grid grid-cols-3 gap-4 p-3 border border-white-500">
                 <AdminAuthFirstTable data={members} />
                 <AdminAuthSecondTable data={auths} />

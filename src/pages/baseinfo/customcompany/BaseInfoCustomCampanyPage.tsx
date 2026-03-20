@@ -3,6 +3,7 @@ import CustomCompanyFormSection from "./components/CustomCompanyFormSection";
 import CustomCompanyTable from "./components/CustomCompanyTable";
 import { CompanyType, type CustomCompany } from "../../../types/baseinfo/CustomCompany";
 import { customCompanyApi } from "../../../api/baseinfo/customCompanyApi";
+import PageHeader from "../../../component/layout/PageHeader";
 
 interface Props {
   companyType?: string;
@@ -44,7 +45,7 @@ const BaseInfoCustomCompanyPage: React.FC<Props> = ({ companyType, companyName }
 
   return (
     <div className="px-6 py-3">
-      <h1 className="text-base font-semibold pb-2">기초자료등록 - 거래처</h1>
+      <PageHeader>기초자료등록 - 거래처</PageHeader>
       <CustomCompanyFormSection 
         onChangeType={onChangeType} onAdd={addCustomCompany} 
         selectedName={selectedName} selectedType={selectedType}

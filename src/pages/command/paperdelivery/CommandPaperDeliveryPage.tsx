@@ -7,6 +7,7 @@ import { CompanyType, type CustomCompany } from "../../../types/baseinfo/CustomC
 import { customCompanyApi } from "../../../api/baseinfo/customCompanyApi";
 import type { Paper } from "../../../types/baseinfo/Paper";
 import { paperApi } from "../../../api/baseinfo/paperApi";
+import PageHeader from "../../../component/layout/PageHeader";
 
 
 export default function CommandPaperDeliveryPage() {
@@ -34,7 +35,7 @@ export default function CommandPaperDeliveryPage() {
 
     return (
         <div className="px-6 py-3">
-            <h1 className="text-base font-semibold pb-2">작업지시 - 용지배송</h1>
+            <PageHeader>작업지시 - 용지배송</PageHeader>
             <CommandPaperDeliveryFormSection 
                 onAdd={addCommandPaperDelivery} 
                 paperCompanies={paperCompanies} 

@@ -7,6 +7,7 @@ import type { Model } from "../../../types/baseinfo/Model";
 import { modelApi } from "../../../api/baseinfo/modelApi";
 import { CompanyType, type CustomCompany } from "../../../types/baseinfo/CustomCompany";
 import { customCompanyApi } from "../../../api/baseinfo/customCompanyApi";
+import PageHeader from "../../../component/layout/PageHeader";
 
 export default function OrderManagerAcceptPage () {
     const [orders, setOrders] = useState<OrderDto[]>([]);
@@ -53,7 +54,7 @@ export default function OrderManagerAcceptPage () {
 
     return (
         <div className="px-6 py-3">
-            <h1 className="text-base font-semibold pb-2">주문접수</h1>
+            <PageHeader>주문접수</PageHeader>
             <OrderManagerAcceptFormSection 
                 onAdd={addOrder} models={models} companies={companies}
                 nextOrderNum={nextOrderNum} getNextReleaseNumFunc={getNextReleaseNum}

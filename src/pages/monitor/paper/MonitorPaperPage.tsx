@@ -7,6 +7,7 @@ import MonitorPaperCompany from "./components/MonitorPaperCompany";
 import MonitorPaperButton from "./components/MonitorPaperButton";
 import type { CommandPrint } from "../../../types/command/CommandPrint";
 import MonitorPaperCommandPrintList from "./components/MonitorPaperCommandPrintList";
+import PageHeader from "../../../component/layout/PageHeader";
 
 export default function MonitorPaperPage() {
     const [putinPapers, setPutinPapers] = useState<PutinPaper[]>([]);
@@ -32,7 +33,7 @@ export default function MonitorPaperPage() {
 
     return (
         <div className="px-6 py-3">
-            <h1 className="text-base font-semibold pb-2">용지재고조회(용지별)</h1>
+            <PageHeader>용지재고조회(용지별)</PageHeader>
             <MonitorPaperFormSection />
             <div className="grid grid-cols-3 gap-4 p-3 border border-white-500">
                 <MonitorPaperPrice data={putinPapers} />

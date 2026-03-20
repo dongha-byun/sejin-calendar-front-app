@@ -7,6 +7,7 @@ import { CompanyType, type CustomCompany } from "../../../types/baseinfo/CustomC
 import { customCompanyApi } from "../../../api/baseinfo/customCompanyApi";
 import type { Model } from "../../../types/baseinfo/Model";
 import { modelApi } from "../../../api/baseinfo/modelApi";
+import PageHeader from "../../../component/layout/PageHeader";
 
 export default function CommandBindPage() {
     const [commandBinds, setCommandBinds] = useState<CommandBindDto[]>([]);
@@ -33,7 +34,7 @@ export default function CommandBindPage() {
 
     return (
         <div className="px-6 py-3">
-            <h1 className="text-base font-semibold pb-2">작업지시 - 제본지시</h1>
+            <PageHeader>작업지시 - 제본지시</PageHeader>
             <CommandBindFormSection 
                 onAdd={addCommandBind} 
                 bindCompanies={bindCompanies} printCompanies={printCompanies}

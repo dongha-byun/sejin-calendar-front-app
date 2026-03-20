@@ -8,6 +8,7 @@ import { customCompanyApi } from "../../../api/baseinfo/customCompanyApi";
 import { commandPrintApi } from "../../../api/command/commandPrintApi";
 import type { CommandPrint } from "../../../types/command/CommandPrint";
 import { diaryPrintApi } from "../../../api/diary/diaryPrintApi";
+import PageHeader from "../../../component/layout/PageHeader";
 
 export default function DiaryPrintPage() {
     const [commandPrints, setCommandPrints] = useState<CommandPrint[]>([]);
@@ -55,7 +56,7 @@ export default function DiaryPrintPage() {
 
     return (
         <div className="px-6 py-3">
-            <h1 className="text-base font-semibold pb-2">작업일지 - 인쇄물입고</h1>
+            <PageHeader>작업일지 - 인쇄물입고</PageHeader>
             <DiaryPrintFormSection 
                 ref={formSectionRef}
                 models={models} 

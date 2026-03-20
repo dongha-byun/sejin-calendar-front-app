@@ -4,6 +4,7 @@ import DiaryPrintCnFormSection, { type FormSectionRef } from "./components/Diary
 import DiaryPrintCnTable from "./components/DiaryPrintCnTable";
 import { diaryPrintCnApi } from "../../../api/diary/diaryPrintCnApi";
 import type { SomsResponse } from "../../../api/somsResponse";
+import PageHeader from "../../../component/layout/PageHeader";
 
 export default function DiaryPrintCnPage() {
     const [orders, setOrders] = useState<Order[]>([]);
@@ -58,7 +59,7 @@ export default function DiaryPrintCnPage() {
 
     return (
         <div className="px-6 py-3">
-            <h1 className="text-base font-semibold pb-2">작업일지 - 상호인쇄</h1>
+            <PageHeader>작업일지 - 상호인쇄</PageHeader>
             <DiaryPrintCnFormSection ref={formSectionRef} searchOrder={searchOrder} />
             <DiaryPrintCnTable data={orders} checkedIds={checkedIds} onCheckId={onCheckId} deleteRows={deleteRows} onInit={onInit} completePrint={completePrint}/>
         </div>

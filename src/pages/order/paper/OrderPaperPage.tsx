@@ -7,6 +7,7 @@ import { CompanyType, type CustomCompany } from "../../../types/baseinfo/CustomC
 import { customCompanyApi } from "../../../api/baseinfo/customCompanyApi";
 import type { Paper } from "../../../types/baseinfo/Paper";
 import { paperApi } from "../../../api/baseinfo/paperApi";
+import PageHeader from "../../../component/layout/PageHeader";
 
 export default function OrderPaperPage() {
     const [orderPapers, setOrderPapers] = useState<OrderPaper[]>([]);
@@ -34,7 +35,7 @@ export default function OrderPaperPage() {
 
     return (
         <div className="px-6 py-3">
-            <h1 className="text-base font-semibold pb-2">자재발주 - 용지</h1>
+            <PageHeader>자재발주 - 용지</PageHeader>
             <OrderPaperFormSection onAdd={addOrderPaper} companies={companies} papers={papers} />
             <OrderPaperTable data={orderPapers} />
         </div>

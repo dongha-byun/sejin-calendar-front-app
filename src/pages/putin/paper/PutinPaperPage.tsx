@@ -7,6 +7,7 @@ import { CompanyType, type CustomCompany } from "../../../types/baseinfo/CustomC
 import { customCompanyApi } from "../../../api/baseinfo/customCompanyApi";
 import type { Paper } from "../../../types/baseinfo/Paper";
 import { paperApi } from "../../../api/baseinfo/paperApi";
+import PageHeader from "../../../component/layout/PageHeader";
 
 
 export default function PutinPaperPage() {
@@ -32,7 +33,7 @@ export default function PutinPaperPage() {
 
     return (
         <div className="px-6 py-3">
-            <h1 className="text-base font-semibold pb-2">자재입고 - 용지</h1>
+            <PageHeader>자재입고 - 용지</PageHeader>
             <PutinPaperFormSection onAdd={addPutinPaper} 
                 companies={companies} papers={papers}/>
             <PutinPaperTable data={putinPapers} />

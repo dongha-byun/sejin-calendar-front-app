@@ -7,6 +7,7 @@ import { CompanyType, type CustomCompany } from "../../../types/baseinfo/CustomC
 import { customCompanyApi } from "../../../api/baseinfo/customCompanyApi";
 import CommandOrderOutBottom from "./components/CommandOrderOutBottom";
 import { orderApi } from "../../../api/ordermanager/orderApi";
+import PageHeader from "../../../component/layout/PageHeader";
 
 export const DEFAULT_PRINT_CN = "NO_PRINT";
 export const DEFAULT_ORDER_TYPE = "ORDER_NUM";
@@ -108,7 +109,7 @@ export default function CommandOrderOutPage () {
 
     return (
         <div className="px-6 py-3">
-            <h1 className="text-base font-semibold pb-2">작업지시 - 출고증발행</h1>
+            <PageHeader>작업지시 - 출고증발행</PageHeader>
             <CommandOrderOutFormSection 
                 companies={companies} searchOrders={searchOrders} 
                 onSelectAll={handleSelectAll}

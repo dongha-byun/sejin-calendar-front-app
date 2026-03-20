@@ -7,6 +7,7 @@ import { BindMethod, type Material } from "../../../types/baseinfo/Material";
 import { CompanyType, type CustomCompany } from "../../../types/baseinfo/CustomCompany";
 import { customCompanyApi } from "../../../api/baseinfo/customCompanyApi";
 import { materialApi } from "../../../api/baseinfo/materialApi";
+import PageHeader from "../../../component/layout/PageHeader";
 
 
 export default function PutinMaterialPage() {
@@ -37,7 +38,7 @@ export default function PutinMaterialPage() {
 
     return (
         <div className="px-6 py-3">
-            <h1 className="text-base font-semibold pb-2">자재입고 - 원자재</h1>
+            <PageHeader>자재입고 - 원자재</PageHeader>
             <PutinMaterialFormSection 
                 onAdd={addPutinMaterial} 
                 selectedBindMethod={selectedBindMethod} setSelectedBindMethod={setSelectedBindMethod} 
