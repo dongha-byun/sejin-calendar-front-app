@@ -1,46 +1,61 @@
-import { useEffect, useState } from "react";
-import MonitorPaperFormSection from "./components/MonitorPaperFormSection";
-import type { CommandPaperDelivery } from "../../../types/command/CommandPaperDelivery";
-import type { PutinPaper } from "../../../types/putin/PutinPaper";
+import { useCallback, useEffect, useRef, useState } from "react";
+import MonitorPaperFormSection, { type MonitorPaperFormSectionRef, type MonitorPaperStockRequest } from "./components/MonitorPaperFormSection";
 import MonitorPaperPrice from "./components/MonitorPaperPrice";
 import MonitorPaperCompany from "./components/MonitorPaperCompany";
-import MonitorPaperButton from "./components/MonitorPaperButton";
-import type { CommandPrint } from "../../../types/command/CommandPrint";
 import MonitorPaperCommandPrintList from "./components/MonitorPaperCommandPrintList";
+import MonitorPaperButton from "./components/MonitorPaperButton";
 import PageHeader from "../../../component/layout/PageHeader";
+import type { MonitorPaperStockResponse } from "../../../types/monitor/MonitorPaperStockResponse";
+import { monitorPaperApi } from "../../../api/monitor/monitorPaperApi";
+import { customCompanyApi } from "../../../api/baseinfo/customCompanyApi";
+import { CompanyType, type CustomCompany } from "../../../types/baseinfo/CustomCompany";
+import { paperApi } from "../../../api/baseinfo/paperApi";
+import type { Paper } from "../../../types/baseinfo/Paper";
 
 export default function MonitorPaperPage() {
-    const [putinPapers, setPutinPapers] = useState<PutinPaper[]>([]);
-    const [commandPaperDeliveries, setCommandPaperDeliveries] = useState<CommandPaperDelivery[]>([]);
-    const [commandPrints, setCommandPrints] = useState<CommandPrint[]>([]);
-        
+    const [response, setResponse] = useState<MonitorPaperStockResponse>();
+    const [paperCompanies, setPaperCompanies] = useState<CustomCompany[]>([]);
+    const [printCompanies, setPrintCompanies] = useState<CustomCompany[]>([]);
+    const [papers, setPapers] = useState<Paper[]>([]);
+    const formSectionRef = useRef<MonitorPaperFormSectionRef | null>(null);
+
     useEffect(() => {
-        const saved = localStorage.getItem("putinPapers");
-        if (saved) setPutinPapers(JSON.parse(saved));
-
-        const deliverySaved = localStorage.getItem("commandPaperDeliveries");
-        if (deliverySaved) setCommandPaperDeliveries(JSON.parse(deliverySaved));
-
-        const commandPrintsSaved = localStorage.getItem("commandPrints");
-        if (commandPrintsSaved) setCommandPrints(JSON.parse(commandPrintsSaved));
+        customCompanyApi.list(CompanyType.Paper).then(setPaperCompanies);
+        customCompanyApi.list(CompanyType.Printing).then(setPrintCompanies);
+        paperApi.list().then(setPapers);
+        search({});
     }, []);
 
-    useEffect(() => {
-        localStorage.setItem("putinPapers", JSON.stringify(putinPapers));
-        localStorage.setItem("commandPaperDeliveries", JSON.stringify(commandPaperDeliveries));
-        localStorage.setItem("commandPrints", JSON.stringify(commandPrints));
-    }, [putinPapers, commandPaperDeliveries, commandPrints]);
+    const search = useCallback((req: Partial<MonitorPaperStockRequest>) => {
+        monitorPaperApi.search(req).then(setResponse).catch(err => {
+            console.error(err);
+            alert(err.response?.data?.message ?? "조회 중 오류가 발생했습니다.");
+        });
+    }, []);
+
+    const onInit = () => {
+        formSectionRef.current?.onInitForm();
+    };
 
     return (
         <div className="px-6 py-3">
             <PageHeader>용지재고조회(용지별)</PageHeader>
-            <MonitorPaperFormSection />
-            <div className="grid grid-cols-3 gap-4 p-3 border border-white-500">
-                <MonitorPaperPrice data={putinPapers} />
-                <MonitorPaperCompany data={commandPaperDeliveries} />
-                <MonitorPaperCommandPrintList data={commandPrints} />
+            <MonitorPaperFormSection
+                ref={formSectionRef}
+                paperCompanies={paperCompanies}
+                printCompanies={printCompanies}
+                papers={papers}
+                onSearch={search}
+            />
+            <div className="grid gap-4 p-3 border border-white-500" style={{ gridTemplateColumns: '1fr 1fr 2fr' }}>
+                <MonitorPaperPrice data={response?.detail.putinList ?? []} />
+                <MonitorPaperCompany data={response?.detail.commandDeliveryList ?? []} />
+                <MonitorPaperCommandPrintList data={response?.detail.commandPrintList ?? []} />
             </div>
-            <MonitorPaperButton />
+            <MonitorPaperButton
+                statistics={response?.paperStockStatistics}
+                onInit={onInit}
+            />
         </div>
     );
 }
