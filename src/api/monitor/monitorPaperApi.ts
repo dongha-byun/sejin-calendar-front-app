@@ -4,6 +4,9 @@ import apiService from "../axiosInstance";
 export interface MonitorPaperStockRequest {
     paperCompanyName?: string;
     printCompanyName?: string;
+    weight?: string;
+    properties?: string;
+    standard?: string;
 }
 
 export const monitorPaperApi = {

@@ -17,6 +17,7 @@ export default function MonitorPaperPage() {
     const [paperCompanies, setPaperCompanies] = useState<CustomCompany[]>([]);
     const [printCompanies, setPrintCompanies] = useState<CustomCompany[]>([]);
     const [papers, setPapers] = useState<Paper[]>([]);
+    const [isDetail, setIsDetail] = useState(true);
     const formSectionRef = useRef<MonitorPaperFormSectionRef | null>(null);
 
     useEffect(() => {
@@ -45,12 +46,26 @@ export default function MonitorPaperPage() {
                 paperCompanies={paperCompanies}
                 printCompanies={printCompanies}
                 papers={papers}
+                isDetail={isDetail}
                 onSearch={search}
+                onDetailChange={setIsDetail}
             />
             <div className="grid gap-4 p-3 border border-white-500" style={{ gridTemplateColumns: '1fr 1fr 2fr' }}>
-                <MonitorPaperPrice data={response?.detail.putinList ?? []} />
-                <MonitorPaperCompany data={response?.detail.commandDeliveryList ?? []} />
-                <MonitorPaperCommandPrintList data={response?.detail.commandPrintList ?? []} />
+                <MonitorPaperPrice
+                    isDetail={isDetail}
+                    detail={response?.detail.putinList ?? []}
+                    summary={response?.summary.putinList ?? []}
+                />
+                <MonitorPaperCompany
+                    isDetail={isDetail}
+                    detail={response?.detail.commandDeliveryList ?? []}
+                    summary={response?.summary.deliveryList ?? []}
+                />
+                <MonitorPaperCommandPrintList
+                    isDetail={isDetail}
+                    detail={response?.detail?.commandPrintList ?? []}
+                    summary={response?.summary?.printList ?? []}
+                />
             </div>
             <MonitorPaperButton
                 statistics={response?.paperStockStatistics}
