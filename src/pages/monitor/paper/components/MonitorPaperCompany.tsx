@@ -14,8 +14,8 @@ export default function MonitorPaperCompany({ isDetail, detail, summary }: Props
                     <thead className="bg-gray-200 sticky top-0">
                         <tr>
                             <th className="border px-2 py-1">지업사</th>
-                            <th className="border px-2 py-1">배송일</th>
-                            <th className="border px-2 py-1">배송량</th>
+                            <th className="border px-2 py-1">입고일</th>
+                            <th className="border px-2 py-1">입고량</th>
                             <th className="border px-2 py-1">인쇄소</th>
                         </tr>
                     </thead>
@@ -36,7 +36,7 @@ export default function MonitorPaperCompany({ isDetail, detail, summary }: Props
                         <tr>
                             <th className="border px-2 py-1">지업사</th>
                             <th className="border px-2 py-1">인쇄소</th>
-                            <th className="border px-2 py-1">배송량 합계</th>
+                            <th className="border px-2 py-1">입고량 합계</th>
                         </tr>
                     </thead>
                     <tbody>
