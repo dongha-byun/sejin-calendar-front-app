@@ -39,7 +39,7 @@ function DetailTable({ data }: { data: PrintDeliveryDetailDto[] }) {
 
 function SummaryTable({ data }: { data: PrintDeliverySummaryDto[] }) {
     return (
-        <table className="w-full table-auto border text-sm">
+        <table className="table-auto border text-sm whitespace-nowrap">
             <thead>
                 <tr>
                     <th className="border px-2 py-1 sticky top-0 bg-gray-200 text-left">무게</th>
