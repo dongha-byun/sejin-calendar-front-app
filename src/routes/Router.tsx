@@ -33,6 +33,7 @@ import DiaryPackaging from "../pages/diary/packaging/DiaryPackaging";
 import DiaryOrderOut from "../pages/diary/orderout/DiaryOrderOut";
 import CommandCustomPrintPrintTemplate from "../pages/command/customprint/print/CommandCustomPrintPrintTemplate";
 import CommandOrderOutPrintPreview from "../pages/command/orderout/print/CommandOrderOutPrintPreview";
+import EtcSample from "../pages/etc/sample/EtcSample";
 
 const router = createBrowserRouter([
     {
@@ -139,6 +140,12 @@ const router = createBrowserRouter([
         path: "/command/order-out/print/preview", // 작업지시 - 출고증발행 인쇄미리보기 (팝업)
         element: (
             <CommandOrderOutPrintPreview />
+        )
+    },
+    {
+        path: "/etc/sample", // 기타작업 - 견본
+        element: (
+            <EtcSample />
         )
     },
     {
