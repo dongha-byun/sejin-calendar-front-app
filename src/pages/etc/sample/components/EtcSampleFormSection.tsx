@@ -11,6 +11,7 @@ type FormState = Omit<EtcSampleDto, 'amount'> & { amount: string };
 interface Props {
     onAdd: (data: EtcSampleDto) => void;
     models: Model[];
+    onModelChange: (modelNum: string) => void;
 }
 
 const defaultForm: FormState = {
@@ -21,7 +22,7 @@ const defaultForm: FormState = {
     etc: '',
 };
 
-export default function EtcSampleFormSection({ onAdd, models }: Props) {
+export default function EtcSampleFormSection({ onAdd, models, onModelChange }: Props) {
     const [form, setForm] = useState<FormState>(defaultForm);
 
     const modelNums = models.map(model => model.modelNum);
@@ -32,6 +33,7 @@ export default function EtcSampleFormSection({ onAdd, models }: Props) {
             ...prev,
             modelName: model?.modelName || '',
         }));
+        onModelChange(form.modelNum);
     }, [form.modelNum]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {

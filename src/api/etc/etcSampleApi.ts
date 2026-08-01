@@ -5,8 +5,8 @@ export const etcSampleApi = {
     save: async (data: EtcSampleDto) => {
         await apiService.post("/api/v1/order-manager/sample", data);
     },
-    list: async () => {
-        const response = await apiService.get("/api/v1/order-manager/sample");
+    list: async (modelNum?: string) => {
+        const response = await apiService.get("/api/v1/order-manager/sample", modelNum ? { modelNum } : undefined);
         return response.data.data;
     }
 }
