@@ -34,6 +34,7 @@ import DiaryOrderOut from "../pages/diary/orderout/DiaryOrderOut";
 import CommandCustomPrintPrintTemplate from "../pages/command/customprint/print/CommandCustomPrintPrintTemplate";
 import CommandOrderOutPrintPreview from "../pages/command/orderout/print/CommandOrderOutPrintPreview";
 import EtcSample from "../pages/etc/sample/EtcSample";
+import EtcRevenue from "../pages/etc/revenue/EtcRevenue";
 
 const router = createBrowserRouter([
     {
@@ -146,6 +147,12 @@ const router = createBrowserRouter([
         path: "/etc/sample", // 기타작업 - 견본
         element: (
             <EtcSample />
+        )
+    },
+    {
+        path: "/etc/revenue", // 기타작업 - 매출현황
+        element: (
+            <EtcRevenue />
         )
     },
     {
