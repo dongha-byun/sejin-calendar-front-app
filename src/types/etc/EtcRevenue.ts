@@ -1,18 +1,18 @@
 export type RevenuePrintCnType = 'ALL' | 'PRINT' | 'NO_PRINT';
 
 export interface EtcRevenueRow {
-    seqNum: number;
+    orderId: number;
     modelNum: string;
     modelName?: string;
     customerName: string;
     printCn: string;
     state?: string;
-    iDate: string;
+    issueDate: string;
     amount: number;
     price: number;
-    pCompleteDate?: string | null;
+    printCompleteDate?: string | null;
     boxDate?: string | null;
-    rCompleteDate?: string | null;
+    releaseCompleteDate?: string | null;
 }
 
 export interface EtcRevenueSummaryData {

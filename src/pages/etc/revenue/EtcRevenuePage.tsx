@@ -18,17 +18,19 @@ export default function EtcRevenuePage() {
     const [companies, setCompanies] = useState<CustomCompany[]>([]);
 
     const fetchRevenue = useCallback(async (query: EtcRevenueQuery) => {
-        try {
-            const [list, sumData] = await Promise.all([
-                etcRevenueApi.list(query),
-                etcRevenueApi.summary(query),
-            ]);
-            setRows(list);
-            setSummary(sumData);
-        } catch {
-            setRows([]);
-            setSummary(emptyRevenueSummary);
-        }
+        etcRevenueApi.list(query)
+            .then(setRows)
+            .catch((err) => {
+                console.error('[매출현황] 목록 조회 실패', err);
+                setRows([]);
+            });
+
+        etcRevenueApi.summary(query)
+            .then(setSummary)
+            .catch((err) => {
+                console.error('[매출현황] 집계 조회 실패', err);
+                setSummary(emptyRevenueSummary);
+            });
     }, []);
 
     useEffect(() => {

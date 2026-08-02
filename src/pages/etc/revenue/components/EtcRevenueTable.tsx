@@ -17,7 +17,7 @@ export default function EtcRevenueTable({ data }: Props) {
                         <th className="border px-2 py-1 whitespace-nowrap">접수번호</th>
                         <th className="border px-2 py-1 whitespace-nowrap">모델#</th>
                         <th className="border px-2 py-1 whitespace-nowrap">거래처명</th>
-                        <th className="border px-2 py-1 whitespace-nowrap">인쇄처</th>
+                        <th className="border px-2 py-1 whitespace-nowrap">상호</th>
                         <th className="border px-2 py-1 whitespace-nowrap">접수일</th>
                         <th className="border px-2 py-1 whitespace-nowrap">수량</th>
                         <th className="border px-2 py-1 whitespace-nowrap">금액</th>
@@ -37,20 +37,20 @@ export default function EtcRevenueTable({ data }: Props) {
                     ) : (
                         data.map((row, idx) => (
                             <tr
-                                key={row.seqNum ?? idx}
+                                key={row.orderId ?? idx}
                                 className={idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
                             >
-                                <td className="border px-2 py-1 text-center whitespace-nowrap">{row.seqNum}</td>
+                                <td className="border px-2 py-1 text-center whitespace-nowrap">{row.orderId}</td>
                                 <td className="border px-2 py-1 whitespace-nowrap">{row.modelNum}</td>
                                 <td className="border px-2 py-1 whitespace-nowrap">{row.customerName}</td>
                                 <td className="border px-2 py-1 whitespace-nowrap">{row.printCn}</td>
-                                <td className="border px-2 py-1 text-center whitespace-nowrap">{cell(row.iDate)}</td>
+                                <td className="border px-2 py-1 text-center whitespace-nowrap">{cell(row.issueDate)}</td>
                                 <td className="border px-2 py-1 text-right whitespace-nowrap">{formatNumber(row.amount)}</td>
                                 <td className="border px-2 py-1 text-right whitespace-nowrap">{formatNumber(row.price)}</td>
                                 <td className="border px-2 py-1 text-center whitespace-nowrap">{cell(row.state)}</td>
-                                <td className="border px-2 py-1 text-center whitespace-nowrap">{cell(row.pCompleteDate)}</td>
+                                <td className="border px-2 py-1 text-center whitespace-nowrap">{cell(row.printCompleteDate)}</td>
                                 <td className="border px-2 py-1 text-center whitespace-nowrap">{cell(row.boxDate)}</td>
-                                <td className="border px-2 py-1 text-center whitespace-nowrap">{cell(row.rCompleteDate)}</td>
+                                <td className="border px-2 py-1 text-center whitespace-nowrap">{cell(row.releaseCompleteDate)}</td>
                             </tr>
                         ))
                     )}
