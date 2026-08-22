@@ -16,11 +16,11 @@ export interface EtcRevenueRow {
 }
 
 export interface EtcRevenueSummaryData {
-    receiveAmount: number;
-    releaseAmount: number;
-    unreleaseAmount: number;
-    receivePrice: number;
-    releasePrice: number;
+    totalAmount: number;
+    totalPrice: number;
+    releasedAmount: number;
+    releasedPrice: number;
+    unreleasedAmount: number;
 }
 
 export interface EtcRevenueQuery {
@@ -33,9 +33,9 @@ export interface EtcRevenueQuery {
 }
 
 export const emptyRevenueSummary: EtcRevenueSummaryData = {
-    receiveAmount: 0,
-    releaseAmount: 0,
-    unreleaseAmount: 0,
-    receivePrice: 0,
-    releasePrice: 0,
+    totalAmount: 0,
+    totalPrice: 0,
+    releasedAmount: 0,
+    releasedPrice: 0,
+    unreleasedAmount: 0,
 };

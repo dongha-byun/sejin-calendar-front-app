@@ -148,8 +148,14 @@ export default function EtcRevenueFormSection({ models, companies, onSearch }: P
                 </FormItem>
             </div>
 
-            {/* 2행: 기간 + 빠른날짜 버튼 + 검색 */}
+            {/* 2행: 빠른날짜 버튼 + 기간 + 검색 */}
             <div className="flex flex-wrap items-center gap-2">
+                <div className="w-20 shrink-0" />
+                {quickBtn('당일', () => { const d = toToday(); applyQuickDate(d, d); })}
+                {quickBtn('어제하루', () => { const d = toYesterday(); applyQuickDate(d, d); })}
+                {quickBtn('일주일전', () => applyQuickDate(toDaysAgo(7), toToday()))}
+                {quickBtn('1달전', () => applyQuickDate(toMonthsAgo(1), toToday()))}
+                {quickBtn('3달전', () => applyQuickDate(toMonthsAgo(3), toToday()))}
                 <FormItem label="기간" additionClass="shrink-0">
                     <div className="flex items-center gap-1">
                         <InputText
@@ -167,20 +173,15 @@ export default function EtcRevenueFormSection({ models, companies, onSearch }: P
                             onChange={handleChange}
                             size={InputTextSize.Medium}
                         />
+                        <button
+                            type="button"
+                            onClick={handleSearch}
+                            className="rounded bg-blue-500 px-3 py-1 text-sm text-white hover:bg-blue-600"
+                        >
+                            검색
+                        </button>
                     </div>
                 </FormItem>
-                {quickBtn('당일', () => { const d = toToday(); applyQuickDate(d, d); })}
-                {quickBtn('어제하루', () => { const d = toYesterday(); applyQuickDate(d, d); })}
-                {quickBtn('일주일전', () => applyQuickDate(toDaysAgo(7), toToday()))}
-                {quickBtn('1달전', () => applyQuickDate(toMonthsAgo(1), toToday()))}
-                {quickBtn('3달전', () => applyQuickDate(toMonthsAgo(3), toToday()))}
-                <button
-                    type="button"
-                    onClick={handleSearch}
-                    className="rounded bg-blue-500 px-3 py-1 text-sm text-white hover:bg-blue-600"
-                >
-                    검색
-                </button>
             </div>
         </div>
     );
